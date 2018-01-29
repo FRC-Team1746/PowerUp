@@ -21,7 +21,7 @@ public class Robot extends IterativeRobot {
     DriveTrain m_driveTrain;
     AutonCrossTheLine m_autonCrossLine;
 
-//brockhampton is good music group
+//brockhampton is good music group or not
     
 	@Override
 	public void robotInit() {
