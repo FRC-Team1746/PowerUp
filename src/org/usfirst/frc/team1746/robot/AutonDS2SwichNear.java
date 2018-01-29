@@ -18,7 +18,7 @@ public class AutonDS2SwichNear {
 	public AutonDS2SwichNear(DriveTrain drivetrain) {
 		m_DriveTrain = drivetrain;
 		currentStates = States.INIT;
-		m_DriveTrain.setRampRate(.5);
+		m_DriveTrain.setRampRate(20);
 	}
 	
 	public void auton() {
@@ -36,15 +36,16 @@ public class AutonDS2SwichNear {
 		break;
 		case TURN:
 			m_DriveTrain.autonDriveTurn(.5);
-			if(m_DriveTrain.getHeading() > 90){
+			if(Math.abs(m_DriveTrain.getHeading()) > 5){
 				currentStates = States.SWERVE;
 			}
 		break;
 		case SWERVE:
 			m_DriveTrain.autonDriveStraight(.5);
-			if(m_DriveTrain.getEncoderRightInches() > 52.56){
+			if(m_DriveTrain.getEncoderRightInches() > 900.56){
 				currentStates = States.DEPLOY;
 			}
+		break;
 		case DEPLOY:
 			currentStates = States.STOP;
 		break;
