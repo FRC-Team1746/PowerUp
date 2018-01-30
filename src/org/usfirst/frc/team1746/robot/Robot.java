@@ -21,7 +21,8 @@ public class Robot extends IterativeRobot {
     DriveTrain m_driveTrain;
     AutonCrossTheLine m_autonCrossLine;
     AutonDS2SwichNear m_autonDS2SwitchNear;
-
+    AutonBase m_autonBase;
+    
 //brockhampton is good music group
     
 	@Override
@@ -39,7 +40,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-				
+		m_autonBase.init();
 	}
 	
 	@Override
