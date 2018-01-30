@@ -20,8 +20,14 @@ public class Robot extends IterativeRobot {
 	Controls m_controls;
     DriveTrain m_driveTrain;
     AutonCrossTheLine m_autonCrossLine;
+<<<<<<< HEAD
     AutonDS2ScaleFar m_autonDS2ScaleFar;
 
+=======
+    AutonDS2SwichNear m_autonDS2SwitchNear;
+    AutonBase m_autonBase;
+    
+>>>>>>> origin/master
 //brockhampton is good music group
     
 	@Override
@@ -30,7 +36,12 @@ public class Robot extends IterativeRobot {
 	 	m_driveTrain = new DriveTrain(m_controls);
 	 	m_driveTrain.resetGyro();
 	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
+<<<<<<< HEAD
 	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 1);
+=======
+	 	m_autonDS2SwitchNear = new AutonDS2SwichNear(m_driveTrain);
+	 	
+>>>>>>> origin/master
 	}
 
 	/**
@@ -38,16 +49,21 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-				
+		m_autonBase.init();
 	}
 	
 	@Override
 	public void autonomousPeriodic() {
 		
+<<<<<<< HEAD
 		//m_autonCrossLine.auton();
 		//m_autonCrossLine.updateSmartDashboard();
 		m_autonDS2ScaleFar.auton();
 		m_autonDS2ScaleFar.updateSmartDashboard();
+=======
+		m_autonDS2SwitchNear.auton();
+		m_autonDS2SwitchNear.updateSmartDashboard();
+>>>>>>> origin/master
 	}
 
 	/**
