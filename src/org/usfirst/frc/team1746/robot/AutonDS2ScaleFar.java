@@ -47,7 +47,7 @@ public class AutonDS2ScaleFar {
 		case TURN_RIGHT:
 			m_driveTrain.autonDriveStraight(0);
 			m_driveTrain.autonDriveTurn(.5);
-			if (m_driveTrain.getHeading() == Math.abs(3)) {
+			if (m_driveTrain.getHeading() > Math.abs(3)) {
 				currentState = States.DRIVE_FORWARD;
 			}
 		break;
@@ -61,7 +61,7 @@ public class AutonDS2ScaleFar {
 		break;
 		case TURN_LEFT:
 			m_driveTrain.autonDriveTurn(-.5);
-			if (m_driveTrain.getHeading() == Math.abs(3)) {
+			if (m_driveTrain.getHeading() > Math.abs(3)) {
 				m_driveTrain.autonDriveTurn(0);
 				currentState = States.DRIVE_MID_SCALE;
 			} 
@@ -76,7 +76,7 @@ public class AutonDS2ScaleFar {
 		case TURN_TOWARD_SCALE:
 			m_driveTrain.autonDriveStraight(0);
 			m_driveTrain.autonDriveTurn(-.5);
-			if (m_driveTrain.getHeading() == Math.abs(3)) {
+			if (m_driveTrain.getHeading() > Math.abs(3)) {
 				currentState = States.DRIVE_TO_SCALE;
 			}
 		break;
