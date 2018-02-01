@@ -5,24 +5,26 @@ import org.usfirst.frc.team1746.robot.DriveTrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Driverstation;
+import edu.wpi.first.wpilibj.DriverStation;
 
 
 public class AutonBase {
 	
 	private DriveTrain m_drivetrain;
 	
-	SendableChooser<Int> startSelector = new SendableChooser<>();
+	SendableChooser<Double> startSelector = new SendableChooser<>();
 	SendableChooser<Boolean> scaleFirstSelector = new SendableChooser<>();
 	SendableChooser<String> switchSelector = new SendableChooser<>();
 	SendableChooser<Boolean> startDelaySelector = new SendableChooser<>();
 	SendableChooser<Boolean> switchDelaySelector = new SendableChooser<>();
 	SendableChooser<Boolean> scaleDelaySelector = new SendableChooser<>();
+	SendableChooser<Boolean> scoreScaleSelector = new SendableChooser<>();
+	SendableChooser<Boolean> scoreSwitchSelector = new SendableChooser<>(); 
 	
 	String gameData;
-	String nearSwitch;
-	String scale;
-	String farSwitch;
+	char nearSwitchP;
+	char scaleP;
+	char farSwitchP;
 	
 	
 	public AutonBase(DriveTrain driveTrain){
@@ -34,42 +36,35 @@ public class AutonBase {
 	
 	public void init() {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		
-		if (gameData.charAt(0) == "L") {
-			nearSwitch = "Left";
-		} else {
-			nearSwitch = "Right";
-		}
-		if (gameData.charAt(1) == "L") {
-			scale = "Left";
-		} else {
-			scale = "Right";
-		}
-		if (gameData.charAt(2) == "L") {
-			farSwitch = "Left";
-		} else {
-			farSwitch = "Right";
-		}
-		
+		nearSwitchP = gameData.charAt(0);
+		scaleP = gameData.charAt(1);
+		farSwitchP = gameData.charAt(2);
 	}
 	
 	public void initSmartDashboard() {
 		initStartSelector();
-		initScaleSelector();
+		initSwitchSelector();
 		initScaleFirstSelector();
 		initStartDelaySelector();
 		initSwitchDelaySelector();
 		initScaleDelaySelector();
+		initScoreScaleSelector();
+		initScoreSwitchSelector();
 		SmartDashboard.putBoolean("Reset Auton", false);
 		
 	}
 	public void updateSmartDashboard(){
 		SmartDashboard.putBoolean("Scale First", selectedScaleFirst());
 		SmartDashboard.putString("Selected Switch", selectedSwitch());
-		SmartDashboard.putInt("Selected Start", selectedStart());
+		SmartDashboard.putNumber("Selected Start", selectedStart());
 		SmartDashboard.putBoolean("Start Delay", selectedStartDelay());
 		SmartDashboard.putBoolean("Switch Delay", selectedSwitchDelay());
 		SmartDashboard.putBoolean("Scale Delay", selectedScaleDelay());
+		SmartDashboard.putString("Near Switch Position", nSwitchPosition());
+		SmartDashboard.putString("Scale Position", scalePosition());
+		SmartDashboard.putString("Far Switch Position", fSwitchPosition());
+		SmartDashboard.putBoolean("Score Scale At End", selectedScoreScale());
+		SmartDashboard.putBoolean("Score Switch At End", selectedScoreSwitch());
 		
 		if(SmartDashboard.getBoolean("Reset Auton", false)){
 			resetAll();
@@ -82,9 +77,9 @@ public class AutonBase {
 		return scaleFirstSelector.getSelected();
 	}
 	public String selectedSwitch(){
-		return scaleSelector.getSelected();
+		return switchSelector.getSelected();
 	}
-	public int selectedStart(){
+	public double selectedStart(){
 		return startSelector.getSelected();
 	}
 	public boolean selectedStartDelay(){
@@ -95,6 +90,40 @@ public class AutonBase {
 	}
 	public boolean selectedScaleDelay(){
 		return scaleDelaySelector.getSelected();
+	}
+	public boolean selectedScoreScale(){
+		return scoreScaleSelector.getSelected();
+	}
+	public boolean selectedScoreSwitch(){
+		return scoreSwitchSelector.getSelected();
+	}
+	
+	public String fSwitchPosition() {
+		String fSwitchPosition = null;
+		if(farSwitchP == 'L') {
+			fSwitchPosition = "Left";
+		}else if(farSwitchP == 'R'){
+			fSwitchPosition = "Right";	
+		}
+		return fSwitchPosition;
+	}
+	public String scalePosition() {
+		String scalePosition = null;
+		if(scaleP == 'L') {
+			scalePosition = "Left";
+		}else if(scaleP == 'R'){
+			scalePosition = "Right";	
+		}
+		return scalePosition;
+	}
+	public String nSwitchPosition() {
+		String nSwitchPosition = null;
+		if(nearSwitchP == 'L') {
+			nSwitchPosition = "Left";
+		}else if(nearSwitchP == 'R'){
+			nSwitchPosition = "Right";	
+		}
+		return nSwitchPosition;
 	}
 	
 	public void initScaleFirstSelector(){
@@ -109,14 +138,14 @@ public class AutonBase {
 		SmartDashboard.putData("Switch Selector", switchSelector);
 	}
 	public void initStartSelector(){
-		startSelector.addDefault("Left", 1);
-		startSelector.addObject("Middle Left", 2);
-		startSelector.addObject("Middle Right", 3);
-		startSelector.addObject("Right", 4);
+		startSelector.addDefault("Left", (double)1);
+		startSelector.addObject("Middle Left", (double)2);
+		startSelector.addObject("Middle Right", (double)3);
+		startSelector.addObject("Right", (double)4);
 		SmartDashboard.putData("Start Selector", startSelector);
 	}
 	
-	public void initstartDelaySelector(){
+	public void initStartDelaySelector(){
 		startDelaySelector.addDefault("No", false);
 		startDelaySelector.addObject("Yes", true);
 		SmartDashboard.putData("Start Delay", startDelaySelector);
@@ -133,7 +162,16 @@ public class AutonBase {
 		scaleDelaySelector.addObject("Yes", true);
 		SmartDashboard.putData("Scale Delay", scaleDelaySelector);
 	}
-	
+	public void initScoreScaleSelector(){
+		scaleDelaySelector.addDefault("No", false);
+		scaleDelaySelector.addObject("Yes", true);
+		SmartDashboard.putData("Score Scale At End", scoreScaleSelector);
+	}
+	public void initScoreSwitchSelector(){
+		scaleDelaySelector.addDefault("No", false);
+		scaleDelaySelector.addObject("Yes", true);
+		SmartDashboard.putData("Score Switch At End", scoreSwitchSelector);
+	}
 	public void resetAll(){
 		m_drivetrain.resetEncoders();
 		m_drivetrain.resetGyro();
