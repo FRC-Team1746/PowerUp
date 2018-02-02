@@ -5,14 +5,13 @@ import java.lang.Math;
 
 public class AutonDS2ScaleFar {
 	private DriveTrain m_driveTrain;
-	private States firstState;
-	private States secondState;
-	private States thirdState;
-	private States fourthState;
+	private int m_position;
+	private States currentState;
+	
 	
 	public enum States {
 		INIT,
-		GRABBER,
+		GRABBER1,
 		DRIVE_PAST_SWITCH1,
 		TURN_RIGHT1,
 		DRIVE_FORWARD1,
@@ -21,10 +20,10 @@ public class AutonDS2ScaleFar {
 		TURN_TOWARD_SCALE1,
 		DRIVE_TO_SCALE1,
 		ELEVATOR1,
-		DRIVE_STOP1,
-		END,
+		ELEVATOR_STOP1,
+		GRABBER2,
 		DRIVE_OUT2,
-		TURN_AWAY_SWITCH2,
+		TURN_AWAYL_SWITCH2,
 		DRIVE_AWAY_SWITCH2,
 		TURN_RIGHT_FORWARD2,
 		DRIVE_PAST_SWITCH2,
@@ -35,118 +34,134 @@ public class AutonDS2ScaleFar {
 		TURN_TOWARD_SCALE2,
 		DRIVE_TO_SCALE2,
 		ELEVATOR2,
-		DRIVE_STOP2,
+		ELEVATOR_STOP2,
+		GRABBER3,
+		DRIVE_OUT3,
+		TURN_AWAYR_SWITCH3,
+		DRIVE_AWAY_SWITCH3,
+		TURN_LEFT_FORWARD3,
+		DRIVE_PAST_SWITCH3,
+		TURN_LEFT3,
+		DRIVE_FORWARD3,
+		TURN_RIGHT3,
+		DRIVE_MID_SCALE3,
+		TURN_TOWARD_SCALE3,
+		DRIVE_TO_SCALE3,
+		ELEVATOR3,
+		ELEVATOR_STOP3,
+		GRABBER4,
+		DRIVE_PAST_SWITCH4,
+		TURN_LEFT4,
+		DRIVE_FORWARD4,
+		TURN_RIGHT4,
+		DRIVE_MID_SCALE4,
+		TURN_TOWARD_SCALE4,
+		DRIVE_TO_SCALE4,
+		ELEVATOR4,
+		ELEVATOR_STOP4,
+		END,
 	}
 	
 	public AutonDS2ScaleFar(DriveTrain driveTrain, int position) {
 		m_driveTrain = driveTrain;
-		secondState = States.INIT;
+		m_position = position;
+		currentState = States.INIT;
 		m_driveTrain.setRampRate(.5);
 	}
 	
 	public void auton(){
-		switch(firstState){
-		case INIT: 
-			m_driveTrain.resetEncoders();
-			m_driveTrain.setBrakeMode(true);
-			firstState = States.GRABBER;
-		break;
-		case GRABBER:
-			firstState = States.DRIVE_PAST_SWITCH1;
-		case DRIVE_PAST_SWITCH1:
-			m_driveTrain.autonDriveStraight(.5);
-			if (m_driveTrain.getEncoderLeftInches() > 261.47) {
-				m_driveTrain.resetEncoders();
-				firstState = States.TURN_RIGHT1;
-			}
-		break;
-		case TURN_RIGHT1:
-			m_driveTrain.autonDriveStraight(0);
-			m_driveTrain.autonDriveTurn(.5);
-			if (m_driveTrain.getHeading() > Math.abs(3)) {
-				firstState = States.DRIVE_FORWARD1;
-			}
-		break;
-		case DRIVE_FORWARD1:
-			m_driveTrain.autonDriveTurn(0);
-			m_driveTrain.autonDriveStraight(.5);
-			if (m_driveTrain.getEncoderLeftInches() > 220) {
-				m_driveTrain.resetEncoders();
-				firstState = States.TURN_LEFT1;
-			}
-		break;
-		case TURN_LEFT1:
-			m_driveTrain.autonDriveTurn(-.5);
-			if (m_driveTrain.getHeading() > Math.abs(3)) {
-				m_driveTrain.autonDriveTurn(0);
-				firstState = States.DRIVE_MID_SCALE1;
-			} 
-		break;
-		case DRIVE_MID_SCALE1:
-			m_driveTrain.autonDriveStraight(.5);
-			if (m_driveTrain.getEncoderLeftInches() > 62.53) {
-				m_driveTrain.resetEncoders();
-				firstState = States.TURN_TOWARD_SCALE1;
-			}
-		break;
-		case TURN_TOWARD_SCALE1:
-			m_driveTrain.autonDriveStraight(0);
-			m_driveTrain.autonDriveTurn(-.5);
-			if (m_driveTrain.getHeading() > Math.abs(3)) {
-				firstState = States.DRIVE_TO_SCALE1;
-			}
-		break;
-		case DRIVE_TO_SCALE1:
-			m_driveTrain.autonDriveStraight(.5);
-			if (m_driveTrain.getEncoderLeftInches() > 35.79) {
-				m_driveTrain.resetEncoders();
-				firstState = States.ELEVATOR1;
-			}
-		break;
-		case ELEVATOR1:
-			m_driveTrain.autonDriveStraight(0);
-			firstState = States.DRIVE_STOP1;
-		break;
-		case DRIVE_STOP1:
-			//m_driveTrain.autonDriveStraight(0);
-			firstState = States.END;
-		break; 
-		case END:
-			break;
-		}
-	}
-			
-		public String getState(){
-			return secondState.name();
-		}
-			
-		public void updateSmartDashboard() {
-			SmartDashboard.putNumber("Left Encoder", m_driveTrain.getEncoderLeftInches());
-			SmartDashboard.putNumber("Right Encoder", m_driveTrain.getEncoderRightInches());
-			SmartDashboard.putString("AutonState", getState());
-		}
-
-		public void auton2(){
-			switch(secondState){
+		if (m_position == 1) {
+			switch(currentState){
 			case INIT: 
 				m_driveTrain.resetEncoders();
 				m_driveTrain.setBrakeMode(true);
-				secondState = States.GRABBER;
+				currentState = States.GRABBER1;
 			break;
-			case GRABBER:
-				secondState = States.DRIVE_OUT2;
+			case GRABBER1:
+				currentState = States.DRIVE_PAST_SWITCH1;	
+			break;
+			case DRIVE_PAST_SWITCH1:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 261.47) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_RIGHT1;
+				}
+			break;
+			case TURN_RIGHT1:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_FORWARD1;
+				}
+			break;
+			case DRIVE_FORWARD1:
+				m_driveTrain.autonDriveTurn(0);
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 220) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_LEFT1;
+				}
+			break;
+			case TURN_LEFT1:
+				m_driveTrain.autonDriveTurn(-.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					m_driveTrain.autonDriveTurn(0);
+					currentState = States.DRIVE_MID_SCALE1;
+				} 
+			break;
+			case DRIVE_MID_SCALE1:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 62.53) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_TOWARD_SCALE1;
+				}
+			break;
+			case TURN_TOWARD_SCALE1:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(-.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_TO_SCALE1;
+				}
+			break;
+			case DRIVE_TO_SCALE1:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 35.79) {
+					m_driveTrain.resetEncoders();
+					currentState = States.ELEVATOR1;
+				}
+			break;
+			case ELEVATOR1:
+				m_driveTrain.autonDriveStraight(0);
+				currentState = States.ELEVATOR_STOP1;
+			break;
+			case ELEVATOR_STOP1:
+				//m_driveTrain.autonDriveStraight(0);
+				currentState = States.END;
+			break; 
+			case END:
+			break;
+			}
+		}else if (m_position == 2) {
+			switch(currentState){
+			case INIT: 
+				m_driveTrain.resetEncoders();
+				m_driveTrain.setBrakeMode(true);
+				currentState = States.GRABBER2;
+			break;
+			case GRABBER2:
+				currentState = States.DRIVE_OUT2;
 			case DRIVE_OUT2:
 				m_driveTrain.autonDriveStraight(.5);
 				if (m_driveTrain.getEncoderLeftInches() > 40) {
 					m_driveTrain.resetEncoders();
-					secondState = States.TURN_AWAY_SWITCH2;
+					currentState = States.TURN_AWAYL_SWITCH2;
 				}
 			break;
-			case TURN_AWAY_SWITCH2:
+			case TURN_AWAYL_SWITCH2:
 				m_driveTrain.autonDriveStraight(0);
-				m_driveTrain.autonDriveTurn(.5);
+				m_driveTrain.autonDriveTurn(-.5);
 				if (m_driveTrain.getHeading() > Math.abs(3)) {
-					secondState = States.DRIVE_AWAY_SWITCH2;
+					currentState = States.DRIVE_AWAY_SWITCH2;
 				}
 			break;
 			case DRIVE_AWAY_SWITCH2:
@@ -154,28 +169,28 @@ public class AutonDS2ScaleFar {
 				m_driveTrain.autonDriveStraight(.5);
 				if (m_driveTrain.getEncoderLeftInches() > 40) {
 					m_driveTrain.resetEncoders();
-					secondState = States.TURN_LEFT2;
+					currentState = States.TURN_LEFT2;
 				}
 			break;
 			case TURN_RIGHT_FORWARD2:
 				m_driveTrain.autonDriveStraight(0);
 				m_driveTrain.autonDriveTurn(.5);
 				if (m_driveTrain.getHeading() > Math.abs(3)) {
-					secondState = States.DRIVE_PAST_SWITCH2;
+					currentState = States.DRIVE_PAST_SWITCH2;
 				}
 			break;
 			case DRIVE_PAST_SWITCH2:
 				m_driveTrain.autonDriveStraight(.5);
 				if (m_driveTrain.getEncoderLeftInches() > 221.47) {
 					m_driveTrain.resetEncoders();
-					secondState = States.TURN_RIGHT2;
+					currentState = States.TURN_RIGHT2;
 				}
 			break;
 			case TURN_RIGHT2:
 				m_driveTrain.autonDriveStraight(0);
 				m_driveTrain.autonDriveTurn(.5);
 				if (m_driveTrain.getHeading() > Math.abs(3)) {
-					secondState = States.DRIVE_FORWARD2;
+					currentState = States.DRIVE_FORWARD2;
 				}
 			break;
 			case DRIVE_FORWARD2:
@@ -183,57 +198,228 @@ public class AutonDS2ScaleFar {
 				m_driveTrain.autonDriveStraight(.5);
 				if (m_driveTrain.getEncoderLeftInches() > 220) {
 					m_driveTrain.resetEncoders();
-					secondState = States.TURN_LEFT2;
+					currentState = States.TURN_LEFT2;
 				}
 			break;
 			case TURN_LEFT2:
 				m_driveTrain.autonDriveTurn(-.5);
 				if (m_driveTrain.getHeading() > Math.abs(3)) {
 					m_driveTrain.autonDriveTurn(0);
-					secondState = States.DRIVE_MID_SCALE2;
+					currentState = States.DRIVE_MID_SCALE2;
 				} 
 			break;
 			case DRIVE_MID_SCALE2:
 				m_driveTrain.autonDriveStraight(.5);
 				if (m_driveTrain.getEncoderLeftInches() > 62.53) {
 					m_driveTrain.resetEncoders();
-					secondState = States.TURN_TOWARD_SCALE2;
+					currentState = States.TURN_TOWARD_SCALE2;
 				}
 			break;
 			case TURN_TOWARD_SCALE2:
 				m_driveTrain.autonDriveStraight(0);
 				m_driveTrain.autonDriveTurn(-.5);
 				if (m_driveTrain.getHeading() > Math.abs(3)) {
-					secondState = States.DRIVE_TO_SCALE2;
+					currentState = States.DRIVE_TO_SCALE2;
 				}
 			break;
 			case DRIVE_TO_SCALE2:
 				m_driveTrain.autonDriveStraight(.5);
 				if (m_driveTrain.getEncoderLeftInches() > 35.79) {
 					m_driveTrain.resetEncoders();
-					secondState = States.ELEVATOR2;
+					currentState = States.ELEVATOR2;
 				}
 			break;
 			case ELEVATOR2:
 				m_driveTrain.autonDriveStraight(0);
-				secondState = States.DRIVE_STOP2;
+				currentState = States.ELEVATOR_STOP2;
 			break;
-			case DRIVE_STOP2:
+			case ELEVATOR_STOP2:
 				//m_driveTrain.autonDriveStraight(0);
-				secondState = States.END;
+				currentState = States.END;
 			break; 
 			case END:
 			break;
+			}
+		}else if (m_position == 3) {
+			switch(currentState){
+			case INIT: 
+				m_driveTrain.resetEncoders();
+				m_driveTrain.setBrakeMode(true);
+				currentState = States.GRABBER3;
+			break;
+			case GRABBER3:
+				currentState = States.DRIVE_OUT3;
+			case DRIVE_OUT3:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 40) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_AWAYR_SWITCH3;
+				}
+			break;
+			case TURN_AWAYR_SWITCH3:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_AWAY_SWITCH3;
+				}
+			break;
+			case DRIVE_AWAY_SWITCH3:
+				m_driveTrain.autonDriveTurn(0);
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 40) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_LEFT3;
+				}
+			break;
+			case TURN_LEFT_FORWARD3:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(-.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_PAST_SWITCH3;
+				}
+			break;
+			case DRIVE_PAST_SWITCH3:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 221.47) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_LEFT3;
+				}
+			break;
+			case TURN_LEFT3:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(-.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_FORWARD3;
+				}
+			break;
+			case DRIVE_FORWARD3:
+				m_driveTrain.autonDriveTurn(0);
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 220) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_RIGHT3;
+				}
+			break;
+			case TURN_RIGHT3:
+				m_driveTrain.autonDriveTurn(.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					m_driveTrain.autonDriveTurn(0);
+					currentState = States.DRIVE_MID_SCALE3;
+				} 
+			break;
+			case DRIVE_MID_SCALE3:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 62.53) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_TOWARD_SCALE3;
+				}
+			break;
+			case TURN_TOWARD_SCALE3:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_TO_SCALE3;
+				}
+			break;
+			case DRIVE_TO_SCALE3:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 35.79) {
+					m_driveTrain.resetEncoders();
+					currentState = States.ELEVATOR3;
+				}
+			break;
+			case ELEVATOR3:
+				m_driveTrain.autonDriveStraight(0);
+				currentState = States.ELEVATOR_STOP3;
+			break;
+			case ELEVATOR_STOP3:
+				//m_driveTrain.autonDriveStraight(0);
+				currentState = States.END;
+			break; 
+			case END:
+			break;
+			}
+		}else if (m_position == 4) {
+			switch(currentState){
+			case INIT: 
+				m_driveTrain.resetEncoders();
+				m_driveTrain.setBrakeMode(true);
+				currentState = States.GRABBER4;
+			break;
+			case GRABBER4:
+				currentState = States.DRIVE_PAST_SWITCH4;	
+			break;
+			case DRIVE_PAST_SWITCH4:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 261.47) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_LEFT4;
+				}
+			break;
+			case TURN_LEFT4:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(-.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_FORWARD4;
+				}
+			break;
+			case DRIVE_FORWARD4:
+				m_driveTrain.autonDriveTurn(0);
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 220) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_RIGHT4;
+				}
+			break;
+			case TURN_RIGHT4:
+				m_driveTrain.autonDriveTurn(.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					m_driveTrain.autonDriveTurn(0);
+					currentState = States.DRIVE_MID_SCALE4;
+				} 
+			break;
+			case DRIVE_MID_SCALE4:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 62.53) {
+					m_driveTrain.resetEncoders();
+					currentState = States.TURN_TOWARD_SCALE4;
+				}
+			break;
+			case TURN_TOWARD_SCALE4:
+				m_driveTrain.autonDriveStraight(0);
+				m_driveTrain.autonDriveTurn(.5);
+				if (m_driveTrain.getHeading() > Math.abs(3)) {
+					currentState = States.DRIVE_TO_SCALE4;
+				}
+			break;
+			case DRIVE_TO_SCALE4:
+				m_driveTrain.autonDriveStraight(.5);
+				if (m_driveTrain.getEncoderLeftInches() > 35.79) {
+					m_driveTrain.resetEncoders();
+					currentState = States.ELEVATOR4;
+				}
+			break;
+			case ELEVATOR4:
+				m_driveTrain.autonDriveStraight(0);
+				currentState = States.ELEVATOR_STOP4;
+			break;
+			case ELEVATOR_STOP4:
+				//m_driveTrain.autonDriveStraight(0);
+				currentState = States.END;
+			break; 
+			case END:
+			break;
+			}
 		}
+	}	
+	
+	public String getState(){
+		return currentState.name();
 	}
-		
-	public String getState2(){
-		return secondState.name();
-	}
-		
-	public void updateSmartDashboard2() {
+			
+	public void updateSmartDashboard() {
 		SmartDashboard.putNumber("Left Encoder", m_driveTrain.getEncoderLeftInches());
 		SmartDashboard.putNumber("Right Encoder", m_driveTrain.getEncoderRightInches());
-		SmartDashboard.putString("AutonState", getState2());
+		SmartDashboard.putString("AutonState", getState());
 	}
 }
