@@ -67,27 +67,33 @@ public class AutonBase {
 	AutonSwitch2ScaleNear wtcn;
 	
 	public void init() {
+		choseAuton = "NONE";
+		currentStates = States.INIT;
+		AUTONSTATUS = "NONE";
+		initSmartDashboard();
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		ourSwitchP = gameData.charAt(0);
 		scaleP = gameData.charAt(1);
 		oppSwitchP = gameData.charAt(2);
-		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Init1");
 		crtl = new AutonCrossTheLine(m_drivetrain);
 //		dtcf = new AutonDS2ScaleFar(m_drivetrain,selectedStart());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Init1a");
 //		dtcn = new AutonDS2ScaleNear(m_drivetrain,selectedStart());
 		dtwf = new AutonDS2SwichFar(m_drivetrain,selectedStart());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Init2");
 //		dtwn = new AutonDS2SwichNear(m_drivetrain,selectedStart());
 		none = new AutonNone();
 //		ctwf = new AutonScale2SwitchFar(m_drivetrain,selectedStart());
 //		ctwn = new AutonScale2SwitchNear(m_drivetrain,selectedStart());
 //		wtcf = new AutonSwitch2ScaleFar(m_drivetrain,selectedStart());
 //		wtcn = new AutonSwitch2ScaleNear(m_drivetrain,selectedStart());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Init3");
 		
-		currentStates = States.INIT;
-		initSmartDashboard();
 	}
 	
 	public void initSmartDashboard() {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>InitSmartDashboard");
 		initStartSelector();
 		initSwitchSelector();
 		initScaleSelector();
@@ -106,7 +112,7 @@ public class AutonBase {
 	public void updateSmartDashboard(){
 		SmartDashboard.putBoolean("Scale First", selectedScaleFirst());
 		SmartDashboard.putString("Selected Switch", selectedSwitch());
-		SmartDashboard.putString("Selected Scale", selectedSwitch());
+		SmartDashboard.putString("Selected Scale", selectedScale());
 		SmartDashboard.putNumber("Selected Start", selectedStart());
 		SmartDashboard.putBoolean("Start Delay", selectedStartDelay());
 		SmartDashboard.putBoolean("Switch Delay", selectedSwitchDelay());
@@ -174,7 +180,7 @@ public class AutonBase {
 	}
 	
 	public String oppSwitchPosition() {
-		String oppSwitchPosition = null;
+		String oppSwitchPosition = "";
 		if(selectedOPO() == "left") {
 			oppSwitchPosition = "Left";
 		}else if(selectedOPO() == "right"){
@@ -189,7 +195,7 @@ public class AutonBase {
 		return oppSwitchPosition;
 	}
 	public String scalePosition() {
-		String scalePosition = null;
+		String scalePosition = "";
 		if(selectedOCO() == "left") {
 			scalePosition = "Left";
 		}else if(selectedOCO() == "right"){
@@ -204,7 +210,7 @@ public class AutonBase {
 		return scalePosition;
 	}
 	public String ourSwitchPosition() {
-		String ourSwitchPosition = null;
+		String ourSwitchPosition = "";
 		if(selectedOWO() == "left") {
 			ourSwitchPosition = "Left";
 		}else if(selectedOWO() == "right"){
@@ -223,11 +229,13 @@ public class AutonBase {
 	}
 	
 	public void initScaleFirstSelector(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSCALEFIRSTSELECTOR");
 		scaleFirstSelector.addDefault("No", false);
 		scaleFirstSelector.addObject("Yes", true);
 		SmartDashboard.putData("Scale First", scaleFirstSelector);
 	}
 	public void initSwitchSelector(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSWITCHSELECTOR");
 		switchSelector.addDefault("None", "none");
 		switchSelector.addObject("Near", "near");
 		switchSelector.addObject("Both", "both");
@@ -235,6 +243,7 @@ public class AutonBase {
 		SmartDashboard.putData("Switch Selector", switchSelector);
 	}
 	public void initScaleSelector(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSCALESELECTOR");
 		scaleSelector.addDefault("None", "none");
 		scaleSelector.addObject("Near", "near");
 		scaleSelector.addObject("Both", "both");
@@ -242,6 +251,7 @@ public class AutonBase {
 		SmartDashboard.putData("Scale Selector", scaleSelector);
 	}
 	public void initStartSelector(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSTARTSELECTOR");
 		startSelector.addDefault("Left", (double)1);
 		startSelector.addObject("Middle", (double)2);
 		startSelector.addObject("Right", (double)3);
@@ -249,43 +259,51 @@ public class AutonBase {
 	}
 	
 	public void initStartDelaySelector(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSTARTDELAYSELECTOR");
 		startDelaySelector.addDefault("No", false);
 		startDelaySelector.addObject("Yes", true);
 		SmartDashboard.putData("Start Delay", startDelaySelector);
 	}
 	
 	public void initSwitchDelaySelector(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSWITCHDELAYSELECTOR");
 		switchDelaySelector.addDefault("No", false);
 		switchDelaySelector.addObject("Yes", true);
 		SmartDashboard.putData("Switch Delay", switchDelaySelector);
 	}
 	
 	public void initScaleDelaySelector(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSCALEDELAYSELECTOR");
 		scaleDelaySelector.addDefault("No", false);
 		scaleDelaySelector.addObject("Yes", true);
 		SmartDashboard.putData("Scale Delay", scaleDelaySelector);
 	}
 	public void initScoreScaleSelector(){
-		scaleDelaySelector.addDefault("No", false);
-		scaleDelaySelector.addObject("Yes", true);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSCORESCALESELECTOR");
+		scoreScaleSelector.addDefault("No", false);
+		scoreScaleSelector.addObject("Yes", true);
 		SmartDashboard.putData("Score Scale At End", scoreScaleSelector);
 	}
 	public void initScoreSwitchSelector(){
-		scaleDelaySelector.addDefault("No", false);
-		scaleDelaySelector.addObject("Yes", true);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITSCORESWITCHSELECTOR");
+		scoreSwitchSelector.addDefault("No", false);
+		scoreSwitchSelector.addObject("Yes", true);
 		SmartDashboard.putData("Score Switch At End", scoreSwitchSelector);
 	}
 	public void initOWOSelector() {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITOWOSELECTOR");
 		owoSelector.addDefault("None", "none");
 		owoSelector.addObject("Left", "left");
 		owoSelector.addObject("Right", "right");
 	}
 	public void initOPOSelector() {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITOPOSELECTOR");
 		opoSelector.addDefault("None", "none");
 		opoSelector.addObject("Left", "left");
 		opoSelector.addObject("Right", "right");
 	}
 	public void initOCOSelector() {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INITOCOSELECTOR");
 		ocoSelector.addDefault("None", "none");
 		ocoSelector.addObject("Left", "left");
 		ocoSelector.addObject("Right", "right");
@@ -302,10 +320,12 @@ public class AutonBase {
 		case INIT:
 			currentStates = States.STARTDELAY;
 			AUTONSTATUS = "INIT";
+			System.out.println(AUTONSTATUS);
 		break;
 		case STARTDELAY:
 			AUTONSTATUS = "DELAY";
 			currentStates = States.CHECKORDER;
+			System.out.println(AUTONSTATUS);
 		break;
 		case CHECKORDER:
 			if(selectedScaleFirst()) {
@@ -314,9 +334,11 @@ public class AutonBase {
 				currentStates = States.RUN2SWITCH;
 			}
 			AUTONSTATUS = "CHECK";
+			System.out.println(AUTONSTATUS);
 		break;
 		case RUN2SCALE:
-			AUTONSTATUS = "RUNNING";
+			AUTONSTATUS = "SCALERUNNING";
+			System.out.println(AUTONSTATUS);
 			if(selectedStart() == 1) {
 				if(scalePosition() == "Left") {
 //					dtcn.auton(); //Scale Near
@@ -337,6 +359,7 @@ public class AutonBase {
 			if(AUTONSTATUS == "NEXT") {
 				currentStates = States.NEXTSCALEDELAY;
 			}
+			System.out.println(AUTONSTATUS);
 		break;
 		case NEXTSCALEDELAY:
 			AUTONSTATUS = "DELAY";			
@@ -370,6 +393,8 @@ public class AutonBase {
 			}
 		break;
 		case RUN2SWITCH:
+			AUTONSTATUS = "SWITCHRUNNING";
+			System.out.println(AUTONSTATUS);
 			if(selectedStart() == 1) {
 				if(ourSwitchPosition() == "Left") {
 //					dtwn.auton(); //Switch Near
@@ -390,9 +415,11 @@ public class AutonBase {
 			if(AUTONSTATUS == "NEXT") {
 				currentStates = States.NEXTSWITCHDELAY;
 			}
+			System.out.println(AUTONSTATUS);
 		break;
 		case NEXTSWITCHDELAY:
-			
+			AUTONSTATUS = "DELAY";			
+			currentStates = States.RUNFSWITCH;
 		break;
 		case RUNFSWITCH:
 			AUTONSTATUS = "RUNNING";

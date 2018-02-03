@@ -62,9 +62,9 @@ public class AutonDS2ScaleFar {
 		END,
 	}
 	
-	public AutonDS2ScaleFar(DriveTrain driveTrain, int position) {
+	public AutonDS2ScaleFar(DriveTrain driveTrain, double d) {
 		m_driveTrain = driveTrain;
-		m_position = position;
+		m_position = (int) d;
 		currentState = States.INIT;
 		m_driveTrain.setRampRate(.5);
 	}

@@ -1,6 +1,5 @@
   package org.usfirst.frc.team1746.robot;
 
-import org.usfirst.frc.team1746.robot.AutonCrossTheLine.States;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 
@@ -8,7 +7,7 @@ public class AutonDS2SwichFar {
 	private DriveTrain m_driveTrain;
 	private States currentState;
 	private int m_direction;
-	private int m_startPosition;
+	private double m_startPosition;
 	private double m_driveSpeed;
 	private double m_turnSpeed;
 	
@@ -41,7 +40,7 @@ public class AutonDS2SwichFar {
 		
 	}
 	
-	public AutonDS2SwichFar(DriveTrain driveTrain, int startPosition) {
+	public AutonDS2SwichFar(DriveTrain driveTrain, double startPosition) {
 		m_driveTrain = driveTrain;
 		currentState = States.INIT;
 		m_driveTrain.setRampRate(.5);

@@ -32,6 +32,7 @@ public class Robot extends IterativeRobot {
 	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
 	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 1);
 	 	m_autonDS2SwitchNear = new AutonDS2SwichNear(m_driveTrain);
+	 	m_autonBase = new AutonBase(m_driveTrain);
 	}
 
 	/**
@@ -50,6 +51,7 @@ public class Robot extends IterativeRobot {
 //		m_autonDS2ScaleFar.updateSmartDashboard();
 //		m_autonDS2SwitchNear.auton();
 //		m_autonDS2SwitchNear.updateSmartDashboard();
+		m_autonBase.run();
 	}
 
 	/**
@@ -80,6 +82,6 @@ public class Robot extends IterativeRobot {
 	
 	public void updateSmartDashboard() {
 		m_driveTrain.updateSmartDashboard();
-		
+		m_autonBase.updateSmartDashboard();
 	}
 }
