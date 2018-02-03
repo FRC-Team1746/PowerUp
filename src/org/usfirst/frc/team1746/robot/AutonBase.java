@@ -75,7 +75,7 @@ public class AutonBase {
 		crtl = new AutonCrossTheLine(m_drivetrain);
 //		dtcf = new AutonDS2ScaleFar(m_drivetrain,selectedStart());
 //		dtcn = new AutonDS2ScaleNear(m_drivetrain,selectedStart());
-//		dtwf = new AutonDS2SwichFar(m_drivetrain,selectedStart());
+		dtwf = new AutonDS2SwichFar(m_drivetrain,selectedStart());
 //		dtwn = new AutonDS2SwichNear(m_drivetrain,selectedStart());
 		none = new AutonNone();
 //		ctwf = new AutonScale2SwitchFar(m_drivetrain,selectedStart());
@@ -243,9 +243,8 @@ public class AutonBase {
 	}
 	public void initStartSelector(){
 		startSelector.addDefault("Left", (double)1);
-		startSelector.addObject("Middle Left", (double)2);
-		startSelector.addObject("Middle Right", (double)3);
-		startSelector.addObject("Right", (double)4);
+		startSelector.addObject("Middle", (double)2);
+		startSelector.addObject("Right", (double)3);
 		SmartDashboard.putData("Start Selector", startSelector);
 	}
 	
@@ -376,7 +375,7 @@ public class AutonBase {
 //					dtwn.auton(); //Switch Near
 					choseAuton = "DS2SwitchNear";
 				} else if (ourSwitchPosition() == "Right") {
-//					ctwf.auton(); //Switch Far
+					dtwf.auton(); //Switch Far
 					choseAuton = "DS2SwitchFar";
 				}
 			} else if (selectedStart() == 3) {
@@ -384,7 +383,7 @@ public class AutonBase {
 //					dtwn.auton();
 					choseAuton = "DS2SwitchNear";
 				} else if (ourSwitchPosition() == "Left") {
-//					dtwf.auton();
+					dtwf.auton();
 					choseAuton = "DS2SwitchFar";
 				}
 			}
