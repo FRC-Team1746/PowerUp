@@ -20,9 +20,15 @@ public class Robot extends IterativeRobot {
 	Controls m_controls;
     DriveTrain m_driveTrain;
     AutonCrossTheLine m_autonCrossLine;
+<<<<<<< HEAD
     AutonDS2SwichFar m_autonSwichFar;
 
 //brockhampton is good music group or not
+=======
+    AutonDS2ScaleFar m_autonDS2ScaleFar;
+    AutonDS2SwichNear m_autonDS2SwitchNear;
+    AutonBase m_autonBase;
+>>>>>>> 684607d107011949f92c254ffd5afdd910119e71
     
 	@Override
 	public void robotInit() {
@@ -32,6 +38,9 @@ public class Robot extends IterativeRobot {
 	 	
 	 	m_autonSwichFar = new AutonDS2SwichFar(m_driveTrain, 1  );
 	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
+	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 1);
+	 	m_autonDS2SwitchNear = new AutonDS2SwichNear(m_driveTrain);
+	 	m_autonBase = new AutonBase(m_driveTrain);
 	}
 
 	/**
@@ -39,16 +48,27 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-				
+		m_autonBase.init();
 	}
 	
 	@Override
+<<<<<<< HEAD
 	public void autonomousPeriodic() {
 		
 		m_autonSwichFar.auton();
 		m_autonSwichFar.updateSmartDashboard();
 //		m_autonCrossLine.auton();
 //		m_autonCrossLine.updateSmartDashboard();
+=======
+	public void autonomousPeriodic() {		
+//		m_autonCrossLine.auton();
+//		m_autonCrossLine.updateSmartDashboard();
+//		m_autonDS2ScaleFar.auton();
+//		m_autonDS2ScaleFar.updateSmartDashboard();
+//		m_autonDS2SwitchNear.auton();
+//		m_autonDS2SwitchNear.updateSmartDashboard();
+		m_autonBase.run();
+>>>>>>> 684607d107011949f92c254ffd5afdd910119e71
 	}
 
 	/**
@@ -79,6 +99,6 @@ public class Robot extends IterativeRobot {
 	
 	public void updateSmartDashboard() {
 		m_driveTrain.updateSmartDashboard();
-		
+		m_autonBase.updateSmartDashboard();
 	}
 }
