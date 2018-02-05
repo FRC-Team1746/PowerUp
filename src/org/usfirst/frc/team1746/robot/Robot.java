@@ -20,6 +20,7 @@ public class Robot extends IterativeRobot {
 	Controls m_controls;
     DriveTrain m_driveTrain;
     AutonCrossTheLine m_autonCrossLine;
+    AutonDS2SwichFar m_autonSwichFar;
 
 //brockhampton is good music group or not
     
@@ -28,6 +29,8 @@ public class Robot extends IterativeRobot {
 		m_controls = new Controls();
 	 	m_driveTrain = new DriveTrain(m_controls);
 	 	m_driveTrain.resetGyro();
+	 	
+	 	m_autonSwichFar = new AutonDS2SwichFar(m_driveTrain, 1  );
 	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
 	}
 
@@ -42,8 +45,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		
-		m_autonCrossLine.auton();
-		m_autonCrossLine.updateSmartDashboard();
+		m_autonSwichFar.auton();
+		m_autonSwichFar.updateSmartDashboard();
+//		m_autonCrossLine.auton();
+//		m_autonCrossLine.updateSmartDashboard();
 	}
 
 	/**
