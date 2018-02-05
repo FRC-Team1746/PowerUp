@@ -106,11 +106,9 @@ public class DriveTrain {
 	
 	public double getHeading(){
 		return m_Gyro.getAngle();
-		
 	}
 	
-	public void resetGyro()
-	{
+	public void resetGyro(){
 		m_Gyro.reset();
 	}
 	
