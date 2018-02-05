@@ -28,7 +28,7 @@ public class AutonCrossTheLine {
 		break;
 		case CROSSLINE:
 			m_driveTrain.autonDriveStraight(.5);
-			if (m_driveTrain.getEncoderLeftInches() > 120) {
+			if (m_driveTrain.getEncoderLeftInches() > 140) {
 				currentState = States.DRIVE_STOP;
 			}
 		break;
