@@ -58,7 +58,7 @@ public class AutonBase {
 	AutonCrossTheLine crtl;
 	AutonDS2ScaleFar dtcf;
 	AutonDS2ScaleNear dtcn;
-	AutonDS2SwichFar dtwf;
+	//AutonDS2SwichFar dtwf;
 	AutonDS2SwichNear dtwn;
 	AutonNone none;
 	AutonScale2SwitchFar ctwf;
@@ -80,7 +80,7 @@ public class AutonBase {
 //		dtcf = new AutonDS2ScaleFar(m_drivetrain,selectedStart());
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Init1a");
 //		dtcn = new AutonDS2ScaleNear(m_drivetrain,selectedStart());
-		dtwf = new AutonDS2SwichFar(m_drivetrain,selectedStart());
+//		dtwf = new AutonDS2SwichFar(m_drivetrain,selectedStart());
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Init2");
 //		dtwn = new AutonDS2SwichNear(m_drivetrain,selectedStart());
 		none = new AutonNone();
@@ -400,7 +400,7 @@ public class AutonBase {
 //					dtwn.auton(); //Switch Near
 					choseAuton = "DS2SwitchNear";
 				} else if (ourSwitchPosition() == "Right") {
-					dtwf.auton(); //Switch Far
+//					dtwf.auton(); //Switch Far
 					choseAuton = "DS2SwitchFar";
 				}
 			} else if (selectedStart() == 3) {
@@ -408,7 +408,7 @@ public class AutonBase {
 //					dtwn.auton();
 					choseAuton = "DS2SwitchNear";
 				} else if (ourSwitchPosition() == "Left") {
-					dtwf.auton();
+	//				dtwf.auton();
 					choseAuton = "DS2SwitchFar";
 				}
 			}

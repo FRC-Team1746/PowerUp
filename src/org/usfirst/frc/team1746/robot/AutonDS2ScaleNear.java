@@ -22,7 +22,7 @@ public class AutonDS2ScaleNear {
 	public void auton() {
 		switch(currentState) {
 		case INIT:
-			m_driveTrain.resetEnconders();
+			m_driveTrain.resetEncoders();
 			m_driveTrain.setBrakeMode(true);
 			currentState = States.DRIVEFWD;
 		break;

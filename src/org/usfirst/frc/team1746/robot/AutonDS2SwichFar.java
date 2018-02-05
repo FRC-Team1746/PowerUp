@@ -1,6 +1,6 @@
   package org.usfirst.frc.team1746.robot;
 
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 import org.usfirst.frc.team1746.robot.AutonCrossTheLine.States;
 =======
 >>>>>>> 684607d107011949f92c254ffd5afdd910119e71
@@ -334,3 +334,4 @@ public class AutonDS2SwichFar {
 	}
 
 }
+*/

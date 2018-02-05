@@ -21,7 +21,7 @@ public class Robot extends IterativeRobot {
     DriveTrain m_driveTrain;
     AutonCrossTheLine m_autonCrossLine;
 
-    AutonDS2SwichFar m_autonSwichFar;
+   // AutonDS2SwichFar m_autonSwichFar;
 
 //brockhampton is good music group or not
 
@@ -36,7 +36,7 @@ public class Robot extends IterativeRobot {
 	 	m_driveTrain = new DriveTrain(m_controls);
 	 	m_driveTrain.resetGyro();
 	 	
-	 	m_autonSwichFar = new AutonDS2SwichFar(m_driveTrain, 1  );
+	 	//m_autonSwichFar = new AutonDS2SwichFar(m_driveTrain, 1  );
 	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
 	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 1);
 	 	m_autonDS2SwitchNear = new AutonDS2SwichNear(m_driveTrain);
@@ -48,12 +48,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonBase.init();
+		//m_autonBase.init();
 	}
 	
 	@Override
 	public void autonomousPeriodic() {		
-		m_autonBase.run();
+		//m_autonBase.run();
 
 	}
 
@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		m_driveTrain.teleopArcadeDrive();
-		updateSmartDashboard();
+		//updateSmartDashboard();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateSmartDashboard() {
-		m_driveTrain.updateSmartDashboard();
-		m_autonBase.updateSmartDashboard();
+	//	m_driveTrain.updateSmartDashboard();
+		//m_autonBase.updateSmartDashboard();
 	}
 }
