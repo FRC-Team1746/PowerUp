@@ -42,7 +42,7 @@ public class AutonDS2SwichNear {
 		break;
 		case SWERVE:
 			m_DriveTrain.autonDriveStraight(.5);
-			if(m_DriveTrain.getEncoderRightInches() > 900.56){
+			if(m_DriveTrain.getEncoderRightInches() > 73.25){
 				currentStates = States.DEPLOY;
 			}
 		break;
