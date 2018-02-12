@@ -53,10 +53,12 @@ public class AutonDS2ScaleFar {
 		m_position = (int) d;
 		currentState = States.INIT;
 		m_driveTrain.setRampRate(.5);
+		System.out.println("CON");
 	}
 	
 	public void auton(){
 		if (m_position == 1) {
+			System.out.println("Position 1");
 			switch(currentState){
 			case INIT: 
 				m_driveTrain.resetEncoders();
@@ -128,6 +130,7 @@ public class AutonDS2ScaleFar {
 			break;
 			}
 		}else if (m_position == 2) {
+			System.out.println("Position 2");
 			switch(currentState){
 			case INIT: 
 				m_driveTrain.resetEncoders();
@@ -138,7 +141,7 @@ public class AutonDS2ScaleFar {
 				currentState = States.DRIVE_OUT2;
 			case DRIVE_OUT2:
 				m_driveTrain.autonDriveStraight(.5);
-				if (m_driveTrain.getEncoderLeftInches() > 40) {
+				if (m_driveTrain.getEncoderLeftInches() > 20) {
 					m_driveTrain.resetEncoders();
 					currentState = States.TURN_AWAYL_SWITCH2;
 				}
@@ -167,7 +170,7 @@ public class AutonDS2ScaleFar {
 			break;
 			case DRIVE_PAST_SWITCH2:
 				m_driveTrain.autonDriveStraight(.5);
-				if (m_driveTrain.getEncoderLeftInches() > 221.47) {
+				if (m_driveTrain.getEncoderLeftInches() > 50) {
 					m_driveTrain.resetEncoders();
 					currentState = States.TURN_RIGHT2;
 				}
@@ -182,7 +185,7 @@ public class AutonDS2ScaleFar {
 			case DRIVE_FORWARD2:
 				m_driveTrain.autonDriveTurn(0);
 				m_driveTrain.autonDriveStraight(.5);
-				if (m_driveTrain.getEncoderLeftInches() > 220) {
+				if (m_driveTrain.getEncoderLeftInches() > 80) {
 					m_driveTrain.resetEncoders();
 					currentState = States.TURN_LEFT2;
 				}
@@ -196,7 +199,7 @@ public class AutonDS2ScaleFar {
 			break;
 			case DRIVE_MID_SCALE2:
 				m_driveTrain.autonDriveStraight(.5);
-				if (m_driveTrain.getEncoderLeftInches() > 62.53) {
+				if (m_driveTrain.getEncoderLeftInches() > 20) {
 					m_driveTrain.resetEncoders();
 					currentState = States.TURN_TOWARD_SCALE2;
 				}
@@ -210,7 +213,7 @@ public class AutonDS2ScaleFar {
 			break;
 			case DRIVE_TO_SCALE2:
 				m_driveTrain.autonDriveStraight(.5);
-				if (m_driveTrain.getEncoderLeftInches() > 35.79) {
+				if (m_driveTrain.getEncoderLeftInches() > 10) {
 					m_driveTrain.resetEncoders();
 					currentState = States.ELEVATOR2;
 				}
@@ -227,42 +230,52 @@ public class AutonDS2ScaleFar {
 			break;
 			}
 		}else if (m_position == 4) {
+			//System.out.println("Position 4");
 			switch(currentState){
 			case INIT: 
 				m_driveTrain.resetEncoders();
 				m_driveTrain.setBrakeMode(true);
+				m_driveTrain.setRampRate(.5);
 				currentState = States.GRABBER4;
+				System.out.println("GRABBER4");
 			break;
 			case GRABBER4:
-				currentState = States.DRIVE_PAST_SWITCH4;	
+				currentState = States.DRIVE_PAST_SWITCH4;
+				System.out.println("DRIVE_PAST_SWITCH4");
 			break;
 			case DRIVE_PAST_SWITCH4:
 				m_driveTrain.autonDriveStraight(.5);
-				if (m_driveTrain.getEncoderLeftInches() > 100) {
+				if (m_driveTrain.getEncoderRightInches() > 20*12) {
 					m_driveTrain.resetEncoders();
 					currentState = States.TURN_LEFT4;
+					System.out.println("TURN_LEFT4");
 				}
 			break;
 			case TURN_LEFT4:
-				m_driveTrain.autonDriveStraight(0);
-				m_driveTrain.autonDriveTurn(-.5);
-				if (m_driveTrain.getHeading() > Math.abs(90)) {
+				m_driveTrain.autonDriveTurn(.5);
+				System.out.println((int)(m_driveTrain.getHeading()));
+				if (Math.abs(m_driveTrain.getHeading()) > 85) {
+					System.out.println(m_driveTrain.getHeading());
+					m_driveTrain.resetEncoders();
 					currentState = States.DRIVE_FORWARD4;
+					System.out.println("DRIVE_FORWARD4");
 				}
 			break;
 			case DRIVE_FORWARD4:
-				m_driveTrain.autonDriveTurn(0);
 				m_driveTrain.autonDriveStraight(.5);
 				if (m_driveTrain.getEncoderLeftInches() > 80) {
 					m_driveTrain.resetEncoders();
 					currentState = States.TURN_RIGHT4;
+					System.out.println("TURN_RIGHT4");
 				}
 			break;
 			case TURN_RIGHT4:
-				m_driveTrain.autonDriveTurn(.5);
-				if (m_driveTrain.getHeading() > Math.abs(90)) {
+				m_driveTrain.autonDriveTurn(-.5);
+				if (Math.abs(m_driveTrain.getHeading()) < 5) {
+					m_driveTrain.resetEncoders();
 					m_driveTrain.autonDriveTurn(0);
 					currentState = States.DRIVE_MID_SCALE4;
+					System.out.println("DRIVE_MID_SCALE4");
 				} 
 			break;
 			case DRIVE_MID_SCALE4:
@@ -270,13 +283,15 @@ public class AutonDS2ScaleFar {
 				if (m_driveTrain.getEncoderLeftInches() > 20) {
 					m_driveTrain.resetEncoders();
 					currentState = States.TURN_TOWARD_SCALE4;
+					System.out.println("TURN_TOWARD_SCALE4");
 				}
 			break;
 			case TURN_TOWARD_SCALE4:
-				m_driveTrain.autonDriveStraight(0);
-				m_driveTrain.autonDriveTurn(.5);
-				if (m_driveTrain.getHeading() > Math.abs(90)) {
+				m_driveTrain.autonDriveTurn(-.5);
+				if (Math.abs(m_driveTrain.getHeading()) > 75) {
+					m_driveTrain.resetEncoders();
 					currentState = States.DRIVE_TO_SCALE4;
+					System.out.println("DRIVE_TO_SCALE4");
 				}
 			break;
 			case DRIVE_TO_SCALE4:
@@ -284,6 +299,7 @@ public class AutonDS2ScaleFar {
 				if (m_driveTrain.getEncoderLeftInches() > 10) {
 					m_driveTrain.resetEncoders();
 					currentState = States.ELEVATOR4;
+					System.out.println("ELEVATOR4");
 				}
 			break;
 			case ELEVATOR4:

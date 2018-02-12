@@ -2,10 +2,6 @@ package org.usfirst.frc.team1746.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-
-
-import edu.wpi.first.wpilibj.Joystick;
-
 public class Controls {
 	ElectricalConstants electricalConstants = new ElectricalConstants();
 	
@@ -43,6 +39,7 @@ public class Controls {
 
 
 	}
+		
 }
 
 	
