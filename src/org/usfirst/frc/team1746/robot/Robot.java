@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team1746.robot;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
@@ -17,30 +19,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
 	Controls m_controls;
     DriveTrain m_driveTrain;
-    AutonCrossTheLine m_autonCrossLine;
-
-   // AutonDS2SwichFar m_autonSwichFar;
-
-//brockhampton is good music group or not
-
-    AutonDS2ScaleFar m_autonDS2ScaleFar;
-    AutonDS2SwichNear m_autonDS2SwitchNear;
-    AutonBase m_autonBase;
-
+    AutonAhead m_autonAhead;
+    AutonBackward m_autonBackward;
+    AutonRight m_autonRight;
+    AutonLeft m_autonLeft;
+    StringBuilder m_commandsToDoDuringAutonomous = new StringBuilder();
+    Pattern m_pattern;
+    Matcher m_matcher;
+    
+    boolean driverCommandComplete = true;
+	boolean elevatorCommandComplete = true;
+	boolean grabberCommandComplete = true;
+	boolean specialCommandComplete = true;
+	boolean allCommandsLoaded = false;
+	
+	String currentDriverCommand="!";
+	String currentDriverCommandArgs="";
+	String currentElevatorCommand="!";
+	String currentElevatorCommandArgs="";
+	String currentGrabberCommand="!";
+	String currentGrabberCommandArgs="";
+	String currentSpecialCommand="!";
+	String currentSpecialCommandArgs="";
+	
     
 	@Override
 	public void robotInit() {
 		m_controls = new Controls();
 	 	m_driveTrain = new DriveTrain(m_controls);
 	 	m_driveTrain.resetGyro();
+
+	 	m_autonAhead = new AutonAhead(m_driveTrain);
+	    m_autonBackward = new AutonBackward(m_driveTrain);
+	    m_autonRight = new AutonRight(m_driveTrain);
+	    m_autonLeft = new AutonLeft(m_driveTrain);
 	 	
-	 	//m_autonSwichFar = new AutonDS2SwichFar(m_driveTrain, 1  );
-	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
-	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 4);
-	 	m_autonDS2SwitchNear = new AutonDS2SwichNear(m_driveTrain);
-	 	m_autonBase = new AutonBase(m_driveTrain);
 	}
 
 	/**
@@ -48,14 +64,79 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		//m_autonBase.init();
+		AutonConstants autonConstants = new AutonConstants();
+		m_pattern = Pattern.compile("([A-Z])([^A-Z]*)");
+		int[] commandsToDo = { 1, 8 };
+		int from=-1;
+		for(int to: commandsToDo) {
+			if (from>0) {
+				m_commandsToDoDuringAutonomous.append(autonConstants.commands[from-1][to-4]);
+			}
+			from=to;
+		}
+		m_matcher = m_pattern.matcher(m_commandsToDoDuringAutonomous);
+		m_matcher.find();
+//		System.out.println("Commands: #"+m_commandsToDoDuringAutonomous+"#   group 1: #"+m_matcher.group(1)+"#   group 2: #"+m_matcher.group(2)+"#");
+		
 	}
 	
 	@Override
-	public void autonomousPeriodic() {		
-		//m_autonBase.run();
-		//System.out.println("Auton");
-	 	m_autonDS2ScaleFar.auton();
+	public void autonomousPeriodic() {
+//		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
+        if (!allCommandsLoaded && driverCommandComplete && AutonConstants.driveCommands.contains(m_matcher.group(1))) {
+        	currentDriverCommand = m_matcher.group(1);
+        	currentDriverCommandArgs = m_matcher.group(2);
+        	driverCommandComplete = false;
+//        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
+        	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
+        }
+        if (!allCommandsLoaded && elevatorCommandComplete && AutonConstants.elevatorCommands.contains(m_matcher.group(1))) {
+        	currentElevatorCommand = m_matcher.group(1);
+        	currentElevatorCommandArgs = m_matcher.group(2);
+        	elevatorCommandComplete = false;
+        	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
+        }
+        if (!allCommandsLoaded && grabberCommandComplete && AutonConstants.grabberCommands.contains(m_matcher.group(1))) {
+        	currentGrabberCommand = m_matcher.group(1);
+        	currentGrabberCommandArgs = m_matcher.group(2);
+        	grabberCommandComplete = false;
+        	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
+        }
+        if (!allCommandsLoaded && specialCommandComplete && AutonConstants.specialCommands.contains(m_matcher.group(1))) {
+        	currentSpecialCommand = m_matcher.group(1);
+        	currentSpecialCommandArgs = m_matcher.group(2);
+        	specialCommandComplete = false;
+        	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
+        }
+        
+		if (!driverCommandComplete && currentDriverCommand.equals("A")) {
+//			System.out.println("Run Ahead Command");
+			driverCommandComplete = m_autonAhead.auton(currentDriverCommandArgs);
+//			System.out.println(driverCommandComplete);
+		} else if (!driverCommandComplete && currentDriverCommand.equals("B")) {
+			driverCommandComplete = m_autonBackward.auton(currentDriverCommandArgs);
+		} else if (!driverCommandComplete && currentDriverCommand.equals("R")) {
+//			System.out.println("Turn Right Command");
+			driverCommandComplete = m_autonRight.auton(currentDriverCommandArgs);
+		} else if (!driverCommandComplete && currentDriverCommand.equals("L")) {
+//			System.out.println("Turn Left Command");
+			driverCommandComplete = m_autonLeft.auton(currentDriverCommandArgs);
+		} 
+//		if (!elevatorCommandComplete && currentElevatorCommand.equals("U")) {
+//			elevatorCommandComplete = m_autonUp.auton(currentElevatorCommandArgs);
+//		} else if ()
+		
+		if (!specialCommandComplete && currentSpecialCommand.equals("W")) {
+			
+		}
+			
+		// <--- other commands go here
+			
+//		} else {
+//			throw new UnsupportedOperationException("An invalid Command was encoutered in AutonConstants.commands.");
+//		}
+		
+		
 	}
 
 	/**
@@ -64,7 +145,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		m_driveTrain.resetEncoders();
-		m_driveTrain.setRampRate(.5);
+		m_driveTrain.setRampRate(0);
 		m_driveTrain.setBrakeMode(false);
 	}
 
@@ -86,6 +167,6 @@ public class Robot extends IterativeRobot {
 	
 	public void updateSmartDashboard() {
 		m_driveTrain.updateSmartDashboard();
-		//m_autonBase.updateSmartDashboard();
+		
 	}
 }

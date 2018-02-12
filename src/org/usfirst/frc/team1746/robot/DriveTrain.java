@@ -70,11 +70,6 @@ public class DriveTrain {
 	
 	public void teleopArcadeDrive(){
 		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), -m_controls.driver_X_Axis());
-		setRampRate(0.5);
-		setCoast(true);
-		resetEncoders();
-		
-		
 	}
 	
 	public void autonDriveStraight(double speed){
@@ -106,43 +101,36 @@ public class DriveTrain {
 	
 	public double getHeading(){
 		return m_Gyro.getAngle();
+		
 	}
 	
-	public void resetGyro(){
+	public void resetGyro()
+	{
 		m_Gyro.reset();
 	}
 	
 	public void setRampRate(double rate){
-		m_LeftMaster.configOpenloopRamp(rate, 5);
-		m_RightMaster.configOpenloopRamp(rate, 5);
+		m_LeftMaster.configOpenloopRamp(rate, 10);
+		m_RightMaster.configOpenloopRamp(rate, 10);
+
 	}
-	
 	
 	public void setBrakeMode(boolean brake) {
 		if (brake){
 			m_LeftMaster.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake); 
 			m_RightMaster.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake); 
-		}
-	}
-	public void setCoast(boolean coast){
-		if (coast) {
+		}else{
 			m_LeftMaster.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Coast);
 			m_RightMaster.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Coast);
 		}
+		
+		
 	}
 	
 	public void updateSmartDashboard(){
 		SmartDashboard.putNumber("Left Encoder", getEncoderLeftInches());
 		SmartDashboard.putNumber("Right Encoder", getEncoderRightInches());
 		SmartDashboard.putNumber("heading",getHeading());
-		SmartDashboard.putNumber("Both Encoders",bothEncoderInchValues());
 	}
-	
 
-	public double bothEncoderInchValues() {
-		
-		return Math.abs(m_encoderRight.get()*Math.PI*4/360 + m_encoderLeft.get()*Math.PI*4/360);
-			
-	}
-	
 }
