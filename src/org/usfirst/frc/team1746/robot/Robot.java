@@ -19,14 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	Controls m_controls;
     DriveTrain m_driveTrain;
-    AutonCrossTheLine m_autonCrossLine;
+    Lift m_lift;
 
-   // AutonDS2SwichFar m_autonSwichFar;
-
-//brockhampton is good music group or not
-
-    AutonDS2ScaleFar m_autonDS2ScaleFar;
-    AutonDS2SwichNear m_autonDS2SwitchNear;
     AutonBase m_autonBase;
 
     
@@ -35,12 +29,9 @@ public class Robot extends IterativeRobot {
 		m_controls = new Controls();
 	 	m_driveTrain = new DriveTrain(m_controls);
 	 	m_driveTrain.resetGyro();
-	 	
-	 	//m_autonSwichFar = new AutonDS2SwichFar(m_driveTrain, 1  );
-	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
-	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 4);
-	 	m_autonDS2SwitchNear = new AutonDS2SwichNear(m_driveTrain);
+	 	m_lift = new Lift(m_controls);
 	 	m_autonBase = new AutonBase(m_driveTrain);
+	 	
 	}
 
 	/**
@@ -55,7 +46,6 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {		
 		//m_autonBase.run();
 		//System.out.println("Auton");
-	 	m_autonDS2ScaleFar.auton();
 	}
 
 	/**
@@ -86,6 +76,7 @@ public class Robot extends IterativeRobot {
 	
 	public void updateSmartDashboard() {
 		m_driveTrain.updateSmartDashboard();
+		m_lift.updateSmartDashboard();
 		//m_autonBase.updateSmartDashboard();
 	}
 }

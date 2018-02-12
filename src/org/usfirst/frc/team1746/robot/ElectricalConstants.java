@@ -19,7 +19,7 @@ public class ElectricalConstants {
 	public int CUBE_INTAKE_RIGHT = 7;
 	
 	public int ELEVATOR_LEFT = 8;
-	public int ELEVATOR_RIGHT = 9;
+	public int ELEVATOR_RIGHT = 31;
 	
 	
 	// MoreBoard
