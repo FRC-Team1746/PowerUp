@@ -38,7 +38,7 @@ public class Robot extends IterativeRobot {
 	 	
 	 	//m_autonSwichFar = new AutonDS2SwichFar(m_driveTrain, 1  );
 	 	m_autonCrossLine = new AutonCrossTheLine(m_driveTrain);
-	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 4);
+	 	m_autonDS2ScaleFar = new AutonDS2ScaleFar(m_driveTrain, 1);
 	 	m_autonDS2SwitchNear = new AutonDS2SwichNear(m_driveTrain);
 	 	m_autonBase = new AutonBase(m_driveTrain);
 	}
@@ -54,8 +54,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {		
 		//m_autonBase.run();
-		//System.out.println("Auton");
-	 	m_autonDS2ScaleFar.auton();
+
 	}
 
 	/**
@@ -64,7 +63,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		m_driveTrain.resetEncoders();
-		m_driveTrain.setRampRate(.5);
+		m_driveTrain.setRampRate(0);
 		m_driveTrain.setBrakeMode(false);
 	}
 
@@ -74,7 +73,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		m_driveTrain.teleopArcadeDrive();
-		updateSmartDashboard();
+		//updateSmartDashboard();
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateSmartDashboard() {
-		m_driveTrain.updateSmartDashboard();
+	//	m_driveTrain.updateSmartDashboard();
 		//m_autonBase.updateSmartDashboard();
 	}
 }
