@@ -18,6 +18,7 @@ public class Lift {
 
 	private VictorSP m_liftLeft;
 	private WPI_TalonSRX m_liftRight;
+	private double m_liftPosition;
 	
 //	private Encoder m_liftEncoder;
 	
@@ -29,13 +30,14 @@ public class Lift {
 //		m_liftEncoder = new Encoder(m_eConstants.ENCODER_LIFT_A, m_eConstants.ENCODER_LIFT_B, false, Encoder.EncodingType.k1X);	
 		m_liftRight.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 0);
 		resetEncoder();
+		m_liftPosition = 0;
 	}
 	
 	
 	
 	public void resetEncoder(){
 //		m_liftEncoder.reset();
-		m_liftRight.getSensorCollection().setQuadraturePosition(1746, 0);
+		m_liftRight.getSensorCollection().setQuadraturePosition(0, 0);
 	}
 	
 	public void setRampRate(double rate){
@@ -59,7 +61,16 @@ public class Lift {
 	}
 	
 	public void updateLift() {
-		m_liftRight.set(ControlMode.Position, 2000);
+		if (m_controls.driver_Y_Button()) {
+			m_liftPosition = 2048;
+		}
+		if (m_controls.driver_X_Button()) {
+			m_liftPosition = 1000;
+		}
+		if (m_controls.driver_A_Button()) {
+			m_liftPosition = 0;
+		}
+		m_liftRight.set(ControlMode.Position, m_liftPosition);
 	}
 	
 	public void updateSmartDashboard(){

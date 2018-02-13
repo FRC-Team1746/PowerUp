@@ -54,8 +54,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		m_driveTrain.resetEncoders();
+		m_lift.resetEncoder();
 		m_driveTrain.setRampRate(.5);
 		m_driveTrain.setBrakeMode(false);
+		System.out.println("teleopInit");
 	}
 
 	/**
@@ -64,6 +66,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		m_driveTrain.teleopArcadeDrive();
+		m_lift.updateLift();
 		updateSmartDashboard();
 	}
 
@@ -72,6 +75,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		m_lift.updateSmartDashboard();
+		
 	}
 	
 	public void updateSmartDashboard() {

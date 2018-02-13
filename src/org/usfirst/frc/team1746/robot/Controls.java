@@ -37,9 +37,19 @@ public class Controls {
 	public double driver_Y_Axis(){
 		return xbox_driver.getRawAxis(1);
 
-
 	}
+	public boolean driver_Y_Button(){
+		return xbox_driver.getRawButton(4);
 		
+	}	
+	public boolean driver_X_Button(){
+		return xbox_driver.getRawButton(3);
+		
+	}	
+	public boolean driver_A_Button(){
+		return xbox_driver.getRawButton(1);
+		
+	}	
 }
 
 	
@@ -80,3 +90,4 @@ public class Controls {
  *    
 */
 /*********************************************************************************/
+
