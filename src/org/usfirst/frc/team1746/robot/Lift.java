@@ -31,6 +31,11 @@ public class Lift {
 		m_liftRight.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 0);
 		resetEncoder();
 		m_liftPosition = 0;
+		
+		/* set acceleration and vcruise velocity - see documentation */
+		m_liftRight.configMotionCruiseVelocity(400, 0);
+		m_liftRight.configMotionAcceleration(1500, 0);
+
 	}
 	
 	
@@ -62,7 +67,7 @@ public class Lift {
 	
 	public void updateLift() {
 		if (m_controls.driver_Y_Button()) {
-			m_liftPosition = 2048;
+			m_liftPosition = -1000;
 		}
 		if (m_controls.driver_X_Button()) {
 			m_liftPosition = 1000;
@@ -70,7 +75,11 @@ public class Lift {
 		if (m_controls.driver_A_Button()) {
 			m_liftPosition = 0;
 		}
-		m_liftRight.set(ControlMode.Position, m_liftPosition);
+		//m_liftRight.set(ControlMode.Position, m_liftPosition);
+		System.out.println(m_liftRight.getSelectedSensorVelocity(0));
+		m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
+		
+		
 	}
 	
 	public void updateSmartDashboard(){
