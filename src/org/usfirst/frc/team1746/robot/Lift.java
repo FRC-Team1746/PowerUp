@@ -33,8 +33,8 @@ public class Lift {
 		m_liftPosition = 0;
 		
 		/* set acceleration and vcruise velocity - see documentation */
-		m_liftRight.configMotionCruiseVelocity(400, 0);
-		m_liftRight.configMotionAcceleration(1500, 0);
+		m_liftRight.configMotionCruiseVelocity(800, 0);
+		m_liftRight.configMotionAcceleration(3000, 0);
 
 	}
 	
@@ -67,10 +67,10 @@ public class Lift {
 	
 	public void updateLift() {
 		if (m_controls.driver_Y_Button()) {
-			m_liftPosition = -1000;
+			m_liftPosition = -2000;
 		}
 		if (m_controls.driver_X_Button()) {
-			m_liftPosition = 1000;
+			m_liftPosition = 2000;
 		}
 		if (m_controls.driver_A_Button()) {
 			m_liftPosition = 0;

@@ -31,7 +31,7 @@ public class DriveTrain {
 	private Encoder m_encoderLeft;
 	private Encoder m_encoderRight;
 	private ADXRS450_Gyro m_Gyro;
-	
+	 
 	public DriveTrain(Controls controls) {
 		m_controls = controls;
 		eConstants = new ElectricalConstants();
