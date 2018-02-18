@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
+
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain {
@@ -31,6 +33,7 @@ public class DriveTrain {
 	private Encoder m_encoderLeft;
 	private Encoder m_encoderRight;
 	private ADXRS450_Gyro m_Gyro;
+	private double m_drivePosition;
 	 
 	public DriveTrain(Controls controls) {
 		m_controls = controls;
@@ -42,12 +45,31 @@ public class DriveTrain {
 		m_RightFollowerA = new WPI_TalonSRX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_A);
 		m_RightFollowerB = new WPI_TalonSRX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_B);
 		
+		m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		m_RightMaster.setSensorPhase(true);
+		m_RightMaster.setInverted(false);
+		m_RightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+		m_RightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+		m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		
+		m_RightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+		m_RightMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
+		m_RightMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
+		/* zero the sensor */
+		m_RightMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		m_RightMaster.configOpenloopRamp(0, 0);
+		m_RightMaster.configClosedloopRamp(0, 0);
+		
+		m_drivePosition = 0;
+		
 		myRobot = new DifferentialDrive(m_LeftMaster, m_RightMaster);
 		
 		m_LeftFollowerA.follow(m_LeftMaster);
 		m_LeftFollowerB.follow(m_LeftMaster);
 		m_RightFollowerA.follow(m_RightMaster);
 		m_RightFollowerB.follow(m_RightMaster);
+		m_LeftMaster.follow(m_RightMaster);
 		
 		m_encoderLeft = new Encoder(eConstants.ENCODER_DRIVE_LEFT_A, eConstants.ENCODER_DRIVE_LEFT_B, false, Encoder.EncodingType.k1X);
 		m_encoderRight = new Encoder(eConstants.ENCODER_DRIVE_RIGHT_A, eConstants.ENCODER_DRIVE_RIGHT_B, false, Encoder.EncodingType.k1X);

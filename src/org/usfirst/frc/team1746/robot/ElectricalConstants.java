@@ -15,10 +15,13 @@ public class ElectricalConstants {
 	public int MOTOR_DRIVE_RIGHT_FOLLOWER_A = 11;
 	public int MOTOR_DRIVE_RIGHT_FOLLOWER_B = 12;
 	
-	public int CUBE_INTAKE_LEFT = 6;
-	public int CUBE_INTAKE_RIGHT = 7;
+	public int CUBE_INTAKE_LEFT = 51;
+	public int CUBE_INTAKE_RIGHT = 52;
+
+	public int GRABBER_LEFT = 50;
+	public int GRABBER_RIGHT = 53;
 	
-	public int ELEVATOR_LEFT = 8;
+	public int ELEVATOR_LEFT = 32;
 	public int ELEVATOR_RIGHT = 31;
 	
 	

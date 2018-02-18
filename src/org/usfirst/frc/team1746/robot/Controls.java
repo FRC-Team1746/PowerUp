@@ -7,16 +7,14 @@ public class Controls {
 	
 	double x_axisSquared;
 	Joystick xbox_driver;
-//	Joystick xbox_operator;
+	Joystick xbox_oper;
 	
 	public Controls()
 	{
 		xbox_driver = new Joystick(electricalConstants.JOYSTICK_DRIVER);
+		xbox_oper = new Joystick(electricalConstants.JOYSTICK_OPERATOR);
 	}
-	public void init(){
-//		xbox_operator = new Joystick(electricalConstants.JOYSTICK_OPERATOR);
-	}
-	
+		
 
 // Driver
 	// Intake
@@ -38,18 +36,34 @@ public class Controls {
 		return xbox_driver.getRawAxis(1);
 
 	}
-	public boolean driver_Y_Button(){
-		return xbox_driver.getRawButton(4);
+	public boolean oper_Y_Button(){
+		return xbox_oper.getRawButton(4);
 		
 	}	
-	public boolean driver_X_Button(){
-		return xbox_driver.getRawButton(3);
+	public boolean oper_X_Button(){
+		return xbox_oper.getRawButton(3);
 		
 	}	
-	public boolean driver_A_Button(){
-		return xbox_driver.getRawButton(1);
+	public boolean oper_A_Button(){
+		return xbox_oper.getRawButton(1);
+		
+	}
+	public boolean oper_LB_Button(){
+		return xbox_oper.getRawButton(5);
 		
 	}	
+	public boolean oper_RB_Button(){
+		return xbox_oper.getRawButton(6);
+		
+	}
+	public double oper_LT_Axis(){
+		return xbox_oper.getRawAxis(2);
+		
+	}
+	public double oper_RT_Axis(){
+		return xbox_oper.getRawAxis(3);
+		
+	}
 }
 
 	

@@ -23,6 +23,8 @@ public class Robot extends IterativeRobot {
 	Controls m_controls;
     DriveTrain m_driveTrain;
     Lift m_lift;
+    Intake m_intake;
+    Grabber m_grabber;
 
     AutonBase m_autonBase;
 
@@ -33,6 +35,8 @@ public class Robot extends IterativeRobot {
 	 	m_driveTrain = new DriveTrain(m_controls);
 	 	m_driveTrain.resetGyro();
 	 	m_lift = new Lift(m_controls);
+	 	m_intake = new Intake(m_controls);
+	 	m_grabber = new Grabber(m_controls, m_lift);
 	 	m_autonBase = new AutonBase(m_driveTrain);
 	 	
 	}
@@ -61,6 +65,7 @@ public class Robot extends IterativeRobot {
 		m_driveTrain.setRampRate(.5);
 		m_driveTrain.setBrakeMode(false);
 		System.out.println("teleopInit");
+		
 	}
 
 	/**
@@ -69,8 +74,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		m_driveTrain.teleopArcadeDrive();
-		m_lift.updateLift();
+		m_lift.update();
+		m_grabber.update();
+		m_intake.update();
 		updateSmartDashboard();
+		
 	}
 
 	/**
@@ -85,6 +93,7 @@ public class Robot extends IterativeRobot {
 	public void updateSmartDashboard() {
 		m_driveTrain.updateSmartDashboard();
 		m_lift.updateSmartDashboard();
+		m_grabber.updateSmartDashboard();
 		//m_autonBase.updateSmartDashboard();
 	}
 }
