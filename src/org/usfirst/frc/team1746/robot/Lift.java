@@ -13,10 +13,13 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.*;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
 public class Lift {
 	
 	ElectricalConstants m_eConstants;
 	Controls m_controls;
+	PowerDistributionPanel m_pdp;
 
 	private VictorSPX m_liftLeft;
 	private WPI_TalonSRX m_liftRight;
@@ -32,6 +35,7 @@ public class Lift {
 		m_liftLeft = new VictorSPX(m_eConstants.ELEVATOR_LEFT);
 		m_liftRight = new WPI_TalonSRX(m_eConstants.ELEVATOR_RIGHT);
 		m_liftLeft.follow(m_liftRight);
+		m_pdp = new PowerDistributionPanel(0);
 //		m_liftEncoder = new Encoder(m_eConstants.ENCODER_LIFT_A, m_eConstants.ENCODER_LIFT_B, false, Encoder.EncodingType.k1X);	
 		
 		m_liftPosition = 0;
@@ -95,18 +99,23 @@ public class Lift {
 	}
 	
 	public void update() {
-		if (m_controls.oper_Y_Button()) {
-			m_liftPosition = 6*4000;
-		}
-		if (m_controls.oper_X_Button()) {
-			m_liftPosition = 3*4000;
-		}
-		if (m_controls.oper_A_Button()) {
-			m_liftPosition = 0;
-		}
+//		if (m_controls.oper_Y_Button()) {
+//			m_liftPosition = 6*4000;
+//		}
+//		if (m_controls.oper_X_Button()) {
+//			m_liftPosition = 3*4000;
+//		}
+//		if (m_controls.oper_A_Button()) {
+//			m_liftPosition = 0;
+//		}
 		//m_liftRight.set(ControlMode.Position, m_liftPosition);
+		if (m_pdp.getCurrent(10) < 10){
+			m_liftRight.set(ControlMode.PercentOutput, m_controls.driver_YR_Axis()/2);
+		}else{
+			m_liftRight.set(ControlMode.PercentOutput, m_controls.driver_YR_Axis()/10);
+		}
 		System.out.println(m_liftRight.getSelectedSensorVelocity(0));
-		m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
+//		m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
 	}
 	public double getLiftPosition(){
 		return m_liftRight.getSensorCollection().getQuadraturePosition();
