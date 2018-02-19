@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1746.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 public class Intake {
@@ -39,10 +40,10 @@ public class Intake {
 	
 	public void update(){
 		if (m_controls.oper_LT_Axis() > .1){
-			m_intakeLeft.set(null, m_controls.oper_LT_Axis());
+			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_LT_Axis());
 		}
 		if (m_controls.oper_RT_Axis() > .1){
-			m_intakeRight.set(null, m_controls.oper_RT_Axis());
+			m_intakeRight.set(ControlMode.PercentOutput, m_controls.oper_RT_Axis());
 		}
 	}
 }

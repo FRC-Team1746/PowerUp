@@ -36,8 +36,8 @@ public class Controls {
 		return xbox_driver.getRawAxis(1);
 
 	}
-	public double driver_YR_Axis(){
-		return xbox_driver.getRawAxis(5);
+	public double oper_YR_Axis(){
+		return xbox_oper.getRawAxis(5);
 
 	}
 	public boolean oper_Y_Button(){

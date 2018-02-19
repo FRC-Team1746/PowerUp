@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.Encoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +21,7 @@ public class Lift {
 	ElectricalConstants m_eConstants;
 	Controls m_controls;
 	PowerDistributionPanel m_pdp;
+	Constants constants;
 
 	private VictorSPX m_liftLeft;
 	private WPI_TalonSRX m_liftRight;
@@ -32,6 +34,7 @@ public class Lift {
 	public Lift(Controls controls) {
 		m_controls = controls;
 		m_eConstants =  new ElectricalConstants();
+		constants = new Constants();
 		m_liftLeft = new VictorSPX(m_eConstants.ELEVATOR_LEFT);
 		m_liftRight = new WPI_TalonSRX(m_eConstants.ELEVATOR_RIGHT);
 		m_liftLeft.follow(m_liftRight);
@@ -41,30 +44,34 @@ public class Lift {
 		m_liftPosition = 0;
 		
 		/* first choose the sensor */
-		m_liftRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		m_liftRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,constants.kPIDLoopIdx, constants.kTimeoutMs);
 		m_liftRight.setSensorPhase(true);
 		m_liftRight.setInverted(false);
 		/* Set relevant frame periods to be at least as fast as periodic rate*/
 		m_liftRight.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10,
-		Constants.kTimeoutMs);
+		constants.kTimeoutMs);
 		m_liftRight.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10,
-		Constants.kTimeoutMs);
+		constants.kTimeoutMs);
 		/* set the peak and nominal outputs */
-		m_liftRight.configNominalOutputForward(0, Constants.kTimeoutMs);
-		m_liftRight.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		m_liftRight.configPeakOutputForward(1, Constants.kTimeoutMs);
-		m_liftRight.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		m_liftRight.configNominalOutputForward(0, constants.kTimeoutMs);
+		m_liftRight.configNominalOutputReverse(0, constants.kTimeoutMs);
+		m_liftRight.configPeakOutputForward(1, constants.kTimeoutMs);
+		m_liftRight.configPeakOutputReverse(-1, constants.kTimeoutMs);
 		/* set closed loop gains in slot0 - see documentation */
-		m_liftRight.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-//		_talon.config_kF(0, 0.2, Constants.kTimeoutMs);
-//		_talon.config_kP(0, 0.2, Constants.kTimeoutMs);
-//		_talon.config_kI(0, 0, Constants.kTimeoutMs);
-//		_talon.config_kD(0, 0, Constants.kTimeoutMs);
+		m_liftRight.selectProfileSlot(constants.kSlotIdx, constants.kPIDLoopIdx);
+		m_liftRight.config_kF(0, .146, Constants.kTimeoutMs);
+		m_liftRight.config_kP(0, 2.5, Constants.kTimeoutMs);
+		m_liftRight.config_kI(0, 0, Constants.kTimeoutMs);
+		m_liftRight.config_kD(0, 25, Constants.kTimeoutMs);
+		m_liftLeft.config_kF(0, .146, Constants.kTimeoutMs);
+		m_liftLeft.config_kP(0, 2.5, Constants.kTimeoutMs);
+		m_liftLeft.config_kI(0, 0, Constants.kTimeoutMs);
+		m_liftLeft.config_kD(0, 25, Constants.kTimeoutMs);
 		/* set acceleration and vcruise velocity - see documentation */
-		m_liftRight.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
-		m_liftRight.configMotionAcceleration(21000, Constants.kTimeoutMs);
+		m_liftRight.configMotionCruiseVelocity(5250, constants.kTimeoutMs);
+		m_liftRight.configMotionAcceleration(21000, constants.kTimeoutMs);
 		/* zero the sensor */
-		m_liftRight.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		m_liftRight.setSelectedSensorPosition(0, constants.kPIDLoopIdx, constants.kTimeoutMs);
 		m_liftRight.configOpenloopRamp(0, 0);
 		m_liftRight.configClosedloopRamp(0, 0);
 
@@ -75,7 +82,7 @@ public class Lift {
 	
 	public void resetEncoder(){
 //		m_liftEncoder.reset();
-		m_liftRight.getSensorCollection().setQuadraturePosition(0, 0);
+		m_liftRight.setSelectedSensorPosition(0, 0, 10);
 	}
 	
 	public void setRampRate(double rate){
@@ -99,30 +106,41 @@ public class Lift {
 	}
 	
 	public void update() {
-//		if (m_controls.oper_Y_Button()) {
-//			m_liftPosition = 6*4000;
-//		}
-//		if (m_controls.oper_X_Button()) {
-//			m_liftPosition = 3*4000;
-//		}
-//		if (m_controls.oper_A_Button()) {
-//			m_liftPosition = 0;
-//		}
-		//m_liftRight.set(ControlMode.Position, m_liftPosition);
-		if (m_pdp.getCurrent(10) < 10){
-			m_liftRight.set(ControlMode.PercentOutput, m_controls.driver_YR_Axis()/2);
-		}else{
-			m_liftRight.set(ControlMode.PercentOutput, m_controls.driver_YR_Axis()/10);
+		
+//		m_liftRight.set(ControlMode.Position, m_liftPosition);
+		if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
+			if (m_pdp.getCurrent(10) < 10){
+				m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
+			}else{
+				m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/5);
+			}
+			System.out.println("Stick");
+		} else {
+			if (m_controls.oper_Y_Button()) {
+				m_liftPosition = 4*4000;
+				System.out.println("Y Pressed");
+			}
+			if (m_controls.oper_X_Button()) {
+				m_liftPosition = 2*4000;
+				System.out.println("X Pressed");
+			}
+			if (m_controls.oper_A_Button()) {
+				m_liftPosition = 0;
+				System.out.println("A Pressed");
+			}
+			m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
+			System.out.println("Buttons");
 		}
 		System.out.println(m_liftRight.getSelectedSensorVelocity(0));
-//		m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
 	}
 	public double getLiftPosition(){
-		return m_liftRight.getSensorCollection().getQuadraturePosition();
+		return m_liftRight.getSelectedSensorPosition(0);
 	}
 	
 	public void updateSmartDashboard(){
 		SmartDashboard.putNumber("Lift position", getLiftPosition());
+		SmartDashboard.putNumber("Intended", m_liftPosition);
+//		SmartDashboard.putNumber("Lift Encoder", m_liftEncoder);
 	}
 	
 }

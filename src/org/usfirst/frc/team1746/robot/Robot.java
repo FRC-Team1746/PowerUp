@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
 		m_driveTrain.setRampRate(.5);
 		m_driveTrain.setBrakeMode(false);
 		System.out.println("teleopInit");
-		
+		m_lift.setBrakeMode(true);
 	}
 
 	/**
