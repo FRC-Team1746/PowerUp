@@ -40,10 +40,14 @@ public class Intake {
 	
 	public void update(){
 		if (m_controls.oper_LT_Axis() > .1){
-			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_LT_Axis());
+			m_intakeLeft.set(ControlMode.PercentOutput, -m_controls.oper_LT_Axis());
+		}else {
+			m_intakeLeft.set(ControlMode.PercentOutput, 0);
 		}
 		if (m_controls.oper_RT_Axis() > .1){
 			m_intakeRight.set(ControlMode.PercentOutput, m_controls.oper_RT_Axis());
+		}else {
+			m_intakeRight.set(ControlMode.PercentOutput, 0);
 		}
 	}
 }

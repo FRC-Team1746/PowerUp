@@ -24,12 +24,12 @@ public class Grabber {
 		m_grabberRight = new WPI_TalonSRX(m_eConstants.GRABBER_RIGHT);
 		m_pdp = new PowerDistributionPanel(0);
 		
-		m_grabberLeft.configContinuousCurrentLimit(10, 0);
-		m_grabberRight.configContinuousCurrentLimit(10, 0);
+		m_grabberLeft.configContinuousCurrentLimit(2, 0);
+		m_grabberRight.configContinuousCurrentLimit(2, 0);
 		
-		grabberOut = 1;
-		grabberInHard = -1;
-		grabberInSoft = -.25;
+		grabberOut = .4;
+		grabberInHard = -.4;
+		grabberInSoft = -.15;
 		
 	}
 	
@@ -54,21 +54,21 @@ public class Grabber {
 	}
 	
 	public void update(){
-		if (m_lift.getLiftPosition() == 0 || m_lift.getLiftPosition() >= 6000){
+		if (m_lift.getLiftPosition() <= 15 || m_lift.getLiftPosition() >= 6000){
 			if (m_controls.oper_LB_Button()){
 				m_grabberLeft.set(grabberOut);
-			} else if(m_pdp.getCurrent(8) < 5){
+			} else if(m_pdp.getCurrent(7) < 1){
 				m_grabberLeft.set(grabberInHard);
-			} else if(m_pdp.getCurrent(8) >= 5){
+			} else if(m_pdp.getCurrent(7) >= 1){
 				m_grabberLeft.set(grabberInSoft);
 			}
 		
 			if (m_controls.oper_RB_Button()){
-				m_grabberRight.set(grabberOut);
-			} else if(m_pdp.getCurrent(9) < 5){
-				m_grabberRight.set(grabberInHard);
-			} else if(m_pdp.getCurrent(9) >= 5){
-				m_grabberRight.set(grabberInSoft);
+				m_grabberRight.set(-grabberOut);
+			} else if(m_pdp.getCurrent(4) < 1){
+				m_grabberRight.set(-grabberInHard);
+			} else if(m_pdp.getCurrent(4) >= 1){
+				m_grabberRight.set(-grabberInSoft);
 			}
 		} else {
 			m_grabberLeft.set(1);
@@ -77,7 +77,7 @@ public class Grabber {
 	}
 	
 	public void updateSmartDashboard(){
-		SmartDashboard.putNumber("PDP 8", m_pdp.getCurrent(8));
-		SmartDashboard.putNumber("PDP 9", m_pdp.getCurrent(9));
+		SmartDashboard.putNumber("PDP 7", m_pdp.getCurrent(7));
+		SmartDashboard.putNumber("PDP 4", m_pdp.getCurrent(4));
 	}
 }
