@@ -91,8 +91,8 @@ public class DriveTrain {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public void teleopArcadeDrive(){
-		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), -m_controls.driver_X_Axis());
-		setRampRate(0.5);
+		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), m_controls.driver_X_Axis());
+		setRampRate(0.25);
 		setCoast(true);
 		resetEncoders();
 		
