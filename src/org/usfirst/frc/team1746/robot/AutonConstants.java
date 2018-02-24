@@ -2,12 +2,24 @@ package org.usfirst.frc.team1746.robot;
 
 public class AutonConstants {
 
-	   public static final double DefaultDrivingSpeed=0.75;
-	   public static final double DefaultBackwardsSpeed=0.75;
-	   public static final double DefaultRampRate=0;
-	   public static final double DefaultTurningSpeed=0.5;
-	   public static final double DefaultElevatorSpeed=0.3;
-	   public static final double DefaultInOutSpeed=0.4;
+	   public static final double DefaultDrivingSpeed = 0.75;
+	   public static final double DefaultBackwardsSpeed = 0.75;
+	   public static final double DefaultRampRate = .25;		// The number of seconds to reach maxVelocity
+	   public static final double DefaultTurningSpeed = 0.5;
+	   public static final double DefaultElevatorSpeed = 0.3;
+	   public static final double DefaultInOutSpeed = 0.4;
+	   public static final double wheelDiameter = 4;
+	   public static final double ticksPerRevolution = 4000; 
+	   public static final double maxVelocity = 5000;			/* The max velocity in encoder ticks per 100 milliseconds 
+															(The robot needs to be able to travel this speed under all circumstances)*/	   
+	   public static final double defaultAcceleration = 1 * maxVelocity;
+	   public static final double ticksPerInch = ticksPerRevolution/(Math.PI * wheelDiameter);
+	   public static final double distanceTolerance = 0.5;			// Distance from target allowed in inches
+	   public static final int velocityTolerance = 5;				// Velocity Tolerance in ticks per 100 milliseconds
+	   
+	   public static final double encoderTicksPer90Degrees = 4130;
+	   
+	   public static final int zeroVelocitiesTillDone = 5;
 	   
 	   /*
 	    * Arcade Distances in inches
@@ -170,7 +182,7 @@ public class AutonConstants {
 	   public static final String specialCommands = "W";
 	   public static final String[][] commands = new String[][] {
 		   {																															// FROM 1
-			   "!",																														//        TO 4
+			   "A600,.7",																												//        TO 4
 		       "!",																														//        TO 5
 			   "!",																														//        TO 6
 			   "!",																														//        TO 7

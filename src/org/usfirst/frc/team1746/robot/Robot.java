@@ -22,10 +22,9 @@ public class Robot extends IterativeRobot {
 	
 	Controls m_controls;
     DriveTrain m_driveTrain;
-    AutonAhead m_autonAhead;
-    AutonBackward m_autonBackward;
-    AutonRight m_autonRight;
-    AutonLeft m_autonLeft;
+    AutonDriveTrain m_autonDriveTrain;
+    AutonGo m_autonGo;
+    AutonTurn m_autonTurn;
     StringBuilder m_commandsToDoDuringAutonomous = new StringBuilder();
     Pattern m_pattern;
     Matcher m_matcher;
@@ -50,12 +49,11 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		m_controls = new Controls();
 	 	m_driveTrain = new DriveTrain(m_controls);
+	 	m_driveTrain.init();
 	 	m_driveTrain.resetGyro();
 
-	 	m_autonAhead = new AutonAhead(m_driveTrain);
-	    m_autonBackward = new AutonBackward(m_driveTrain);
-	    m_autonRight = new AutonRight(m_driveTrain);
-	    m_autonLeft = new AutonLeft(m_driveTrain);
+	 	m_autonGo = new AutonGo(m_autonDriveTrain);
+	    m_autonTurn = new AutonTurn(m_autonDriveTrain);
 	 	
 	}
 
@@ -66,7 +64,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		AutonConstants autonConstants = new AutonConstants();
 		m_pattern = Pattern.compile("([A-Z])([^A-Z]*)");
-		int[] commandsToDo = { 1, 8 };
+		int[] commandsToDo = { 1, 4 };
 		int from=-1;
 		for(int to: commandsToDo) {
 			if (from>0) {
@@ -76,18 +74,21 @@ public class Robot extends IterativeRobot {
 		}
 		m_matcher = m_pattern.matcher(m_commandsToDoDuringAutonomous);
 		m_matcher.find();
-//		System.out.println("Commands: #"+m_commandsToDoDuringAutonomous+"#   group 1: #"+m_matcher.group(1)+"#   group 2: #"+m_matcher.group(2)+"#");
+		System.out.println("Commands: #"+m_commandsToDoDuringAutonomous+"#   group 1: #"+m_matcher.group(1)+"#   group 2: #"+m_matcher.group(2)+"#");
 		
+		//m_driveTrain.setRampRate(3);
+		
+	
 	}
 	
 	@Override
 	public void autonomousPeriodic() {
-//		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
+		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
         if (!allCommandsLoaded && driverCommandComplete && AutonConstants.driveCommands.contains(m_matcher.group(1))) {
         	currentDriverCommand = m_matcher.group(1);
         	currentDriverCommandArgs = m_matcher.group(2);
         	driverCommandComplete = false;
-//        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
+        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
         	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
         }
         if (!allCommandsLoaded && elevatorCommandComplete && AutonConstants.elevatorCommands.contains(m_matcher.group(1))) {
@@ -110,24 +111,29 @@ public class Robot extends IterativeRobot {
         }
         
 		if (!driverCommandComplete && currentDriverCommand.equals("A")) {
-//			System.out.println("Run Ahead Command");
-			driverCommandComplete = m_autonAhead.auton(currentDriverCommandArgs);
-//			System.out.println(driverCommandComplete);
+			System.out.println("Run Ahead Command");
+			driverCommandComplete = m_autonGo.auton(1,currentDriverCommandArgs);
+			System.out.println(driverCommandComplete);
+				
 		} else if (!driverCommandComplete && currentDriverCommand.equals("B")) {
-			driverCommandComplete = m_autonBackward.auton(currentDriverCommandArgs);
+			System.out.println("Run Backwards Command");
+			driverCommandComplete = m_autonGo.auton(-1,currentDriverCommandArgs);
 		} else if (!driverCommandComplete && currentDriverCommand.equals("R")) {
-//			System.out.println("Turn Right Command");
-			driverCommandComplete = m_autonRight.auton(currentDriverCommandArgs);
+			System.out.println("Turn Right Command");
+			driverCommandComplete = m_autonTurn.auton(1,currentDriverCommandArgs);
 		} else if (!driverCommandComplete && currentDriverCommand.equals("L")) {
-//			System.out.println("Turn Left Command");
-			driverCommandComplete = m_autonLeft.auton(currentDriverCommandArgs);
+			System.out.println("Turn Left Command");
+			driverCommandComplete = m_autonTurn.auton(-1,currentDriverCommandArgs);
 		} 
 //		if (!elevatorCommandComplete && currentElevatorCommand.equals("U")) {
 //			elevatorCommandComplete = m_autonUp.auton(currentElevatorCommandArgs);
 //		} else if ()
 		
 		if (!specialCommandComplete && currentSpecialCommand.equals("W")) {
-			
+			if (!specialCommandComplete && currentSpecialCommand.equals("W")) {
+				specialCommandComplete = true;
+				if (!m_matcher.find()) allCommandsLoaded = true;
+			}
 		}
 			
 		// <--- other commands go here
@@ -135,8 +141,7 @@ public class Robot extends IterativeRobot {
 //		} else {
 //			throw new UnsupportedOperationException("An invalid Command was encoutered in AutonConstants.commands.");
 //		}
-		
-		
+		updateSmartDashboard();
 	}
 
 	/**
