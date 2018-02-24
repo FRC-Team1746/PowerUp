@@ -19,7 +19,7 @@ public class AutonConstants {
 	   
 	   public static final double encoderTicksPer90Degrees = 4130;
 	   
-	   public static final int zeroVelocitiesTillDone = 5;
+	   public static final int zeroVelocitiesTillDone = 25;
 	   
 	   /*
 	    * Arcade Distances in inches
@@ -182,7 +182,7 @@ public class AutonConstants {
 	   public static final String specialCommands = "W";
 	   public static final String[][] commands = new String[][] {
 		   {																															// FROM 1
-			   "A600,.7",																												//        TO 4
+			   "R",																												//        TO 4
 		       "!",																														//        TO 5
 			   "!",																														//        TO 6
 			   "!",																														//        TO 7

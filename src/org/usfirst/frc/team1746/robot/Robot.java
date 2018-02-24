@@ -48,10 +48,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		m_controls = new Controls();
-	 	m_driveTrain = new DriveTrain(m_controls);
-	 	m_driveTrain.init();
-	 	m_driveTrain.resetGyro();
-
+	 	m_autonDriveTrain = new AutonDriveTrain(m_controls);
+	 	m_autonDriveTrain.init();
+//	 	m_autonDriveTrain.resetGyro();
 	 	m_autonGo = new AutonGo(m_autonDriveTrain);
 	    m_autonTurn = new AutonTurn(m_autonDriveTrain);
 	 	
@@ -88,7 +87,7 @@ public class Robot extends IterativeRobot {
         	currentDriverCommand = m_matcher.group(1);
         	currentDriverCommandArgs = m_matcher.group(2);
         	driverCommandComplete = false;
-        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
+//        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
         	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
         }
         if (!allCommandsLoaded && elevatorCommandComplete && AutonConstants.elevatorCommands.contains(m_matcher.group(1))) {
@@ -141,7 +140,7 @@ public class Robot extends IterativeRobot {
 //		} else {
 //			throw new UnsupportedOperationException("An invalid Command was encoutered in AutonConstants.commands.");
 //		}
-		updateSmartDashboard();
+//		updateAutonSmartDashboard();
 	}
 
 	/**
@@ -149,6 +148,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+		m_driveTrain = new DriveTrain(m_controls);
+	 	m_driveTrain.init();
+	 	m_driveTrain.resetGyro();
 		m_driveTrain.resetEncoders();
 		m_driveTrain.setRampRate(0);
 		m_driveTrain.setBrakeMode(false);
@@ -172,6 +174,10 @@ public class Robot extends IterativeRobot {
 	
 	public void updateSmartDashboard() {
 		m_driveTrain.updateSmartDashboard();
+		
+	}
+	public void updateAutonSmartDashboard() {
+		m_autonDriveTrain.updateSmartDashboard();
 		
 	}
 }

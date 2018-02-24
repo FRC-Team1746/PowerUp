@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonTurn {
 	AutonConstants aConstants;
-	private AutonDriveTrain m_driveTrain;
+	private AutonDriveTrain m_autonDriveTrain;
 	private States currentState;
 //	private double m_turningSpeed;
 	private boolean done;
@@ -25,9 +25,9 @@ public class AutonTurn {
 
 	public  AutonTurn(AutonDriveTrain driveTrain){
 		aConstants = new AutonConstants();
-		m_driveTrain = driveTrain;
+		m_autonDriveTrain = driveTrain;
 		currentState = States.INIT;
-//		m_driveTrain.setRampRate(AutonConstants.DefaultRampRate);
+		m_autonDriveTrain.setRampRate(AutonConstants.DefaultRampRate);
 		m_turn = 0; //-1 should be left, 1 should be right
 	}
 	
@@ -35,8 +35,9 @@ public class AutonTurn {
 		done=false;
 		switch(currentState){
 		case INIT: 
+			m_autonDriveTrain.resetEncoders();
 //			m_initialHeading = m_driveTrain.getHeading();
-			m_driveTrain.setBrakeMode(true);									// May want to warn if this is not changed by a passed argument
+			m_autonDriveTrain.setBrakeMode(true);									// May want to warn if this is not changed by a passed argument
 //			m_turningSpeed = AutonConstants.DefaultTurningSpeed;
 			m_countZeroVelocity = 0;
 			if (m_args.length()!=0) {
@@ -52,12 +53,12 @@ public class AutonTurn {
 			currentState = States.TURN_NOW;
 		break;
 		case TURN_NOW:
-			m_driveTrain.autonDriveTurn(m_turn);
+			m_autonDriveTrain.autonDriveTurn(m_turn);
 //			if (m_driveTrain.getHeading() < -88 + m_initialHeading) {  // We need to make this more accurate !!!!  (and calibrate)
 //				currentState = States.TURN_STOP;							
 //			}		
-			if (Math.abs(m_driveTrain.getEncoderRightVelocity()) < AutonConstants.velocityTolerance && 
-					Math.abs(m_driveTrain.getEncoderLeftVelocity()) < AutonConstants.velocityTolerance){
+			if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) < AutonConstants.velocityTolerance && 
+					Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) < AutonConstants.velocityTolerance){
 				m_countZeroVelocity++;
 				System.out.println(m_countZeroVelocity);
 			} else {
@@ -72,7 +73,7 @@ public class AutonTurn {
 			}
 		break;
 		case TURN_STOP:
-			m_driveTrain.autonDriveStraight(0);
+			m_autonDriveTrain.autonDriveStraight(0);
 			currentState = States.END;
 		break;
 		case END:
@@ -91,6 +92,6 @@ public class AutonTurn {
 //		SmartDashboard.putNumber("Left Encoder", m_driveTrain.getEncoderLeftInches());
 //		SmartDashboard.putNumber("Right Encoder", m_driveTrain.getEncoderRightInches());
 		SmartDashboard.putString("AutonState", getState());
-		SmartDashboard.putNumber("Gyro", m_driveTrain.getHeading());
+		SmartDashboard.putNumber("Gyro", m_autonDriveTrain.getHeading());
 	}
 }
