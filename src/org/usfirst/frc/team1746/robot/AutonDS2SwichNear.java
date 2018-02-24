@@ -3,7 +3,7 @@ package org.usfirst.frc.team1746.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonDS2SwichNear {
-	private DriveTrain m_DriveTrain;
+	private TeleopDriveTrain m_DriveTrain;
 	private States currentStates;
 	
 	public enum States {
@@ -15,7 +15,7 @@ public class AutonDS2SwichNear {
 		STOP
 	}
 	
-	public AutonDS2SwichNear(DriveTrain drivetrain) {
+	public AutonDS2SwichNear(TeleopDriveTrain drivetrain) {
 		m_DriveTrain = drivetrain;
 		currentStates = States.INIT;
 		m_DriveTrain.setRampRate(20);

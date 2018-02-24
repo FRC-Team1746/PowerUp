@@ -3,7 +3,7 @@ package org.usfirst.frc.team1746.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonCrossTheLine {
-	private DriveTrain m_driveTrain;
+	private TeleopDriveTrain m_driveTrain;
 	private States currentState;
 	
 	public enum States {
@@ -13,7 +13,7 @@ public class AutonCrossTheLine {
 		END,
 	}
 
-	public  AutonCrossTheLine(DriveTrain driveTrain){
+	public  AutonCrossTheLine(TeleopDriveTrain driveTrain){
 		m_driveTrain = driveTrain;
 		currentState = States.INIT;
 		m_driveTrain.setRampRate(.5);

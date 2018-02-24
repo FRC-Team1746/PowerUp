@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1746.robot;
 
 import org.usfirst.frc.team1746.robot.AutonConstants;
-import org.usfirst.frc.team1746.robot.DriveTrain;
+import org.usfirst.frc.team1746.robot.TeleopDriveTrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class AutonBase {
 	
-	private DriveTrain m_drivetrain;
+	private TeleopDriveTrain m_drivetrain;
 	
 	SendableChooser<Double> startSelector = new SendableChooser<>(); //Send And Use
 	SendableChooser<Boolean> scaleFirstSelector = new SendableChooser<>(); // Use
@@ -48,7 +48,7 @@ public class AutonBase {
 		STOP,
 	}
 	
-	public AutonBase(DriveTrain driveTrain){
+	public AutonBase(TeleopDriveTrain driveTrain){
 		m_drivetrain = driveTrain;
 		
 	}

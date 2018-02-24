@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  
 public class Robot extends IterativeRobot {
 	Controls m_controls;
-    DriveTrain m_driveTrain;
+    TeleopDriveTrain m_driveTrain;
     Lift m_lift;
     Intake m_intake;
 //    Grabber m_grabber;
@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		m_controls = new Controls();
-	 	m_driveTrain = new DriveTrain(m_controls);
+	 	m_driveTrain = new TeleopDriveTrain(m_controls);
 	 	m_driveTrain.resetGyro();
 	 	m_lift = new Lift(m_controls);
 	 	m_intake = new Intake(m_controls);

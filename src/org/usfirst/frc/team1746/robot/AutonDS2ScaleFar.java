@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 
 public class AutonDS2ScaleFar {
-	private DriveTrain m_driveTrain;
+	private TeleopDriveTrain m_driveTrain;
 	private int m_position;
 	private States currentState;
 	
@@ -48,7 +48,7 @@ public class AutonDS2ScaleFar {
 		END,
 	}
 	
-	public AutonDS2ScaleFar(DriveTrain driveTrain, double d) {
+	public AutonDS2ScaleFar(TeleopDriveTrain driveTrain, double d) {
 		m_driveTrain = driveTrain;
 		m_position = (int) d;
 		currentState = States.INIT;

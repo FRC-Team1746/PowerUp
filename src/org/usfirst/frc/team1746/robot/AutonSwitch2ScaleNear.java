@@ -7,7 +7,7 @@ import java.lang.Math;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonSwitch2ScaleNear {
-	private DriveTrain m_driveTrain;
+	private TeleopDriveTrain m_driveTrain;
 	private Direction instructions;
 	private String Positions;
 	
@@ -35,7 +35,7 @@ public class AutonSwitch2ScaleNear {
 	
 
 	
-	public  AutonSwitch2ScaleNear(DriveTrain driveTrain){
+	public  AutonSwitch2ScaleNear(TeleopDriveTrain driveTrain){
 		m_driveTrain = driveTrain;
 		instructions = Direction.INIT;
 		m_driveTrain.setRampRate(.5);
