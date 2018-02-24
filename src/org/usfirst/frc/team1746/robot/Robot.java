@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  
 public class Robot extends IterativeRobot {
 	Controls m_controls;
-    TeleopDriveTrain m_driveTrain;
+    TeleopDriveTrain m_driveTrainT;
     Lift m_lift;
     Intake m_intake;
 //    Grabber m_grabber;
@@ -33,13 +33,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		m_controls = new Controls();
-	 	m_driveTrain = new TeleopDriveTrain(m_controls);
-	 	m_driveTrain.resetGyro();
+//	 	m_driveTrainT = new TeleopDriveTrain(m_controls);
+//	 	m_driveTrainT.resetGyro();
 	 	m_lift = new Lift(m_controls);
 	 	m_intake = new Intake(m_controls);
 //	 	m_grabber = new Grabber(m_controls, m_lift);
 	 	m_sensor = new Sensor();
-	 	m_autonBase = new AutonBase(m_driveTrain);
+	// 	m_autonBase = new AutonBase(m_driveTrain);
 	 	
 	}
 
@@ -62,10 +62,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
-		m_driveTrain.resetEncoders();
-		m_lift.resetEncoder();
-		m_driveTrain.setRampRate(.5);
-		m_driveTrain.setBrakeMode(false);
+	 	m_driveTrainT = new TeleopDriveTrain(m_controls);
+	 	m_driveTrainT.resetGyro();
+//		m_driveTrainT.resetEncoders();
+//		m_lift.resetEncoder();
+		m_driveTrainT.setRampRate(.5);
+		m_driveTrainT.setBrakeMode(false);
 		System.out.println("teleopInit");
 		m_lift.setBrakeMode(true);
 	}
@@ -75,7 +77,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		m_driveTrain.teleopArcadeDrive();
+		m_driveTrainT.teleopArcadeDrive();
 		m_lift.update();
 	//	m_grabber.update();
 		m_intake.update();
@@ -93,7 +95,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateSmartDashboard() {
-		m_driveTrain.updateSmartDashboard();
+		m_driveTrainT.updateSmartDashboard();
 		m_lift.updateSmartDashboard();
 //		m_grabber.updateSmartDashboard();
 		//m_autonBase.updateSmartDashboard();

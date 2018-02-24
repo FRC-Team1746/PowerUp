@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Encoder;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import java.util.concurrent.TimeUnit;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -27,6 +27,8 @@ public class Lift {
 	private WPI_TalonSRX m_liftRight;
 	private double m_liftPosition;
 	
+	private DigitalInput m_liftBottom;
+	
 	StringBuilder _sb = new StringBuilder();
 	
 //	private Encoder m_liftEncoder;
@@ -41,7 +43,7 @@ public class Lift {
 		m_pdp = new PowerDistributionPanel(0);
 //		m_liftEncoder = new Encoder(m_eConstants.ENCODER_LIFT_A, m_eConstants.ENCODER_LIFT_B, false, Encoder.EncodingType.k1X);	
 		
-		m_liftPosition = 0;
+		m_liftPosition = 13;
 		
 		/* first choose the sensor */
 		m_liftRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,constants.kPIDLoopIdx, constants.kTimeoutMs);
@@ -68,13 +70,15 @@ public class Lift {
 		m_liftLeft.config_kI(0, 0, Constants.kTimeoutMs);
 		m_liftLeft.config_kD(0, 25, Constants.kTimeoutMs);
 		/* set acceleration and vcruise velocity - see documentation */
-		m_liftRight.configMotionCruiseVelocity(5250, constants.kTimeoutMs);
-		m_liftRight.configMotionAcceleration(21000, constants.kTimeoutMs);
+		m_liftRight.configMotionCruiseVelocity(500, constants.kTimeoutMs);
+		m_liftRight.configMotionAcceleration(5000, constants.kTimeoutMs);
 		/* zero the sensor */
 		m_liftRight.setSelectedSensorPosition(0, constants.kPIDLoopIdx, constants.kTimeoutMs);
 		m_liftRight.configOpenloopRamp(0, 0);
 		m_liftRight.configClosedloopRamp(0, 0);
 
+		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
+		
 		resetEncoder();
 	}
 	
@@ -109,7 +113,7 @@ public class Lift {
 		
 //		m_liftRight.set(ControlMode.Position, m_liftPosition);
 		if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
-			if (m_pdp.getCurrent(10) < 10){
+			if (m_pdp.getCurrent(9) < 10){
 				m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
 			}else{
 				m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/5);
@@ -117,19 +121,27 @@ public class Lift {
 			System.out.println("Stick");
 		} else {
 			if (m_controls.oper_Y_Button()) {
-				m_liftPosition = 4*4000;
+				m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+				m_liftPosition = 38667;
 				System.out.println("Y Pressed");
-			}
-			if (m_controls.oper_X_Button()) {
-				m_liftPosition = 2*4000;
+			}else if (m_controls.oper_X_Button()) {
+				m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+				m_liftPosition = 20000;
 				System.out.println("X Pressed");
-			}
-			if (m_controls.oper_A_Button()) {
-				m_liftPosition = 0;
+			}else if (m_controls.oper_A_Button()) {
+				m_liftRight.configMotionCruiseVelocity(500, constants.kTimeoutMs);
+				m_liftPosition = 13;
 				System.out.println("A Pressed");
 			}
+			if (getLiftPosition() <= 150 && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
+				m_liftRight.set(0);
+			}else {
 			m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
+			}
 			System.out.println("Buttons");
+		}
+		if (!m_liftBottom.get()) {
+			resetEncoder();
 		}
 		System.out.println(m_liftRight.getSelectedSensorVelocity(0));
 	}
@@ -140,6 +152,8 @@ public class Lift {
 	public void updateSmartDashboard(){
 		SmartDashboard.putNumber("Lift position", getLiftPosition());
 		SmartDashboard.putNumber("Intended", m_liftPosition);
+		SmartDashboard.putNumber("PDP 8", m_pdp.getCurrent(8));
+		SmartDashboard.putNumber("PDP 9", m_pdp.getCurrent(9));
 //		SmartDashboard.putNumber("Lift Encoder", m_liftEncoder);
 	}
 	

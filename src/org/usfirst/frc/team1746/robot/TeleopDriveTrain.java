@@ -30,8 +30,8 @@ public class TeleopDriveTrain {
 	
 	private DifferentialDrive myRobot;
 	
-	private Encoder m_encoderLeft;
-	private Encoder m_encoderRight;
+//	private Encoder m_encoderLeft;
+//	private Encoder m_encoderRight;
 	private ADXRS450_Gyro m_Gyro;
 	private double m_drivePosition;
 	 
@@ -45,7 +45,9 @@ public class TeleopDriveTrain {
 		m_RightFollowerA = new WPI_TalonSRX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_A);
 		m_RightFollowerB = new WPI_TalonSRX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_B);
 		
-		m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		
 		m_RightMaster.setSensorPhase(true);
 		m_RightMaster.setInverted(false);
 		m_RightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
@@ -71,8 +73,8 @@ public class TeleopDriveTrain {
 		m_RightFollowerB.follow(m_RightMaster);
 		m_LeftMaster.follow(m_RightMaster);
 		
-		m_encoderLeft = new Encoder(eConstants.ENCODER_DRIVE_LEFT_A, eConstants.ENCODER_DRIVE_LEFT_B, false, Encoder.EncodingType.k1X);
-		m_encoderRight = new Encoder(eConstants.ENCODER_DRIVE_RIGHT_A, eConstants.ENCODER_DRIVE_RIGHT_B, false, Encoder.EncodingType.k1X);
+//		m_encoderLeft = new Encoder(eConstants.ENCODER_DRIVE_LEFT_A, eConstants.ENCODER_DRIVE_LEFT_B, false, Encoder.EncodingType.k1X);
+//		m_encoderRight = new Encoder(eConstants.ENCODER_DRIVE_RIGHT_A, eConstants.ENCODER_DRIVE_RIGHT_B, false, Encoder.EncodingType.k1X);
 		m_Gyro = new ADXRS450_Gyro();
 	}
 	
@@ -108,22 +110,22 @@ public class TeleopDriveTrain {
 	}
 	
 	public int getEncoderLeft(){
-		return m_encoderLeft.get();
+		return m_LeftMaster.getSelectedSensorPosition(0);
 	}
 	public int getEncoderRight(){
-		return m_encoderRight.get();
+		return m_RightMaster.getSelectedSensorPosition(0);
 	}
 	
 	public double getEncoderLeftInches(){
-		return m_encoderLeft.get()*Math.PI*4/360;
+		return m_LeftMaster.getSelectedSensorPosition(0)*Math.PI*4/360;
 	}
 	public double getEncoderRightInches(){
-		return m_encoderRight.get()*Math.PI*4/360;
+		return m_RightMaster.getSelectedSensorPosition(0)*Math.PI*4/360;
 	}
 	
 	public void resetEncoders(){
-		m_encoderLeft.reset();
-		m_encoderRight.reset();
+		m_RightMaster.setSelectedSensorPosition(0, 0, 0);
+		m_LeftMaster.setSelectedSensorPosition(0, 0, 0);
 	}
 	
 	public double getHeading(){
@@ -163,8 +165,8 @@ public class TeleopDriveTrain {
 
 	public double bothEncoderInchValues() {
 		
-		return Math.abs(m_encoderRight.get()*Math.PI*4/360 + m_encoderLeft.get()*Math.PI*4/360);
-			
+		return Math.abs(m_LeftMaster.getSelectedSensorPosition(0)*Math.PI*4/360 + m_RightMaster.getSelectedSensorPosition(0)*Math.PI*4/360);
+	
 	}
 	
 }
