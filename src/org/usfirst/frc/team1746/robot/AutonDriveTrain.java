@@ -177,14 +177,14 @@ public class AutonDriveTrain {
 //		myRobot.tankDrive(-speed, -speed);
 		m_LeftMaster.set(-speed);
 		m_RightMaster.set(speed);
-		System.out.println("Running Tank Drive");
+//		System.out.println("Running Tank Drive");
 	}
 	
 	public void autonDriveTurn(double direction){
 //		myRobot.tankDrive(speed, -speed);
 		m_LeftMaster.set(ControlMode.MotionMagic, -(direction * aConstants.encoderTicksPer90Degrees));
 		m_RightMaster.set(ControlMode.MotionMagic, -(direction * aConstants.encoderTicksPer90Degrees));
-		System.out.println("Running Tank Turn");
+//		System.out.println("Running Tank Turn");
 	}
 	
 	//////////////////////////////////////////////////////////////

@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonUp {
 	AutonConstants aConstants;
-	private DriveTrain m_driveTrain;
+	private AutonDriveTrain m_autonDriveTrain;
 	private States currentState;
-	private double m_elevatorDistance;
-	private double m_elevatorSpeed;
+	private double m_drivingDistance;
+	private double m_drivingSpeed;
 	private boolean done;
+	private int m_countZeroVelocity;
 	
 	public enum States {
 		INIT,
@@ -17,58 +18,82 @@ public class AutonUp {
 		END,
 	}
 
-	public  AutonUp(DriveTrain driveTrain){
+	public  AutonUp(AutonDriveTrain driveTrain){
 		aConstants = new AutonConstants();
-		m_driveTrain = driveTrain;
+		m_autonDriveTrain = driveTrain;
 		currentState = States.INIT;
-		m_driveTrain.setRampRate(aConstants.DefaultRampRate);
+		//m_driveTrain.setRampRate(aConstants.DefaultRampRate);
 	}
-	
-	public boolean auton(String m_args){
+
+	public boolean auton(int direction, String m_args){
 		done=false;
 		switch(currentState){
 		case INIT: 
-			m_driveTrain.resetEncoders();  // Elevator Train not Drive
-			m_driveTrain.setBrakeMode(true);
-			m_elevatorDistance = 0;										// May want to warn if this is not changed by a passed argument
-			m_elevatorSpeed = aConstants.DefaultElevatorSpeed;
+			m_autonDriveTrain.resetEncoders();
+			m_autonDriveTrain.setBrakeMode(true);
+			m_drivingDistance = 0;	// May want to warn if this is not changed by a passed argument
+			m_countZeroVelocity = 0;
+			m_drivingSpeed = aConstants.DefaultDrivingSpeed*direction;
 			if (m_args.length()!=0) {
 				String[] stringArray = m_args.split(",");
 	 		    double tmpDouble;
 	 		    for (int j = 0; j < stringArray.length; j++) {
 	 		       String numberAsString = stringArray[j];
  		    	   tmpDouble = Double.parseDouble(numberAsString);
- 		    	   if (j == 1) m_elevatorDistance = tmpDouble;
- 		    	   if (j == 2) m_elevatorSpeed = tmpDouble;
+ 		    	   if (j == 0) m_drivingDistance = tmpDouble*direction;
+ 		    	   if (j == 1) m_drivingSpeed = tmpDouble*direction;
 	 		    }
 	 		}
+//			System.out.println("Driving Distance: " + m_drivingDistance);
+//			System.out.println("Driving Speed: " + m_drivingSpeed);
 			currentState = States.DRIVE_AHEAD;
 		break;
 		case DRIVE_AHEAD:
-			m_driveTrain.autonDriveStraight(m_elevatorSpeed);  // Elevator move not drive strait
-			if (m_driveTrain.getEncoderLeftInches() > m_elevatorDistance) {    // We need to make this more accurate !!!!  (and calibrate)
+//			System.out.println("About to Drive");
+//			m_driveTrain.autonDriveStraight(m_drivingSpeed);	            		// Uses Tank Drive
+			m_autonDriveTrain.autonDriveStraight(m_drivingDistance, m_drivingSpeed);		// Uses Motion magic
+//			m_driveTrain.drivePID(m_drivingSpeed, 0);								// Uses Routine from 2016
+//			System.out.println("Driving right now");
+			System.out.println("Distance to travel: " + m_drivingDistance  + "       Right Inches: " + m_autonDriveTrain.getEncoderRightInches() + "       Left Inches: " + m_autonDriveTrain.getEncoderLeftInches());
+			//if (m_drivingDistance - Math.abs(m_driveTrain.getEncoderRightInches()) < AutonConstants.distanceTolerance) {    // We need to make this more accurate !!!!  (and calibrate)
+			if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) < aConstants.velocityTolerance && 
+					Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) < aConstants.velocityTolerance){
+				m_countZeroVelocity++;
+				System.out.println(m_countZeroVelocity);
+			} else {
+				m_countZeroVelocity = 0;
+				System.out.println(m_countZeroVelocity);
+			}
+			if (m_countZeroVelocity >= aConstants.zeroVelocitiesTillDone){
+				
 				currentState = States.DRIVE_STOP;
+			
+				System.out.println("Stopping");
 			}
 		break;
 		case DRIVE_STOP:
-			m_driveTrain.autonDriveStraight(0);  // same as above
+			System.out.println("Drive Stop");
+			m_autonDriveTrain.autonDriveStraight(0);
 			currentState = States.END;
+		
 		break;
 		case END:
 			done=true;
-			currentState = States.INIT;     // Set up for getting called again
+			currentState = States.INIT;				// Set up for getting called again
+			
 		break;
 		}
 		return done;
-	}
+		}
+
 	
 	public String getState(){
 		return currentState.name();
 	}
 	
 	public void updateSmartDashboard(){
-		SmartDashboard.putNumber("Left Encoder", m_driveTrain.getEncoderLeftInches());
-		SmartDashboard.putNumber("Right Encoder", m_driveTrain.getEncoderRightInches());
+		SmartDashboard.putNumber("Left Encoder", m_autonDriveTrain.getEncoderLeftInches());
+		SmartDashboard.putNumber("Right Encoder", m_autonDriveTrain.getEncoderRightInches());
 		SmartDashboard.putString("AutonState", getState());
 	}
 }

@@ -169,14 +169,14 @@ public class DriveTrain {
 		}
 }
 
-	public void autonDriveStraight(double speed){
-				myRobot.tankDrive(-speed, -speed);
-				System.out.println("Running Tank Drive");
-	}
-	
-	public void autonDriveTurn(double speed){
-		myRobot.tankDrive(speed, -speed);
-	}
+//	public void autonDriveStraight(double speed){
+//				myRobot.tankDrive(-speed, -speed);
+//				System.out.println("Running Tank Drive");
+//	}
+//	
+//	public void autonDriveTurn(double speed){
+//		myRobot.tankDrive(speed, -speed);
+//	}
 	
 	//////////////////////////////////////////////////////////////
 	//////////////		    	PID              ////////////////

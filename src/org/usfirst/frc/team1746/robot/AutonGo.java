@@ -44,8 +44,8 @@ public class AutonGo {
  		    	   if (j == 1) m_drivingSpeed = tmpDouble*direction;
 	 		    }
 	 		}
-			System.out.println("Driving Distance: " + m_drivingDistance);
-			System.out.println("Driving Speed: " + m_drivingSpeed);
+//			System.out.println("Driving Distance: " + m_drivingDistance);
+//			System.out.println("Driving Speed: " + m_drivingSpeed);
 			currentState = States.DRIVE_AHEAD;
 		break;
 		case DRIVE_AHEAD:

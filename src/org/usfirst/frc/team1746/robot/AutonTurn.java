@@ -12,9 +12,10 @@ public class AutonTurn {
 	private States currentState;
 //	private double m_turningSpeed;
 	private boolean done;
-//	private double m_initialHeading;
+	private double m_initialHeading;
 	private double m_turn;
 	private int m_countZeroVelocity;
+	private double m_finalHeading;
 	
 	public enum States {
 		INIT,
@@ -36,7 +37,7 @@ public class AutonTurn {
 		switch(currentState){
 		case INIT: 
 			m_autonDriveTrain.resetEncoders();
-//			m_initialHeading = m_driveTrain.getHeading();
+			m_initialHeading = m_autonDriveTrain.getHeading();
 			m_autonDriveTrain.setBrakeMode(true);									// May want to warn if this is not changed by a passed argument
 //			m_turningSpeed = AutonConstants.DefaultTurningSpeed;
 			m_countZeroVelocity = 0;
@@ -54,6 +55,7 @@ public class AutonTurn {
 		break;
 		case TURN_NOW:
 			m_autonDriveTrain.autonDriveTurn(m_turn);
+			System.out.println("       Right Inches: " + m_autonDriveTrain.getEncoderRightInches() + "       Left Inches: " + m_autonDriveTrain.getEncoderLeftInches());
 //			if (m_driveTrain.getHeading() < -88 + m_initialHeading) {  // We need to make this more accurate !!!!  (and calibrate)
 //				currentState = States.TURN_STOP;							
 //			}		
@@ -74,6 +76,8 @@ public class AutonTurn {
 		break;
 		case TURN_STOP:
 			m_autonDriveTrain.autonDriveStraight(0);
+			m_finalHeading = m_autonDriveTrain.getHeading();
+			System.out.println("Degrees Moved"+ (m_finalHeading - m_initialHeading));
 			currentState = States.END;
 		break;
 		case END:

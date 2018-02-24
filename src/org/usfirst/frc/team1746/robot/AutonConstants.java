@@ -17,7 +17,7 @@ public class AutonConstants {
 	   public static final double distanceTolerance = 0.5;			// Distance from target allowed in inches
 	   public static final int velocityTolerance = 5;				// Velocity Tolerance in ticks per 100 milliseconds
 	   
-	   public static final double encoderTicksPer90Degrees = 4130;
+	   public static final double encoderTicksPer90Degrees = 5612;
 	   
 	   public static final int zeroVelocitiesTillDone = 25;
 	   
@@ -182,7 +182,7 @@ public class AutonConstants {
 	   public static final String specialCommands = "W";
 	   public static final String[][] commands = new String[][] {
 		   {																															// FROM 1
-			   "R",																												//        TO 4
+			   "LLLRRR",																												//        TO 4
 		       "!",																														//        TO 5
 			   "!",																														//        TO 6
 			   "!",																														//        TO 7

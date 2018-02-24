@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
 		m_controls = new Controls();
 	 	m_autonDriveTrain = new AutonDriveTrain(m_controls);
 	 	m_autonDriveTrain.init();
-//	 	m_autonDriveTrain.resetGyro();
+	 	m_autonDriveTrain.resetGyro();
 	 	m_autonGo = new AutonGo(m_autonDriveTrain);
 	    m_autonTurn = new AutonTurn(m_autonDriveTrain);
 	 	
@@ -82,7 +82,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void autonomousPeriodic() {
-		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
+//		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
         if (!allCommandsLoaded && driverCommandComplete && AutonConstants.driveCommands.contains(m_matcher.group(1))) {
         	currentDriverCommand = m_matcher.group(1);
         	currentDriverCommandArgs = m_matcher.group(2);
@@ -110,18 +110,18 @@ public class Robot extends IterativeRobot {
         }
         
 		if (!driverCommandComplete && currentDriverCommand.equals("A")) {
-			System.out.println("Run Ahead Command");
+//			System.out.println("Run Ahead Command");
 			driverCommandComplete = m_autonGo.auton(1,currentDriverCommandArgs);
-			System.out.println(driverCommandComplete);
+//			System.out.println(driverCommandComplete);
 				
 		} else if (!driverCommandComplete && currentDriverCommand.equals("B")) {
-			System.out.println("Run Backwards Command");
+//			System.out.println("Run Backwards Command");
 			driverCommandComplete = m_autonGo.auton(-1,currentDriverCommandArgs);
 		} else if (!driverCommandComplete && currentDriverCommand.equals("R")) {
-			System.out.println("Turn Right Command");
+//			System.out.println("Turn Right Command");
 			driverCommandComplete = m_autonTurn.auton(1,currentDriverCommandArgs);
 		} else if (!driverCommandComplete && currentDriverCommand.equals("L")) {
-			System.out.println("Turn Left Command");
+//			System.out.println("Turn Left Command");
 			driverCommandComplete = m_autonTurn.auton(-1,currentDriverCommandArgs);
 		} 
 //		if (!elevatorCommandComplete && currentElevatorCommand.equals("U")) {
