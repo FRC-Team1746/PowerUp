@@ -10,9 +10,9 @@ public class AutonTurn {
 	AutonConstants aConstants;
 	private AutonDriveTrain m_driveTrain;
 	private States currentState;
-	private double m_turningSpeed;
+//	private double m_turningSpeed;
 	private boolean done;
-	private double m_initialHeading;
+//	private double m_initialHeading;
 	private double m_turn;
 	private int m_countZeroVelocity;
 	
@@ -27,7 +27,7 @@ public class AutonTurn {
 		aConstants = new AutonConstants();
 		m_driveTrain = driveTrain;
 		currentState = States.INIT;
-		m_driveTrain.setRampRate(aConstants.DefaultRampRate);
+//		m_driveTrain.setRampRate(AutonConstants.DefaultRampRate);
 		m_turn = 0; //-1 should be left, 1 should be right
 	}
 	
@@ -35,9 +35,9 @@ public class AutonTurn {
 		done=false;
 		switch(currentState){
 		case INIT: 
-			m_initialHeading = m_driveTrain.getHeading();
+//			m_initialHeading = m_driveTrain.getHeading();
 			m_driveTrain.setBrakeMode(true);									// May want to warn if this is not changed by a passed argument
-			m_turningSpeed = aConstants.DefaultTurningSpeed;
+//			m_turningSpeed = AutonConstants.DefaultTurningSpeed;
 			m_countZeroVelocity = 0;
 			if (m_args.length()!=0) {
 				String[] stringArray = m_args.split(",");
@@ -45,7 +45,7 @@ public class AutonTurn {
 	 		    for (int j = 0; j < stringArray.length; j++) {
 	 		       String numberAsString = stringArray[j];
  		    	   tmpDouble = Double.parseDouble(numberAsString);
- 		    	   if (j == 0) m_turningSpeed = tmpDouble;
+// 		    	   if (j == 0) m_turningSpeed = tmpDouble;
 	 		    }
 	 		}
 			m_turn = turn;
@@ -56,15 +56,15 @@ public class AutonTurn {
 //			if (m_driveTrain.getHeading() < -88 + m_initialHeading) {  // We need to make this more accurate !!!!  (and calibrate)
 //				currentState = States.TURN_STOP;							
 //			}		
-			if (Math.abs(m_driveTrain.getEncoderRightVelocity()) < aConstants.velocityTolerance && 
-					Math.abs(m_driveTrain.getEncoderLeftVelocity()) < aConstants.velocityTolerance){
+			if (Math.abs(m_driveTrain.getEncoderRightVelocity()) < AutonConstants.velocityTolerance && 
+					Math.abs(m_driveTrain.getEncoderLeftVelocity()) < AutonConstants.velocityTolerance){
 				m_countZeroVelocity++;
 				System.out.println(m_countZeroVelocity);
 			} else {
 				m_countZeroVelocity = 0;
 				System.out.println(m_countZeroVelocity);
 			}
-			if (m_countZeroVelocity >= aConstants.zeroVelocitiesTillDone){
+			if (m_countZeroVelocity >= AutonConstants.zeroVelocitiesTillDone){
 				
 				currentState = States.TURN_STOP;
 			

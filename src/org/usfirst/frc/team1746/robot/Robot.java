@@ -129,7 +129,7 @@ public class Robot extends IterativeRobot {
 //			elevatorCommandComplete = m_autonUp.auton(currentElevatorCommandArgs);
 //		} else if ()
 		
-		if (!specialCommandComplete && currentSpecialCommand.equals("W")) {
+		if (!specialCommandComplete && currentSpecialCommand.equals("W")) { //May Not Work
 			if (!specialCommandComplete && currentSpecialCommand.equals("W")) {
 				specialCommandComplete = true;
 				if (!m_matcher.find()) allCommandsLoaded = true;
