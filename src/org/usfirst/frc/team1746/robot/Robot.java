@@ -63,7 +63,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		AutonConstants autonConstants = new AutonConstants();
 		m_pattern = Pattern.compile("([A-Z])([^A-Z]*)");
-		int[] commandsToDo = { 1, 4 };
+		int[] commandsToDo = { 1, 10, 16 };
 		int from=-1;
 		for(int to: commandsToDo) {
 			if (from>0) {
@@ -87,7 +87,7 @@ public class Robot extends IterativeRobot {
         	currentDriverCommand = m_matcher.group(1);
         	currentDriverCommandArgs = m_matcher.group(2);
         	driverCommandComplete = false;
-//        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
+        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
         	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
         }
         if (!allCommandsLoaded && elevatorCommandComplete && AutonConstants.elevatorCommands.contains(m_matcher.group(1))) {
@@ -150,7 +150,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		m_driveTrain = new DriveTrain(m_controls);
 	 	m_driveTrain.init();
-	 	m_driveTrain.resetGyro();
+//	 	m_driveTrain.resetGyro();
 		m_driveTrain.resetEncoders();
 		m_driveTrain.setRampRate(0);
 		m_driveTrain.setBrakeMode(false);

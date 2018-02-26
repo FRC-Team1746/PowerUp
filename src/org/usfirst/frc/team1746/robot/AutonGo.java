@@ -9,6 +9,7 @@ public class AutonGo {
 	private double m_drivingDistance;
 	private double m_drivingSpeed;
 	private boolean done;
+	private boolean m_movingYet;
 	private int m_countZeroVelocity;
 	
 	public enum States {
@@ -29,6 +30,7 @@ public class AutonGo {
 		done=false;
 		switch(currentState){
 		case INIT: 
+			m_movingYet=false;
 			m_autonDriveTrain.resetEncoders();
 			m_autonDriveTrain.setBrakeMode(true);
 			m_drivingDistance = 0;	// May want to warn if this is not changed by a passed argument
@@ -56,19 +58,28 @@ public class AutonGo {
 //			System.out.println("Driving right now");
 			System.out.println("Distance to travel: " + m_drivingDistance  + "       Right Inches: " + m_autonDriveTrain.getEncoderRightInches() + "       Left Inches: " + m_autonDriveTrain.getEncoderLeftInches());
 			//if (m_drivingDistance - Math.abs(m_driveTrain.getEncoderRightInches()) < AutonConstants.distanceTolerance) {    // We need to make this more accurate !!!!  (and calibrate)
-			if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) < aConstants.velocityTolerance && 
-					Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) < aConstants.velocityTolerance){
-				m_countZeroVelocity++;
-				System.out.println(m_countZeroVelocity);
+			System.out.println("RVel:" + m_autonDriveTrain.getEncoderRightVelocity() + "  LVel: " + m_autonDriveTrain.getEncoderLeftVelocity());
+			if (!m_movingYet){
+				if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) > aConstants.velocityTolerance && 
+						Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) > aConstants.velocityTolerance){
+					m_movingYet=true;
+				} 
+				System.out.println("Not Moving Yet");
 			} else {
-				m_countZeroVelocity = 0;
-				System.out.println(m_countZeroVelocity);
-			}
-			if (m_countZeroVelocity >= aConstants.zeroVelocitiesTillDone){
+				if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) < aConstants.velocityTolerance && 
+						Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) < aConstants.velocityTolerance){
+					m_countZeroVelocity++;
+					System.out.println(m_countZeroVelocity);
+				} else {
+					m_countZeroVelocity = 0;
+					System.out.println(m_countZeroVelocity);
+				}
+				if (m_countZeroVelocity >= aConstants.zeroVelocitiesTillDone){
+					
+					currentState = States.DRIVE_STOP;
 				
-				currentState = States.DRIVE_STOP;
-			
-				System.out.println("Stopping");
+					System.out.println("Stopping");
+				}
 			}
 		break;
 		case DRIVE_STOP:

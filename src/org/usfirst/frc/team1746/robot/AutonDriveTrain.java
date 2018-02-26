@@ -139,10 +139,10 @@ public class AutonDriveTrain {
 //		m_LeftMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
 //		m_RightMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
 //		m_RightMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-		m_LeftMaster.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
-		m_LeftMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
-		m_RightMaster.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
-		m_RightMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
+//		m_LeftMaster.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
+		m_LeftMaster.configMotionAcceleration((int)(AutonConstants.defaultAcceleration), Constants.kTimeoutMs);
+//		m_RightMaster.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
+		m_RightMaster.configMotionAcceleration((int)(AutonConstants.defaultAcceleration), Constants.kTimeoutMs);
 		/* zero the sensor */
 		m_LeftMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 		m_LeftMaster.configOpenloopRamp(0, 0);
@@ -158,14 +158,12 @@ public class AutonDriveTrain {
 //		myRobot.arcadeDrive(m_controls.driver_Y_Axis(), m_controls.driver_X_Axis());
 	}
 	public void autonDriveStraight(double distance, double speed){
-//		m_RightMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
-//		m_RightMaster.configMotionAcceleration((int)(AutonConstants.maxVelocity / AutonConstants.DefaultRampRate), Constants.kTimeoutMs);
-//		m_RightMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
+		m_RightMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
 //		m_RightMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-//		m_LeftMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
+		m_LeftMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
 //		m_LeftMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-		m_LeftMaster.set(ControlMode.MotionMagic, (distance * AutonConstants.ticksPerInch));
 		m_RightMaster.set(ControlMode.MotionMagic, (distance * AutonConstants.ticksPerInch));
+		m_LeftMaster.set(ControlMode.MotionMagic, (-distance * AutonConstants.ticksPerInch));
 //		try {
 //			TimeUnit.MILLISECONDS.sleep(10);
 //		} catch (Exception e) {
