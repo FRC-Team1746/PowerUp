@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
+
+
 public class DriveTrain {
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,23 +84,26 @@ public class DriveTrain {
 	}
 	
 	public int getEncoderLeft(){
-		return m_encoderLeft.get();
+		return m_LeftMaster.getSensorCollection().getQuadraturePosition();
 	}
+	
 	public int getEncoderRight(){
-		return m_encoderRight.get();
+		return m_RightMaster.getSensorCollection().getQuadraturePosition();
 	}
 	
 	public double getEncoderLeftInches(){
-		return m_encoderLeft.get()*Math.PI*4/360;
+		return m_LeftMaster.getSensorCollection().getQuadraturePosition() / AutonConstants.ticksPerInch;
 	}
 	public double getEncoderRightInches(){
-		return m_encoderRight.get()*Math.PI*4/360;
+		return m_RightMaster.getSensorCollection().getQuadraturePosition() / AutonConstants.ticksPerInch;
 	}
 	
 	public void resetEncoders(){
-		m_encoderLeft.reset();
-		m_encoderRight.reset();
+		m_RightMaster.getSensorCollection().setQuadraturePosition(0, 0);
+		m_LeftMaster.getSensorCollection().setQuadraturePosition(0, 0);
+		while (Math.abs(getEncoderLeft()) > 10) System.out.println("Waiting for encoder reset");
 	}
+
 	
 	public double getHeading(){
 		return m_Gyro.getAngle();

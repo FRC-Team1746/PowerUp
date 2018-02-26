@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1746.robot;
+ package org.usfirst.frc.team1746.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -42,21 +42,22 @@ public class AutonAhead {
  		    	   if (j == 1) m_drivingSpeed = tmpDouble;
 	 		    }
 	 		}
-//			System.out.println("Driving Distance: " + m_drivingDistance);
-//			System.out.println("Driving Speed: " + m_drivingSpeed);
+			System.out.println("Driving Distance: " + m_drivingDistance);
+			System.out.println("Driving Speed: " + m_drivingSpeed);
 			currentState = States.DRIVE_AHEAD;
 		break;
 		case DRIVE_AHEAD:
-//			System.out.println("About to Drive");
+			System.out.println("About to Drive");
 			m_driveTrain.autonDriveStraight(m_drivingSpeed);
-//			System.out.println("Driving right now");
+			System.out.println("Driving right now");
+			System.out.println("Distance to Travel: " + m_drivingDistance + "             Right Inches: " + m_driveTrain.getEncoderRightInches() + "             Left Inches: " + m_driveTrain.getEncoderLeftInches());
 			if (m_driveTrain.getEncoderLeftInches() > m_drivingDistance) {    // We need to make this more accurate !!!!  (and calibrate)
 				currentState = States.DRIVE_STOP;
 			}
 		break;
 		case DRIVE_STOP:
 			m_driveTrain.autonDriveStraight(0);
-			currentState = States.END;
+			currentState = States.END; 
 		break;
 		case END:
 			done=true;

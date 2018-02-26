@@ -64,9 +64,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		System.out.println("Inside Autonomous INIT");
 		AutonConstants autonConstants = new AutonConstants();
 		m_pattern = Pattern.compile("([A-Z])([^A-Z]*)");
-		int[] commandsToDo = { 1, 8 };
+		int[] commandsToDo = { 1, 4 };
 		int from=-1;
 		for(int to: commandsToDo) {
 			if (from>0) {
@@ -75,19 +76,22 @@ public class Robot extends IterativeRobot {
 			from=to;
 		}
 		m_matcher = m_pattern.matcher(m_commandsToDoDuringAutonomous);
-		m_matcher.find();
-//		System.out.println("Commands: #"+m_commandsToDoDuringAutonomous+"#   group 1: #"+m_matcher.group(1)+"#   group 2: #"+m_matcher.group(2)+"#");
+		m_matcher.find();  // Load of the first command  --  "Prime the pump"
+		System.out.println("Commands: #"+m_commandsToDoDuringAutonomous+"#   group 1: #"+m_matcher.group(1)+"#   group 2: #"+m_matcher.group(2)+"#");
 		
 	}
 	
 	@Override
 	public void autonomousPeriodic() {
-//		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
+		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
+		/*
+		 * Initialize the currently loaded command if there is no command of that type (driver, elevator, grabber, special) already executing
+		 */
         if (!allCommandsLoaded && driverCommandComplete && AutonConstants.driveCommands.contains(m_matcher.group(1))) {
         	currentDriverCommand = m_matcher.group(1);
         	currentDriverCommandArgs = m_matcher.group(2);
         	driverCommandComplete = false;
-//        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
+        	System.out.println("command: #"+currentDriverCommand+"#"+currentDriverCommandArgs);
         	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
         }
         if (!allCommandsLoaded && elevatorCommandComplete && AutonConstants.elevatorCommands.contains(m_matcher.group(1))) {
@@ -106,20 +110,24 @@ public class Robot extends IterativeRobot {
         	currentSpecialCommand = m_matcher.group(1);
         	currentSpecialCommandArgs = m_matcher.group(2);
         	specialCommandComplete = false;
-        	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
+        	if (!currentSpecialCommand.equals("W")) {
+        		if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
+        	}
         }
-        
+        /*
+         * Continue Processing the Commands that are in Progress
+         */
 		if (!driverCommandComplete && currentDriverCommand.equals("A")) {
-//			System.out.println("Run Ahead Command");
+			System.out.println("Run Ahead Command");
 			driverCommandComplete = m_autonAhead.auton(currentDriverCommandArgs);
-//			System.out.println(driverCommandComplete);
+			System.out.println(driverCommandComplete);
 		} else if (!driverCommandComplete && currentDriverCommand.equals("B")) {
 			driverCommandComplete = m_autonBackward.auton(currentDriverCommandArgs);
 		} else if (!driverCommandComplete && currentDriverCommand.equals("R")) {
-//			System.out.println("Turn Right Command");
+			System.out.println("Turn Right Command");
 			driverCommandComplete = m_autonRight.auton(currentDriverCommandArgs);
 		} else if (!driverCommandComplete && currentDriverCommand.equals("L")) {
-//			System.out.println("Turn Left Command");
+			System.out.println("Turn Left Command");
 			driverCommandComplete = m_autonLeft.auton(currentDriverCommandArgs);
 		} 
 //		if (!elevatorCommandComplete && currentElevatorCommand.equals("U")) {
@@ -127,22 +135,21 @@ public class Robot extends IterativeRobot {
 //		} else if ()
 		
 		if (!specialCommandComplete && currentSpecialCommand.equals("W")) {
+			if (driverCommandComplete && elevatorCommandComplete && grabberCommandComplete) {
+				specialCommandComplete = true;
+				if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
+			}
 			
 		}
 			
 		// <--- other commands go here
-			
-//		} else {
-//			throw new UnsupportedOperationException("An invalid Command was encoutered in AutonConstants.commands.");
-//		}
-		
 		
 	}
 
 	/**
 	 * This function is called once each time the robot enters teleoperated mode.
 	 */
-	@Override
+	@Override 
 	public void teleopInit() {
 		m_driveTrain.resetEncoders();
 		m_driveTrain.setRampRate(0);
