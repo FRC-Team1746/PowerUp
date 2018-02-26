@@ -60,6 +60,22 @@ public class Controls {
 		return xbox_oper.getRawButton(6);
 		
 	}
+	public boolean oper_UP_DPAD(){
+		if ((xbox_oper.getPOV()) == 0) {
+			System.out.println("UP DPAD");
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public boolean oper_DOWN_DPAD(){
+		if ((xbox_oper.getPOV()) >= 160 && (xbox_oper.getPOV()) <= 200) {
+			System.out.println("DOWN DPAD");
+			return true;
+		}else {
+			return false;
+		}
+	}
 	public double oper_LT_Axis(){
 		return xbox_oper.getRawAxis(2);
 		

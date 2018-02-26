@@ -7,6 +7,7 @@ import java.lang.Math;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import java.util.concurrent.TimeUnit;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -28,6 +29,7 @@ public class Lift {
 	private double m_liftPosition;
 	
 	private DigitalInput m_liftBottom;
+	private DigitalOutput m_liftTestLED;
 	
 	StringBuilder _sb = new StringBuilder();
 	
@@ -78,6 +80,7 @@ public class Lift {
 		m_liftRight.configClosedloopRamp(0, 0);
 
 		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
+		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
 		
 		resetEncoder();
 	}
@@ -112,6 +115,7 @@ public class Lift {
 	public void update() {
 		
 //		m_liftRight.set(ControlMode.Position, m_liftPosition);
+		
 		if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
 			if (m_pdp.getCurrent(9) < 10){
 				m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
@@ -125,26 +129,32 @@ public class Lift {
 				m_liftPosition = 38667;
 				System.out.println("Y Pressed");
 			}else if (m_controls.oper_X_Button()) {
-				m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+				m_liftRight.configMotionCruiseVelocity(2500, constants.kTimeoutMs);
 				m_liftPosition = 20000;
 				System.out.println("X Pressed");
 			}else if (m_controls.oper_A_Button()) {
-				m_liftRight.configMotionCruiseVelocity(500, constants.kTimeoutMs);
+				m_liftRight.configMotionCruiseVelocity(700, constants.kTimeoutMs);
 				m_liftPosition = 13;
 				System.out.println("A Pressed");
 			}
-			if (getLiftPosition() <= 150 && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
+			
+			m_liftTestLED.set(m_liftBottom.get());
+			
+			if (!m_liftBottom.get() && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
 				m_liftRight.set(0);
 			}else {
 			m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
 			}
-			System.out.println("Buttons");
+			//System.out.println("Buttons");
 		}
 		if (!m_liftBottom.get()) {
 			resetEncoder();
 		}
+	
 		System.out.println(m_liftRight.getSelectedSensorVelocity(0));
+		
 	}
+	
 	public double getLiftPosition(){
 		return m_liftRight.getSelectedSensorPosition(0);
 	}

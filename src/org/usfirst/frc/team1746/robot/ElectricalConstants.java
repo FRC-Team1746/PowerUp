@@ -47,14 +47,14 @@ public class ElectricalConstants {
 	public int ENCODER_LIFT_B = 5;
 	public int CUBE_PRESENT = 6;
 	public int LIFT_BOTTOM = 7;
-	public int dio8 = 8;
+	public int LIFT_LED = 8;
 	public int dio9 = 9;
 	
 	//PCM
-	public int INTAKE_RETRACT_LEFT = 0;
-	public int INTAKE_RETRACT_RIGHT = 1;
-	public int GEAR_HOPPER_FLAPS_OUT= 2;
-	public int GEAR_HOPPER_FLAPS_IN = 3;
+	public int SHOOTIN = 0;
+	public int SHOOTOUT = 1;
+	public int pcm2= 2;
+	public int pcm3 = 3;
 	public int pcm4 = 4;
 	public int pcm5 = 5;
 	public int pcm6 = 6;
