@@ -8,7 +8,7 @@ public class AutonConstants {
 	   public static final double DefaultTurningSpeed=0.5;
 	   public static final double DefaultElevatorSpeed=0.3;
 	   public static final double DefaultInOutSpeed=0.4;
-	   
+
 	   /*
 	    * Arcade Distances in inches
 	    */
@@ -20,7 +20,8 @@ public class AutonConstants {
 	   public static final double WallToLine = 120;					// From Diagram
 	   public static final double WallToSwitch = 140;				// From Diagram
 	   public static final double WallToPlatform = 261.47;			// From Diagram
-	   public static final double WallToScale = 299.65;				// From Diagram
+	   public static final double WallToScale = 299.65;             // From Diagram
+	   public static final double WallToPyramid = 98;
 	   
 	   public static final double SwitchWidth = 56;					// From Diagram
 	   public static final double ScaleWidth = 48;					// From Diagram
@@ -91,7 +92,7 @@ public class AutonConstants {
 	    * Operating Constants.  These constants are intended to be used directly in commands.
 	    */
 	   
-	   		// Vertical Driving Distances
+	   		// Horizontal Driving Distances
 	   
 	   public static final double StartToMidSwitch = WallToSwitch + (SwitchWidth * 0.5) - BackToTurningAxis;
 	   public static final double StartToMidScale = WallToScale + (ScaleWidth * 0.5) - BackToTurningAxis;
@@ -109,8 +110,10 @@ public class AutonConstants {
 	   public static final double Lane2ToSwitchForPickup = WallToLane2 - WallToSwitch - SwitchWidth - FrontToTurningAxis - CubeSize - PickupBuffer;
 	   public static final double Lane2ToScale = WallToScale - WallToLane2 - FrontToTurningAxis - PlacementBuffer;
 	   public static final double Lane1ToLane2 = WallToLane1 - WallToLane2;
+	   public static final double OutsideToExchangeNear = MiddleToOutsideLane - ExchangeOffset;
+	   public static final double OutsideToExchangeFar = MiddleToOutsideLane + ExchangeOffset;
 	   
-	   		// Horizontal Driving Distances
+	   		// Vertical Driving Distances
 
 	   public static final double OutsideToSwitch = MiddleToOutsideLane - MiddleToSwitchEnd - FrontToTurningAxis - PlacementBuffer;
 	   public static final double OutsideToScale = MiddleToOutsideLane - MiddleToScaleEnd - FrontToTurningAxis - PlacementBuffer;
@@ -125,6 +128,7 @@ public class AutonConstants {
 	   public static final double OutsideToFourthCube = OutsideToFirstCube + (BetweenCubes * 3);
 	   public static final double OutsideToFifthCube = OutsideToFirstCube + (BetweenCubes * 4);
 	   public static final double OutsideToSixthCube = OutsideToFirstCube + (BetweenCubes * 5);
+	   public static final double Lane1ToPyramid = WallToPyramid - WallToLane1 - BackToTurningAxis;
 	   /*
 	    * Note: If you travel a distance of OutsideToSecondCube from one outside lane, you can continue for a distance of OutSideToFifthCube
 	    *       in the same direction to reach the other outside lane.  In other words, if the robot is on the left outside lane and is currently
@@ -208,8 +212,8 @@ public class AutonConstants {
 		       "!",																														//        TO 19		       
 		   },
 		   {																															// FROM 3
-			   "!",																														//        TO 4
-		       "!",																														//        TO 5
+			   "A"+StartToLane1+"LA"+OutsideToExchangeFar+"LA"+StartToLane1,															//		  TO 4											
+		       "A"+StartToLane1+"LA"+Lane1ToPyramid+"RA"+StartToLane1,																//        TO 5
 			   "!",																														//        TO 6
 			   "!",																														//        TO 7
 			   "A"+StartToLane2+"LA"+OutsideToOutside+"LA"+Lane2ToMidSwitch+"LA"+OutsideToSwitch,										//        TO 8
