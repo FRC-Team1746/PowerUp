@@ -126,15 +126,15 @@ public class Lift {
 		} else {
 			if (m_controls.oper_Y_Button()) {
 				m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-				m_liftPosition = 38667;
+				m_liftPosition = constants.liftEncoderPosition2;
 				System.out.println("Y Pressed");
 			}else if (m_controls.oper_X_Button()) {
 				m_liftRight.configMotionCruiseVelocity(2500, constants.kTimeoutMs);
-				m_liftPosition = 20000;
+				m_liftPosition = constants.liftEncoderPosition1;
 				System.out.println("X Pressed");
 			}else if (m_controls.oper_A_Button()) {
 				m_liftRight.configMotionCruiseVelocity(700, constants.kTimeoutMs);
-				m_liftPosition = 13;
+				m_liftPosition = constants.liftEncoderPosition0;
 				System.out.println("A Pressed");
 			}
 			
@@ -155,16 +155,21 @@ public class Lift {
 		
 	}
 	
-	public void updatePosition(int position) {
+	public boolean updatePosition(int position) {
 		if (position == 2) {
 			m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-			m_liftPosition = 38667;
+			m_liftPosition = constants.liftEncoderPosition2;
 		}else if (position == 1) {
 			m_liftRight.configMotionCruiseVelocity(2500, constants.kTimeoutMs);
-			m_liftPosition = 20000;
+			m_liftPosition = constants.liftEncoderPosition1;
 		}else if (position == 0) {
 			m_liftRight.configMotionCruiseVelocity(700, constants.kTimeoutMs);
-			m_liftPosition = 5;
+			m_liftPosition = constants.liftEncoderPosition0;
+		}
+		if ( Math.abs(getLiftPosition()-m_liftPosition) <= constants.liftEncoderTolerance) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	

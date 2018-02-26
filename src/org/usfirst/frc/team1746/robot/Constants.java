@@ -2,6 +2,11 @@ package org.usfirst.frc.team1746.robot;
 
 class Constants {
 
+	
+	public static final double liftEncoderPosition0 = 5;
+	public static final double liftEncoderPosition1 = 20000;
+	public static final double liftEncoderPosition2 = 38667;
+	public static final double liftEncoderTolerance = 100;
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from
 	 * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
