@@ -52,12 +52,40 @@ public class Controls {
 		return xbox_oper.getRawButton(1);
 		
 	}
+	public boolean oper_B_Button(){
+		return xbox_oper.getRawButton(2);
+		
+	}
 	public boolean oper_LB_Button(){
 		return xbox_oper.getRawButton(5);
 		
 	}	
 	public boolean oper_RB_Button(){
 		return xbox_oper.getRawButton(6);
+		
+	}
+	public boolean driver_Y_Button(){
+		return xbox_driver.getRawButton(4);
+		
+	}	
+	public boolean driver_X_Button(){
+		return xbox_driver.getRawButton(3);
+		
+	}	
+	public boolean driver_A_Button(){
+		return xbox_driver.getRawButton(1);
+		
+	}
+	public boolean driver_B_Button(){
+		return xbox_driver.getRawButton(1);
+		
+	}
+	public boolean driver_LB_Button(){
+		return xbox_driver.getRawButton(5);
+		
+	}	
+	public boolean driver_RB_Button(){
+		return xbox_driver.getRawButton(6);
 		
 	}
 	public boolean oper_UP_DPAD(){

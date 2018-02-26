@@ -23,8 +23,17 @@ public class Shoot {
 		m_shootIn.set(false);
 		m_shootOut.set(true);
 	}
+	
 	public void shootIn(){
 		m_shootOut.set(false);
 		m_shootIn.set(true);
+	}	
+	
+	public void update() {
+		if(m_controls.oper_B_Button()){
+			shootOut();
+		}else {
+			shootIn();
+		}	
 	}
 }
