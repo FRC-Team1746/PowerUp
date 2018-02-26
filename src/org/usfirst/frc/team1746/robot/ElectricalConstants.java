@@ -7,13 +7,13 @@ public class ElectricalConstants {
 	
 	
 	// PWMs
-	public int MOTOR_DRIVE_LEFT_MASTER = 10;
-	public int MOTOR_DRIVE_LEFT_FOLLOWER_A = 11;
-	public int MOTOR_DRIVE_LEFT_FOLLOWER_B = 12;
+	public int MOTOR_DRIVE_LEFT_MASTER = 20;
+	public int MOTOR_DRIVE_LEFT_FOLLOWER_A = 21;
+	public int MOTOR_DRIVE_LEFT_FOLLOWER_B = 22;
 	
-	public int MOTOR_DRIVE_RIGHT_MASTER = 20;
-	public int MOTOR_DRIVE_RIGHT_FOLLOWER_A = 21;
-	public int MOTOR_DRIVE_RIGHT_FOLLOWER_B = 22;
+	public int MOTOR_DRIVE_RIGHT_MASTER = 10;
+	public int MOTOR_DRIVE_RIGHT_FOLLOWER_A = 11;
+	public int MOTOR_DRIVE_RIGHT_FOLLOWER_B = 12;
 	
 	public int CUBE_INTAKE_LEFT = 6;
 	public int CUBE_INTAKE_RIGHT = 7;
