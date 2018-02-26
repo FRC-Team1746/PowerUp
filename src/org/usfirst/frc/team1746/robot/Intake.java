@@ -16,6 +16,8 @@ public class Intake {
 		m_eConstants =  new ElectricalConstants();
 		m_intakeLeft = new VictorSPX(m_eConstants.CUBE_INTAKE_LEFT);
 		m_intakeRight = new VictorSPX(m_eConstants.CUBE_INTAKE_RIGHT);
+		m_intakeRight.configOpenloopRamp(0, 5);
+		m_intakeLeft.configOpenloopRamp(0, 5);
 	}
 	
 	public void setRampRate(double rate){

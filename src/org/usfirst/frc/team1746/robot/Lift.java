@@ -155,6 +155,19 @@ public class Lift {
 		
 	}
 	
+	public void updatePosition(int position) {
+		if (position == 2) {
+			m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+			m_liftPosition = 38667;
+		}else if (position == 1) {
+			m_liftRight.configMotionCruiseVelocity(2500, constants.kTimeoutMs);
+			m_liftPosition = 20000;
+		}else if (position == 0) {
+			m_liftRight.configMotionCruiseVelocity(700, constants.kTimeoutMs);
+			m_liftPosition = 5;
+		}
+	}
+	
 	public double getLiftPosition(){
 		return m_liftRight.getSelectedSensorPosition(0);
 	}
