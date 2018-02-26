@@ -2,7 +2,7 @@ package org.usfirst.frc.team1746.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AutonUp {
+public class AutonGo {
 	AutonConstants aConstants;
 	private AutonDriveTrain m_autonDriveTrain;
 	private States currentState;
@@ -18,7 +18,7 @@ public class AutonUp {
 		END,
 	}
 
-	public  AutonUp(AutonDriveTrain driveTrain){
+	public  AutonGo(AutonDriveTrain driveTrain){
 		aConstants = new AutonConstants();
 		m_autonDriveTrain = driveTrain;
 		currentState = States.INIT;
