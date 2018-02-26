@@ -38,7 +38,7 @@ public class DriveTrain {
 	
 	private Encoder m_encoderLeft;
 	private Encoder m_encoderRight;
-	private ADXRS450_Gyro m_Gyro;
+//	private ADXRS450_Gyro m_Gyro;
 	
 	private Timer m_timer;
 	
@@ -65,7 +65,7 @@ public class DriveTrain {
 
 //		m_encoderLeft = new Encoder(eConstants.ENCODER_DRIVE_LEFT_A, eConstants.ENCODER_DRIVE_LEFT_B, false, Encoder.EncodingType.k1X);
 //		m_encoderRight = new Encoder(eConstants.ENCODER_DRIVE_RIGHT_A, eConstants.ENCODER_DRIVE_RIGHT_B, false, Encoder.EncodingType.k1X);
-		m_Gyro = new ADXRS450_Gyro();
+//		m_Gyro = new ADXRS450_Gyro();
 		
 //		leftMotorSpeed = .25;                      // used in drive pid from 2016
 //		MOTOR_INCREMENT_RATE  = .02;			   // used in drive pid from 2016
@@ -78,72 +78,7 @@ public class DriveTrain {
 //	SendableChooser<String> driveSelector = new SendableChooser<>();
 		
 	public void init(){
-		
-		///////  Right Master ///////
-		
-		/* first choose the sensor */
-		m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		m_RightMaster.setSensorPhase(false);
-		m_RightMaster.setInverted(false);
-		/* Set relevant frame periods to be at least as fast as periodic rate*/
-		m_RightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10,
-		Constants.kTimeoutMs);
-		m_RightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10,
-		Constants.kTimeoutMs);
-		/* set the peak and nominal outputs */
-		m_RightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-		m_RightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-		m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		/* set closed loop gains in slot0 - see documentation */
-		m_RightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-//		_talon.config_kF(0, 0.2, Constants.kTimeoutMs);
-//		_talon.config_kP(0, 0.2, Constants.kTimeoutMs);
-//		_talon.config_kI(0, 0, Constants.kTimeoutMs);
-//		_talon.config_kD(0, 0, Constants.kTimeoutMs);
-		/* set acceleration and vcruise velocity - see documentation */
-//		m_RightMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity), Constants.kTimeoutMs);
-//		m_RightMaster.configMotionAcceleration((int)(AutonConstants.maxVelocity / AutonConstants.DefaultRampRate), Constants.kTimeoutMs);
-		/* zero the sensor */
-		m_RightMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		m_RightMaster.configOpenloopRamp(0, 0);
-		m_RightMaster.configClosedloopRamp(0, 0);
-		
-		
-		///////  Left Master ///////
-
-		/* first choose the sensor */
-		m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		m_LeftMaster.setSensorPhase(false);
-		m_LeftMaster.setInverted(false);
-		/* Set relevant frame periods to be at least as fast as periodic rate*/
-		m_LeftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-		m_LeftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-		/* set the peak and nominal outputs */
-		m_LeftMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-		m_LeftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		m_LeftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-		m_LeftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		/* set closed loop gains in slot0 - see documentation */
-		m_LeftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-//		_talon.config_kF(0, 0.2, Constants.kTimeoutMs);
-//		_talon.config_kP(0, 0.2, Constants.kTimeoutMs);
-//		_talon.config_kI(0, 0, Constants.kTimeoutMs);
-//		_talon.config_kD(0, 0, Constants.kTimeoutMs);
-		/* set acceleration and vcruise velocity - see documentation */
-//		m_LeftMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
-//		m_LeftMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-//		m_RightMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
-//		m_RightMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-		m_LeftMaster.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
-		m_LeftMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
-		m_RightMaster.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
-		m_RightMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
-		/* zero the sensor */
-		m_LeftMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		m_LeftMaster.configOpenloopRamp(0, 0);
-		m_LeftMaster.configClosedloopRamp(0, 0);
-		
+	
 	}
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,15 +189,15 @@ public class DriveTrain {
 		while (Math.abs(getEncoderLeft()) > 10) System.out.println("Waiting for encoder reset --- Time: " + m_timer.get());
 	}
 	
-	public double getHeading(){
-		return m_Gyro.getAngle();
-		
-	}
-	
-	public void resetGyro()
-	{
-		m_Gyro.reset();
-	}
+//	public double getHeading(){
+//		return m_Gyro.getAngle();
+//		
+//	}
+//	
+//	public void resetGyro()
+//	{
+//		m_Gyro.reset();
+//	}
 	
 	public void setRampRate(double rate){
 		m_LeftMaster.configOpenloopRamp(rate, 10);
@@ -285,7 +220,7 @@ public class DriveTrain {
 	public void updateSmartDashboard(){
 		SmartDashboard.putNumber("Left Encoder", getEncoderLeftInches());
 		SmartDashboard.putNumber("Right Encoder", getEncoderRightInches());
-		SmartDashboard.putNumber("heading",getHeading());
+//		SmartDashboard.putNumber("heading",getHeading());
 		
 		
 		/* smart dash plots */

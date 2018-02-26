@@ -12,6 +12,7 @@ public class AutonTurn {
 	private States currentState;
 //	private double m_turningSpeed;
 	private boolean done;
+	private boolean m_movingYet;
 	private double m_initialHeading;
 	private double m_turn;
 	private int m_countZeroVelocity;
@@ -28,7 +29,7 @@ public class AutonTurn {
 		aConstants = new AutonConstants();
 		m_autonDriveTrain = driveTrain;
 		currentState = States.INIT;
-		m_autonDriveTrain.setRampRate(AutonConstants.DefaultRampRate);
+//		m_autonDriveTrain.setRampRate(AutonConstants.DefaultRampRate);
 		m_turn = 0; //-1 should be left, 1 should be right
 	}
 	
@@ -36,6 +37,7 @@ public class AutonTurn {
 		done=false;
 		switch(currentState){
 		case INIT: 
+			m_movingYet = false;
 			m_autonDriveTrain.resetEncoders();
 			m_initialHeading = m_autonDriveTrain.getHeading();
 			m_autonDriveTrain.setBrakeMode(true);									// May want to warn if this is not changed by a passed argument
@@ -59,19 +61,27 @@ public class AutonTurn {
 //			if (m_driveTrain.getHeading() < -88 + m_initialHeading) {  // We need to make this more accurate !!!!  (and calibrate)
 //				currentState = States.TURN_STOP;							
 //			}		
-			if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) < AutonConstants.velocityTolerance && 
-					Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) < AutonConstants.velocityTolerance){
-				m_countZeroVelocity++;
-				System.out.println(m_countZeroVelocity);
+			if (!m_movingYet){
+				if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) > aConstants.velocityTolerance && 
+						Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) > aConstants.velocityTolerance){
+					m_movingYet=true;
+				} 
+				System.out.println("Not Moving Yet");
 			} else {
-				m_countZeroVelocity = 0;
-				System.out.println(m_countZeroVelocity);
-			}
-			if (m_countZeroVelocity >= AutonConstants.zeroVelocitiesTillDone){
+				if (Math.abs(m_autonDriveTrain.getEncoderRightVelocity()) < aConstants.velocityTolerance && 
+						Math.abs(m_autonDriveTrain.getEncoderLeftVelocity()) < aConstants.velocityTolerance){
+					m_countZeroVelocity++;
+					System.out.println(m_countZeroVelocity);
+				} else {
+					m_countZeroVelocity = 0;
+					System.out.println(m_countZeroVelocity);
+				}
+				if (m_countZeroVelocity >= aConstants.zeroVelocitiesTillDone){
+					
+					currentState = States.TURN_STOP;
 				
-				currentState = States.TURN_STOP;
-			
-				System.out.println("Stopping");
+					System.out.println("Stopping");
+				}
 			}
 		break;
 		case TURN_STOP:
