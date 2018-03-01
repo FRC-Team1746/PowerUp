@@ -25,8 +25,9 @@ public class Robot extends IterativeRobot {
     Lift m_lift;
     Intake m_intake;
     Grabber m_grabber;
-
-    AutonBase m_autonBase;
+    Shoot m_shoot;
+    
+//    AutonBase m_autonBase;
     
 
     
@@ -39,7 +40,7 @@ public class Robot extends IterativeRobot {
 	 	m_intake = new Intake(m_controls);
 	 	m_grabber = new Grabber(m_controls, m_lift);
 	// 	m_autonBase = new AutonBase(m_driveTrain);
-	 	
+	 	m_shoot = new Shoot(m_controls);
 	}
 
 	/**
@@ -80,8 +81,9 @@ public class Robot extends IterativeRobot {
 //		m_grabber.update();
 		m_intake.update();
 		m_driveTrainT.teleopArcadeDrive();
-		updateSmartDashboard();
+		m_shoot.update();
 		
+		updateSmartDashboard();
 	}
 
 	/**

@@ -58,10 +58,10 @@ public class AutonSwitch2ScaleNear {
 			break;
 		case L_TURN:
 			m_driveTrain.autonDriveTurn(-0.4);
-			if (Math.abs(m_driveTrain.getHeading())> 85) {
-				instructions = Direction.FORWARD;
-				m_driveTrain.resetEncoders();
-			}
+//			if (Math.abs(m_driveTrain.getHeading())> 85) {
+//				instructions = Direction.FORWARD;
+//				m_driveTrain.resetEncoders();
+//			}
 		break;
 		case FORWARD:
 			m_driveTrain.autonDriveStraight(0.5);
@@ -71,10 +71,10 @@ public class AutonSwitch2ScaleNear {
 			break;
 		case R_TURN:
 			m_driveTrain.autonDriveTurn(0.5);
-			if(Math.abs(m_driveTrain.getHeading())< 5) {
-				instructions = Direction.FORWARD1;	
-				m_driveTrain.resetEncoders();
-			}
+//			if(Math.abs(m_driveTrain.getHeading())< 5) {
+//				instructions = Direction.FORWARD1;	
+//				m_driveTrain.resetEncoders();
+//			}
 			break;
 		case FORWARD1:
 			m_driveTrain.autonDriveStraight(0.5);
@@ -91,10 +91,10 @@ public class AutonSwitch2ScaleNear {
 			break;
 		case L_TURN1:
 			m_driveTrain.autonDriveTurn(-0.5);
-			if(m_driveTrain.getHeading()>90) {
-				instructions = Direction.FORWARD3;	
-				m_driveTrain.resetEncoders();
-			}
+//			if(m_driveTrain.getHeading()>90) {
+//				instructions = Direction.FORWARD3;	
+//				m_driveTrain.resetEncoders();
+//			}
 			break;
 		case FORWARD3:
 			m_driveTrain.autonDriveStraight(0.5);
@@ -104,10 +104,10 @@ public class AutonSwitch2ScaleNear {
 			break;
 		case R_TURN2:
 			m_driveTrain.autonDriveTurn(0.5);
-			if(m_driveTrain.getHeading()<1) {
-				instructions = Direction.DRIVE_STOP;
-				m_driveTrain.resetEncoders();
-			}
+//			if(m_driveTrain.getHeading()<1) {
+//				instructions = Direction.DRIVE_STOP;
+//				m_driveTrain.resetEncoders();
+//			}
 			break;
 		case DRIVE_STOP:
 			m_driveTrain.autonDriveStraight(0);
@@ -134,10 +134,10 @@ public class AutonSwitch2ScaleNear {
 				break;
 			case R_TURN:
 				m_driveTrain.autonDriveTurn(-0.4);
-				if (Math.abs(m_driveTrain.getHeading())> 85) {
-					instructions = Direction.FORWARD;
-					m_driveTrain.resetEncoders();
-				}
+//				if (Math.abs(m_driveTrain.getHeading())> 85) {
+//					instructions = Direction.FORWARD;
+//					m_driveTrain.resetEncoders();
+//				}
 			break;
 			case FORWARD:
 				m_driveTrain.autonDriveStraight(0.5);
@@ -147,10 +147,10 @@ public class AutonSwitch2ScaleNear {
 				break;
 			case L_TURN:
 				m_driveTrain.autonDriveTurn(0.4);
-				if(Math.abs(m_driveTrain.getHeading())< 1) {
-					instructions = Direction.FORWARD1;	
-					m_driveTrain.resetEncoders();
-				}
+//				if(Math.abs(m_driveTrain.getHeading())< 1) {
+//					instructions = Direction.FORWARD1;	
+//					m_driveTrain.resetEncoders();
+//				}
 				break;
 			case FORWARD1:
 				m_driveTrain.autonDriveStraight(0.5);
@@ -167,10 +167,10 @@ public class AutonSwitch2ScaleNear {
 				break;
 			case R_TURN1:
 				m_driveTrain.autonDriveTurn(-0.4);
-				if(m_driveTrain.getHeading()>85) {
-					instructions = Direction.FORWARD3;	
-					m_driveTrain.resetEncoders();
-				}
+//				if(m_driveTrain.getHeading()>85) {
+//					instructions = Direction.FORWARD3;	
+//					m_driveTrain.resetEncoders();
+//				}
 				break;
 			case FORWARD3:
 				m_driveTrain.autonDriveStraight(0.5);
@@ -180,10 +180,10 @@ public class AutonSwitch2ScaleNear {
 				break;
 			case L_TURN2:
 				m_driveTrain.autonDriveTurn(0.4);
-				if(m_driveTrain.getHeading()<5) {
-					instructions = Direction.DRIVE_STOP;
-					m_driveTrain.resetEncoders();
-				}
+//				if(m_driveTrain.getHeading()<5) {
+//					instructions = Direction.DRIVE_STOP;
+//					m_driveTrain.resetEncoders();
+//				}
 				break;
 			case DRIVE_STOP:
 				m_driveTrain.autonDriveStraight(0);
@@ -202,7 +202,7 @@ public class AutonSwitch2ScaleNear {
 	public void updateSmartDashboard(){
 		SmartDashboard.putNumber("Left Encoder", m_driveTrain.getEncoderLeftInches());
 		SmartDashboard.putNumber("Right Encoder", m_driveTrain.getEncoderRightInches());
-		SmartDashboard.putNumber("1Heading",m_driveTrain.getHeading());
+//		SmartDashboard.putNumber("1Heading",m_driveTrain.getHeading());
 		SmartDashboard.putNumber("Both Encoders",m_driveTrain.bothEncoderInchValues());
 		SmartDashboard.putString("AutonState", getState());
 	}

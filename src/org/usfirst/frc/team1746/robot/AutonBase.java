@@ -310,7 +310,7 @@ public class AutonBase {
 	}
 	public void resetAll(){
 		m_drivetrain.resetEncoders();
-		m_drivetrain.resetGyro();
+//		m_drivetrain.resetGyro();
 	}
 	
 	public void run(){

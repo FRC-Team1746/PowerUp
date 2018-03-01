@@ -1,15 +1,15 @@
 package org.usfirst.frc.team1746.robot;
 
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+//import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import edu.wpi.first.wpilibj.Victor;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+//import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TeleopDriveTrain {
@@ -32,8 +32,8 @@ public class TeleopDriveTrain {
 	
 //	private Encoder m_encoderLeft;
 //	private Encoder m_encoderRight;
-	private ADXRS450_Gyro m_Gyro;
-	private double m_drivePosition;
+//	private ADXRS450_Gyro m_Gyro;
+//	private double m_drivePosition;
 	 
 	public TeleopDriveTrain(Controls controls) {
 		m_controls = controls;
@@ -45,25 +45,25 @@ public class TeleopDriveTrain {
 		m_RightFollowerA = new WPI_TalonSRX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_A);
 		m_RightFollowerB = new WPI_TalonSRX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_B);
 		
-		m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		
-		m_RightMaster.setSensorPhase(true);
-		m_RightMaster.setInverted(false);
-		m_RightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-		m_RightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-		m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		
-		m_RightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-		m_RightMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
-		m_RightMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-		/* zero the sensor */
-		m_RightMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		m_RightMaster.configOpenloopRamp(0, 0);
-		m_RightMaster.configClosedloopRamp(0, 0);
-		
-		m_drivePosition = 0;
+//		m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+//		m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+//		
+//		m_RightMaster.setSensorPhase(true);
+//		m_RightMaster.setInverted(false);
+//		m_RightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+//		m_RightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+//		m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+//		m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+//		
+//		m_RightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+//		m_RightMaster.configMotionCruiseVelocity(5250, Constants.kTimeoutMs);
+//		m_RightMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
+//		/* zero the sensor */
+//		m_RightMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+//		m_RightMaster.configOpenloopRamp(0, 0);
+//		m_RightMaster.configClosedloopRamp(0, 0);
+//		
+//		m_drivePosition = 0;
 		
 		myRobot = new DifferentialDrive(m_LeftMaster, m_RightMaster);
 		
@@ -71,11 +71,11 @@ public class TeleopDriveTrain {
 		m_LeftFollowerB.follow(m_LeftMaster);
 		m_RightFollowerA.follow(m_RightMaster);
 		m_RightFollowerB.follow(m_RightMaster);
-		m_LeftMaster.follow(m_RightMaster);
+//		m_LeftMaster.follow(m_RightMaster);  ///////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		
 //		m_encoderLeft = new Encoder(eConstants.ENCODER_DRIVE_LEFT_A, eConstants.ENCODER_DRIVE_LEFT_B, false, Encoder.EncodingType.k1X);
 //		m_encoderRight = new Encoder(eConstants.ENCODER_DRIVE_RIGHT_A, eConstants.ENCODER_DRIVE_RIGHT_B, false, Encoder.EncodingType.k1X);
-		m_Gyro = new ADXRS450_Gyro();
+//		m_Gyro = new ADXRS450_Gyro();
 	}
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,9 +94,9 @@ public class TeleopDriveTrain {
 	
 	public void teleopArcadeDrive(){
 		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), m_controls.driver_X_Axis());
-		setRampRate(0.25);
-		setCoast(true);
-		resetEncoders();
+//		setRampRate(0.25);
+//		setCoast(true);
+//		resetEncoders();
 		
 		
 	}
@@ -128,13 +128,13 @@ public class TeleopDriveTrain {
 		m_LeftMaster.setSelectedSensorPosition(0, 0, 0);
 	}
 	
-	public double getHeading(){
-		return m_Gyro.getAngle();
-	}
-	
-	public void resetGyro(){
-		m_Gyro.reset();
-	}
+//	public double getHeading(){
+//		return m_Gyro.getAngle();
+//	}
+//	
+//	public void resetGyro(){
+//		m_Gyro.reset();
+//	}
 	
 	public void setRampRate(double rate){
 		m_LeftMaster.configOpenloopRamp(rate, 5);
@@ -158,7 +158,7 @@ public class TeleopDriveTrain {
 	public void updateSmartDashboard(){
 		SmartDashboard.putNumber("Left Encoder", getEncoderLeftInches());
 		SmartDashboard.putNumber("Right Encoder", getEncoderRightInches());
-		SmartDashboard.putNumber("heading",getHeading());
+//		SmartDashboard.putNumber("heading",getHeading());
 		SmartDashboard.putNumber("Both Encoders",bothEncoderInchValues());
 	}
 	

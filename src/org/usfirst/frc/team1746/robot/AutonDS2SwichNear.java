@@ -36,9 +36,9 @@ public class AutonDS2SwichNear {
 		break;
 		case TURN:
 			m_DriveTrain.autonDriveTurn(.5);
-			if(Math.abs(m_DriveTrain.getHeading()) > 5){
-				currentStates = States.SWERVE;
-			}
+//			if(Math.abs(m_DriveTrain.getHeading()) > 5){
+//				currentStates = States.SWERVE;
+//			}
 		break;
 		case SWERVE:
 			m_DriveTrain.autonDriveStraight(.5);
