@@ -129,11 +129,26 @@ public class Robot extends IterativeRobot {
 //			elevatorCommandComplete = m_autonUp.auton(currentElevatorCommandArgs);
 //		} else if ()
 		
-		if (!specialCommandComplete && currentSpecialCommand.equals("W")) { //May Not Work
-			if (!specialCommandComplete && currentSpecialCommand.equals("W")) {
-				specialCommandComplete = true;
-				if (!m_matcher.find()) allCommandsLoaded = true;
-			}
+//		if (!specialCommandComplete && currentSpecialCommand.equals("W")) { //May Not Work
+//			double seconds = Double.parseDouble(currentSpecialCommandArgs);
+//			try {
+//				Thread.sleep((long) seconds);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			}
+		if (!specialCommandComplete && currentSpecialCommand.equals("W") || driverCommandComplete || elevatorCommandComplete || grabberCommandComplete) {
+			double seconds = 0;
+			if (curr.length()!=0) {
+				String[] stringArray = m_args.split(",");
+	 		    double tmpDouble;
+	 		    for (int j = 0; j < stringArray.length; j++) {
+	 		       String numberAsString = stringArray[j];
+ 		    	   tmpDouble = Double.parseDouble(numberAsString);
+ 		    	   if (j == 0) m_drivingDistance = tmpDouble*direction;
+ 		    	   if (j == 1) m_drivingSpeed = tmpDouble*direction;
+	 		    }
+	 		}
 		}
 			
 		// <--- other commands go here
@@ -141,7 +156,7 @@ public class Robot extends IterativeRobot {
 //		} else {
 //			throw new UnsupportedOperationException("An invalid Command was encoutered in AutonConstants.commands.");
 //		}
-//		updateAutonSmartDashboard();
+//		updateAutonSmartDashboard(); 
 	}
 
 	/**
