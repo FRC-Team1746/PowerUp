@@ -546,7 +546,7 @@ public class AutonConstants {
 			   "B"+OutsideToScale+"RA"+Lane2ToMidScale+"LA"+OutsideToFourthCube+"RA"+Lane2ToSwitchForPickup,							//        TO 15
 		       "!",																														//        TO 16
 		       "!",																														//        TO 17
-		       "!",				
+		       "!",																														//        TO 18
 		       "!",																														//        TO 19		       
 		   },
 		   {																															// FROM 19
