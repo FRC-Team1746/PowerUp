@@ -47,6 +47,12 @@ public class Intake {
 		}else if (m_controls.oper_LT_Axis() > .1){ //Spin Out
 			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_LT_Axis());
 			m_intakeRight.set(ControlMode.PercentOutput, -m_controls.oper_LT_Axis());
+		}else if (m_controls.oper_LEFT_DPAD()) {
+			m_intakeLeft.set(ControlMode.PercentOutput, -.5);
+			m_intakeRight.set(ControlMode.PercentOutput, -.5);
+		}else if (m_controls.oper_RIGHT_DPAD()) {
+			m_intakeLeft.set(ControlMode.PercentOutput, .5);
+			m_intakeRight.set(ControlMode.PercentOutput, .5);
 		}else { //Nope
 			m_intakeRight.set(ControlMode.PercentOutput, 0);
 			m_intakeLeft.set(ControlMode.PercentOutput, 0);

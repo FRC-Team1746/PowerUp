@@ -88,17 +88,33 @@ public class Controls {
 		return xbox_driver.getRawButton(6);
 		
 	}
-	public boolean oper_UP_DPAD(){
-		if ((xbox_oper.getPOV()) == 0) {
-			System.out.println("UP DPAD");
+//	public boolean oper_UP_DPAD(){
+//		if ((xbox_oper.getPOV()) == 0) {
+//			System.out.println("UP DPAD");
+//			return true;
+//		}else {
+//			return false;
+//		}
+//	}
+//	public boolean oper_DOWN_DPAD(){
+//		if ((xbox_oper.getPOV()) >= 160 && (xbox_oper.getPOV()) <= 200) {
+//			System.out.println("DOWN DPAD");
+//			return true;
+//		}else {
+//			return false;
+//		}
+//	}
+	public boolean oper_LEFT_DPAD(){
+		if ((xbox_oper.getPOV()) == 270) {
+			System.out.println("LEFT DPAD");
 			return true;
 		}else {
 			return false;
 		}
 	}
-	public boolean oper_DOWN_DPAD(){
-		if ((xbox_oper.getPOV()) >= 160 && (xbox_oper.getPOV()) <= 200) {
-			System.out.println("DOWN DPAD");
+	public boolean oper_RIGHT_DPAD(){
+		if ((xbox_oper.getPOV()) == 90) {
+			System.out.println("RIGHT DPAD");
 			return true;
 		}else {
 			return false;
