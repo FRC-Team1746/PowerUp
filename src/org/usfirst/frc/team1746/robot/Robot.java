@@ -53,6 +53,7 @@ public class Robot extends IterativeRobot {
 	 	m_autonDriveTrain.resetGyro();
 	 	m_autonGo = new AutonGo(m_autonDriveTrain);
 	    m_autonTurn = new AutonTurn(m_autonDriveTrain);
+	    
 	 	
 	}
 

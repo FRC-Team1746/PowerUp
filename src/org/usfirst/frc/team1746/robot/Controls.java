@@ -5,17 +5,16 @@ import edu.wpi.first.wpilibj.Joystick;
 public class Controls {
 	ElectricalConstants electricalConstants = new ElectricalConstants();
 	
+	double x_axisSquared;
 	Joystick xbox_driver;
-//	Joystick xbox_operator;
+	Joystick xbox_oper;
 	
 	public Controls()
 	{
 		xbox_driver = new Joystick(electricalConstants.JOYSTICK_DRIVER);
+		xbox_oper = new Joystick(electricalConstants.JOYSTICK_OPERATOR);
 	}
-	public void init(){
-//		xbox_operator = new Joystick(electricalConstants.JOYSTICK_OPERATOR);
-	}
-	
+		
 
 // Driver
 	// Intake
@@ -24,13 +23,71 @@ public class Controls {
 	}	
 	// Left Axis
 	public double driver_X_Axis(){
-		return xbox_driver.getRawAxis(0);
+		x_axisSquared = xbox_driver.getRawAxis(0);
+		x_axisSquared = x_axisSquared * x_axisSquared;
+		if (xbox_driver.getRawAxis(0) < 0) {
+			x_axisSquared = x_axisSquared * -1;
+		}
+		return x_axisSquared;
+		//return xbox_driver.getRawAxis(0);
+		
 	}
 	public double driver_Y_Axis(){
 		return xbox_driver.getRawAxis(1);
+
 	}
+	public double oper_YR_Axis(){
+		return xbox_oper.getRawAxis(5);
+
+	}
+	public boolean oper_Y_Button(){
+		return xbox_oper.getRawButton(4);
 		
+	}	
+	public boolean oper_X_Button(){
+		return xbox_oper.getRawButton(3);
+		
+	}	
+	public boolean oper_A_Button(){
+		return xbox_oper.getRawButton(1);
+		
+	}
+	public boolean oper_LB_Button(){
+		return xbox_oper.getRawButton(5);
+		
+	}	
+	public boolean oper_RB_Button(){
+		return xbox_oper.getRawButton(6);
+		
+	}
+	public boolean oper_UP_DPAD(){
+		if ((xbox_oper.getPOV()) == 0) {
+			System.out.println("UP DPAD");
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public boolean oper_DOWN_DPAD(){
+		if ((xbox_oper.getPOV()) >= 160 && (xbox_oper.getPOV()) <= 200) {
+			System.out.println("DOWN DPAD");
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public double oper_LT_Axis(){
+		return xbox_oper.getRawAxis(2);
+		
+	}
+	public double oper_RT_Axis(){
+		return xbox_oper.getRawAxis(3);
+		
+	}
 }
+
+	
+
 /*********************************************************************************/	
 /* 
  * Xbox Controller Layout
@@ -67,3 +124,4 @@ public class Controls {
  *    
 */
 /*********************************************************************************/
+
