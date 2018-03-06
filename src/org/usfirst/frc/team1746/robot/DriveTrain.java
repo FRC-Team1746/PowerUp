@@ -2,6 +2,7 @@ package org.usfirst.frc.team1746.robot;
 
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Victor;
@@ -33,6 +34,8 @@ public class DriveTrain {
 	private WPI_TalonSRX m_RightMaster;
 	private WPI_VictorSPX m_RightFollowerA;
 	private WPI_VictorSPX m_RightFollowerB;
+	private SpeedControllerGroup m_RightDrive;
+	private SpeedControllerGroup m_LeftDrive;
 	
 	
 	private DifferentialDrive myRobot;
@@ -57,11 +60,16 @@ public class DriveTrain {
 		m_RightMaster = new WPI_TalonSRX(eConstants.MOTOR_DRIVE_RIGHT_MASTER);
 		m_RightFollowerA = new WPI_VictorSPX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_A);
 		m_RightFollowerB = new WPI_VictorSPX(eConstants.MOTOR_DRIVE_RIGHT_FOLLOWER_B);
+		m_RightDrive = new SpeedControllerGroup(m_RightMaster, m_RightFollowerA, m_RightFollowerB);
+		m_LeftDrive = new SpeedControllerGroup(m_LeftMaster, m_LeftFollowerA, m_LeftFollowerB);
+
 		
-		m_LeftFollowerA.follow(m_LeftMaster);
-		m_LeftFollowerB.follow(m_LeftMaster);
-		m_RightFollowerA.follow(m_RightMaster);
-		m_RightFollowerB.follow(m_RightMaster);	
+//		m_LeftFollowerA.follow(m_LeftMaster);
+//		m_LeftFollowerB.follow(m_LeftMaster);
+//		m_RightFollowerA.follow(m_RightMaster);
+//		m_RightFollowerB.follow(m_RightMaster);	
+		
+		
 	
 //		m_encoderLeft = new Encoder(eConstants.ENCODER_DRIVE_LEFT_A, eConstants.ENCODER_DRIVE_LEFT_B, false, Encoder.EncodingType.k1X);
 //		m_encoderRight = new Encoder(eConstants.ENCODER_DRIVE_RIGHT_A, eConstants.ENCODER_DRIVE_RIGHT_B, false, Encoder.EncodingType.k1X);
@@ -83,19 +91,23 @@ public class DriveTrain {
 	public void initTele(){
 		
 		if(m_differentialInit == 0) {
-			if(m_autoInit >= 1) {
-				m_RightMaster.free();
-				m_LeftMaster.free();
-				m_autoInit = 0;
-				
-
-				m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-				m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-				m_LeftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-				m_LeftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
-			}
-			myRobot = new DifferentialDrive(m_LeftMaster, m_RightMaster);
+//			if(m_autoInit >= 1) {
+//				m_RightMaster.free();
+//				m_LeftMaster.free();
+//				m_autoInit = 0;
+//				
+//
+//				m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+//				m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+//				m_LeftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+//				m_LeftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+//
+//			}
+			myRobot = new DifferentialDrive(m_LeftDrive, m_RightDrive);
+//			m_LeftFollowerA.follow(m_LeftMaster);
+//			m_LeftFollowerB.follow(m_LeftMaster);
+//			m_RightFollowerA.follow(m_RightMaster);
+//			m_RightFollowerB.follow(m_RightMaster);
 			m_differentialInit ++;
 		}
 	}
@@ -188,31 +200,39 @@ public void initAuto(){
 //		setCoast(true);		
 	}
 	public void autonDriveStraight(double distance, double speed){
-		m_RightMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
+		
+//		m_RightMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
 //		m_RightMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-		m_LeftMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
+//		m_LeftMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
 //		m_LeftMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
-		m_RightMaster.set(ControlMode.MotionMagic, (-distance * AutonConstants.ticksPerInch));
-		m_LeftMaster.set(ControlMode.MotionMagic, (distance * AutonConstants.ticksPerInch));
+//		m_RightMaster.set(ControlMode.MotionMagic, (-distance * AutonConstants.ticksPerInch));
+//		m_LeftMaster.set(ControlMode.MotionMagic, (distance * AutonConstants.ticksPerInch));
 //		try {
 //			TimeUnit.MILLISECONDS.sleep(10);
 //		} catch (Exception e) {
 //			System.out.println("Exception: " + e);
 //		}
-//		if(Math.abs(getEncoderLeft()) < Math.abs(distance*AutonConstants.ticksPerInch)-333) {
+		if(Math.abs(getEncoderLeft()) < Math.abs(distance*AutonConstants.ticksPerInch)-111) {
 //			m_LeftMaster.set(ControlMode.Position, (distance * AutonConstants.ticksPerInch));
 //			m_RightMaster.set(ControlMode.Position, (-distance * AutonConstants.ticksPerInch));
-////			drivePID(AutonConstants.DefaultDrivingSpeed, 0);
-//		}else {
-//			m_RightMaster.set(ControlMode.PercentOutput, 0);
-//			m_LeftMaster.set(ControlMode.PercentOutput, 0);
-//		}
+//			drivePID(AutonConstants.DefaultDrivingSpeed, 0);
+			double rightENC = getEncoderRight();
+			double leftENC = getEncoderLeft();
+			double encoderDifference = rightENC + leftENC;
+			System.out.println("Right Encoder: " + rightENC);
+			System.out.print("Left Encoder: " + leftENC);
+			System.out.println("Encoder Difference: " + encoderDifference);
+			double P;
+			myRobot.tankDrive(.615, .6);
+		}else {
+			myRobot.tankDrive(0, 0);
+		}
 }
 
 	public void autonDriveStraight(double speed){
-//		myRobot.tankDrive(-speed, -speed);
-		m_LeftMaster.set(speed);
-		m_RightMaster.set(-speed);
+		myRobot.tankDrive(-speed, -speed);
+//		m_LeftMaster.set(speed);
+//		m_RightMaster.set(-speed);
 //		System.out.println("Running Tank Drive");
 	}
 	
