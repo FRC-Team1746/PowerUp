@@ -88,8 +88,7 @@ public class Robot extends IterativeRobot {
 	    m_autonTurn = new AutonTurn(m_driveTrain);
 	    m_timer = new Timer();
 	 	
-
-	 	m_driveTrain.initTele();
+	    m_driveTrain.initTele();
 	}
 
 	/**
@@ -240,6 +239,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+	 	m_driveTrain.initTele();
 		m_driveTrain.setRampRate(.5);
 		m_driveTrain.setBrakeMode(false);
 		m_lift.setBrakeMode(true);

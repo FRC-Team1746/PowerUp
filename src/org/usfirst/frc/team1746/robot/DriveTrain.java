@@ -91,18 +91,18 @@ public class DriveTrain {
 	public void initTele(){
 		
 		if(m_differentialInit == 0) {
-//			if(m_autoInit >= 1) {
-//				m_RightMaster.free();
-//				m_LeftMaster.free();
-//				m_autoInit = 0;
-//				
-//
-//				m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-//				m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-//				m_LeftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-//				m_LeftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-//
-//			}
+			if(m_autoInit >= 1) {
+				m_RightMaster.free();
+				m_LeftMaster.free();
+				m_autoInit = 0;
+
+				m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+				m_RightMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+				m_LeftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+				m_LeftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+			}
+//			myRobot = new DifferentialDrive(m_LeftMaster, m_RightMaster);
 			myRobot = new DifferentialDrive(m_LeftDrive, m_RightDrive);
 //			m_LeftFollowerA.follow(m_LeftMaster);
 //			m_LeftFollowerB.follow(m_LeftMaster);
@@ -116,7 +116,7 @@ public void initAuto(){
 		
 		if(m_autoInit == 0) {
 			if(m_differentialInit >= 1) {
-				myRobot.free();
+//				myRobot.free();
 				m_differentialInit = 0;
 			}
 
@@ -186,6 +186,12 @@ public void initAuto(){
 			m_LeftMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 			m_LeftMaster.configOpenloopRamp(0, 0);
 			m_LeftMaster.configClosedloopRamp(.25, 0);
+			
+			m_LeftFollowerA.follow(m_LeftMaster);
+			m_LeftFollowerB.follow(m_LeftMaster);
+			m_RightFollowerA.follow(m_RightMaster);
+			m_RightFollowerB.follow(m_RightMaster);
+			
 			m_autoInit ++;
 		}
 	}
@@ -222,8 +228,10 @@ public void initAuto(){
 			System.out.println("Right Encoder: " + rightENC);
 			System.out.print("Left Encoder: " + leftENC);
 			System.out.println("Encoder Difference: " + encoderDifference);
-			double P;
-			myRobot.tankDrive(.615, .6);
+			double P= 0.00001;
+			
+			
+			myRobot.tankDrive(.6+(P*(-encoderDifference)), .6);
 		}else {
 			myRobot.tankDrive(0, 0);
 		}
@@ -236,10 +244,10 @@ public void initAuto(){
 //		System.out.println("Running Tank Drive");
 	}
 	
-	public void autonDriveTurn(double direction){
+	public void autonDriveTurn(double direction, double initialHeading){
 //		myRobot.tankDrive(speed, -speed);
-		m_LeftMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
-		m_RightMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
+//		m_LeftMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
+//		m_RightMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
 //		System.out.println("Running Tank	 Turn");
 		
 //		m_LeftMaster.set(ControlMode.PercentOutput , direction * aConstants.DefaultTurningSpeed);
@@ -251,47 +259,55 @@ public void initAuto(){
 //				m_turned = false;
 //		}			
 //		return m_turned;
+		double turnError = (initialHeading + direction*90)-getHeading();
+		System.out.println("Turn Error: " + turnError);
+		double P = 1/90;
+		if(Math.abs(turnError) > 20) {
+			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed,-direction*aConstants.DefaultTurningSpeed);
+		}else {
+			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed*P*turnError,-direction*aConstants.DefaultTurningSpeed);
+		}		
 	}
 
 	//////////////////////////////////////////////////////////////
 	//////////////		    	PID              ////////////////
 	/////////////////////////////////////////////////////////////	
-//	int sumEncoderErrors;
-//
-//	public void drivePID(double desiredLeftMotorSpeed, double turnRadius){
-////		double P = SmartDashboard.getNumber("PID P");
-//		//double I = SmartDashboard.getNumber("PID I");
-//		double P = .05;
-//		double encoderError;
-//		if(turnRadius != 0){
-//			encoderError = getEncoderLeft() - getEncoderRight() - (getEncoderLeft() * (1-(turnRadius-11)/(turnRadius+11)));
-//		} else{
-//			encoderError = -(getEncoderLeft() + getEncoderRight());
-//		}
-//		double rightMotorSpeed;
-//		if(desiredLeftMotorSpeed >= 0){
-//			if(leftMotorSpeed < desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed+MOTOR_INCREMENT_RATE;
-//			}else if(leftMotorSpeed > desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed-MOTOR_INCREMENT_RATE;
-//			}else{
-//				leftMotorSpeed = desiredLeftMotorSpeed;
-//			}
-//		} else{
-//			if(leftMotorSpeed > desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed-MOTOR_INCREMENT_RATE;
-//			}else if(leftMotorSpeed < desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed+MOTOR_INCREMENT_RATE;
-//			}else{
-//				leftMotorSpeed = desiredLeftMotorSpeed;
-//			}
-//		}
-//		
-//		rightMotorSpeed = leftMotorSpeed + P*encoderError;
-////		myRobot.tankDrive(-leftMotorSpeed, -rightMotorSpeed);
+	int sumEncoderErrors;
+
+	public void drivePID(double desiredLeftMotorSpeed, double turnRadius){
+//		double P = SmartDashboard.getNumber("PID P");
+		//double I = SmartDashboard.getNumber("PID I");
+		double P = .05;
+		double encoderError;
+		if(turnRadius != 0){
+			encoderError = getEncoderLeft() - getEncoderRight() - (getEncoderLeft() * (1-(turnRadius-11)/(turnRadius+11)));
+		} else{
+			encoderError = -(getEncoderLeft() + getEncoderRight());
+		}
+		double rightMotorSpeed;
+		if(desiredLeftMotorSpeed >= 0){
+			if(leftMotorSpeed < desiredLeftMotorSpeed){
+				leftMotorSpeed = leftMotorSpeed+MOTOR_INCREMENT_RATE;
+			}else if(leftMotorSpeed > desiredLeftMotorSpeed){
+				leftMotorSpeed = leftMotorSpeed-MOTOR_INCREMENT_RATE;
+			}else{
+				leftMotorSpeed = desiredLeftMotorSpeed;
+			}
+		} else{
+			if(leftMotorSpeed > desiredLeftMotorSpeed){
+				leftMotorSpeed = leftMotorSpeed-MOTOR_INCREMENT_RATE;
+			}else if(leftMotorSpeed < desiredLeftMotorSpeed){
+				leftMotorSpeed = leftMotorSpeed+MOTOR_INCREMENT_RATE;
+			}else{
+				leftMotorSpeed = desiredLeftMotorSpeed;
+			}
+		}
+		
+		rightMotorSpeed = leftMotorSpeed + P*encoderError;
+		myRobot.tankDrive(leftMotorSpeed, -rightMotorSpeed);
 //		m_LeftMaster.set(ControlMode.PercentOutput, leftMotorSpeed);
 //		m_RightMaster.set(ControlMode.PercentOutput, -rightMotorSpeed);
-//	}
+	}
 	
 	public int getEncoderLeft(){
 		return m_LeftMaster.getSelectedSensorPosition(Constants.kPIDLoopIdx);

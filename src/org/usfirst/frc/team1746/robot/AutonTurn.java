@@ -39,7 +39,7 @@ public class AutonTurn {
 		case INIT: 
 			m_movingYet = false;
 			m_driveTrain.resetEncoders();
-//			m_initialHeading = m_autonDriveTrain.getHeading();
+			m_initialHeading = m_driveTrain.getHeading();
 			m_driveTrain.setBrakeMode(true);
 			m_turningSpeed = aConstants.DefaultTurningSpeed;
 			m_countZeroVelocity = 0;
@@ -61,6 +61,7 @@ public class AutonTurn {
 //			if (m_driveTrain.getHeading() < -88 + m_initialHeading) {  // We need to make this more accurate !!!!  (and calibrate)
 //				currentState = States.TURN_STOP;							
 //			}		
+			m_driveTrain.autonDriveTurn(m_turn, m_initialHeading);
 			if (!m_movingYet){
 				if (Math.abs(m_driveTrain.getEncoderRightVelocity()) > aConstants.velocityTolerance && 
 						Math.abs(m_driveTrain.getEncoderLeftVelocity()) > aConstants.velocityTolerance){
