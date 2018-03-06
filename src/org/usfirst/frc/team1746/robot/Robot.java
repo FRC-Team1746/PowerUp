@@ -275,7 +275,7 @@ public class Robot extends IterativeRobot {
 		if (driverCommandComplete && elevatorGrabberCommandComplete) {
 			if (m_controls.driver_UP_DPAD() || m_controls.oper_UP_DPAD()) {
 				currentDriverCommand = "A";
-				currentDriverCommandArgs = "50";
+				currentDriverCommandArgs = "200";
 				driverCommandComplete = false;
 			}else if (m_controls.driver_DOWN_DPAD() || m_controls.oper_DOWN_DPAD()) {
 				currentDriverCommand = "B";

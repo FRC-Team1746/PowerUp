@@ -31,6 +31,8 @@ public class Lift {
 	
 	private DigitalInput m_liftBottom;
 	private DigitalOutput m_liftTestLED;
+	private boolean m_UpDpadPrevious;
+	private boolean m_DownDpadPrevious;
 	
 	StringBuilder _sb = new StringBuilder();
 	
@@ -83,6 +85,9 @@ public class Lift {
 
 		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
 		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
+
+		m_UpDpadPrevious = false;
+		m_DownDpadPrevious = false;
 		
 		resetEncoder();
 	}
@@ -145,15 +150,22 @@ public class Lift {
 						m_liftRight.configMotionCruiseVelocity(2000, constants.kTimeoutMs);
 						m_liftPosition = constants.liftEncoderPosition0;
 //						System.out.println("A Pressed");
-					}else if (m_controls.oper_UP_DPAD()) {
+					}else if (m_controls.oper_UP_DPAD() != m_UpDpadPrevious) {
+						if (m_controls.oper_UP_DPAD()) {
 						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
 						m_liftPosition = m_liftPosition + constants.liftBumpUp;
 //						System.out.println("Up Press");
-					}else if (m_controls.oper_DOWN_DPAD()) {
+						}
+						m_UpDpadPrevious = m_controls.oper_UP_DPAD();
+					}else if (m_controls.oper_DOWN_DPAD() != m_DownDpadPrevious) {
+						if (m_controls.oper_DOWN_DPAD()) {
 						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
 						m_liftPosition = m_liftPosition - constants.liftBumpDown;
 //						System.out.println("Down Press");
+						}
+						m_DownDpadPrevious = m_controls.oper_DOWN_DPAD();
 					}
+					
 				m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
 			}
 			//System.out.println("Buttons");
