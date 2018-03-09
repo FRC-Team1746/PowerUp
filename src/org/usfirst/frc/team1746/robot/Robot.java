@@ -37,10 +37,12 @@ public class Robot extends IterativeRobot {
     Controls m_controls;
     DriveTrain m_driveTrain;
     AutonLiftMove m_autonLiftMove;
+    AutonRetractor m_autonRetractor;
     AutonConstants autonConstants;
     Lift m_lift;
     AutonIntake m_autonIntake;
     Intake m_intake;
+    Retractor m_retractor;
     AutonGo m_autonGo;
     AutonTurn m_autonTurn;
     StringBuilder m_commandsToDoDuringAutonomous = new StringBuilder();
@@ -77,8 +79,10 @@ public class Robot extends IterativeRobot {
 		
 		m_controls = new Controls();
 		m_lift = new Lift(m_controls);
+		m_retractor = new Retractor(m_controls);
 	 	m_driveTrain = new DriveTrain(m_controls);
 	 	m_autonLiftMove = new AutonLiftMove(m_lift);
+	 	m_autonRetractor = new AutonRetractor(m_retractor);
 	 	autonConstants = new AutonConstants();
 	 	m_intake =  new Intake(m_controls);
 	 	m_autonIntake =  new AutonIntake(m_intake);
@@ -118,11 +122,28 @@ public class Robot extends IterativeRobot {
 //		m_switchRightScaleLeft = prefs.getString("Switch Right, Scale Left", "1,16,11,11");
 //		m_switchRightScaleRight = prefs.getString("Switch Right, Scale Right", "1,17,11,11");
 		m_liveMatch = false;
-		m_simulatedGameData = "LL";
-		m_switchLeftScaleLeft = "1,8";
-		m_switchLeftScaleRight = "1,8,10,17";
-		m_switchRightScaleLeft = "1,16,11,11";
-		m_switchRightScaleRight = "1,17,11,11";
+		m_simulatedGameData = "LL";	
+		
+		//////// From Position 1 ///////
+		
+//		m_switchLeftScaleLeft = "1,8";
+//		m_switchLeftScaleRight = "1,8";
+//		m_switchRightScaleLeft = "1,18";
+//		m_switchRightScaleRight = "4,4";
+		
+		////////From Position 2 ///////
+		
+		m_switchLeftScaleLeft = "2,6";
+		m_switchLeftScaleRight = "2,6";
+		m_switchRightScaleLeft = "2,7";
+		m_switchRightScaleRight = "2,7";
+		
+		////////From Position 3 ///////
+		
+//		m_switchLeftScaleLeft = "3,9";
+//		m_switchLeftScaleRight = "3,9";
+//		m_switchRightScaleLeft = "3,19";
+//		m_switchRightScaleRight = "4,4";
 		
 		m_pattern = Pattern.compile("([A-Z])([^A-Z]*)");
 		
@@ -210,6 +231,9 @@ public class Robot extends IterativeRobot {
 			driverCommandComplete = m_autonTurn.auton(-1,currentDriverCommandArgs);
 		} 
 		if (!elevatorGrabberCommandComplete && currentElevatorGrabberCommand.equals("H")) {
+			elevatorGrabberCommandComplete = m_autonLiftMove.auton(currentElevatorGrabberCommandArgs);
+		}
+		if (!elevatorGrabberCommandComplete && currentElevatorGrabberCommand.equals("U")) {
 			elevatorGrabberCommandComplete = m_autonLiftMove.auton(currentElevatorGrabberCommandArgs);
 		}
 		if (!elevatorGrabberCommandComplete && currentElevatorGrabberCommand.equals("I")) {

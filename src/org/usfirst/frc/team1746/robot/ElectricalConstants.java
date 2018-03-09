@@ -25,6 +25,8 @@ public class ElectricalConstants {
 	public int CLIMBER_2 = 41;
 	public int CLIMBER_3 = 42;
 	
+//	public int RETRACTOR_LEFT = 50;
+	public int RETRACTOR = 53;
 	
 	// MoreBoard
 	public int EMPTY1 = 10;

@@ -43,17 +43,17 @@ public class Intake {
 	
 	public void update(){
 		if (m_controls.oper_RT_Axis() > .1) { //Spin In
-			m_intakeLeft.set(ControlMode.PercentOutput, -m_controls.oper_RT_Axis());
-			m_intakeRight.set(ControlMode.PercentOutput, m_controls.oper_RT_Axis());
+			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_RT_Axis());
+			m_intakeRight.set(ControlMode.PercentOutput, -m_controls.oper_RT_Axis());
 		}else if (m_controls.oper_LT_Axis() > .1){ //Spin Out
-			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_LT_Axis());
-			m_intakeRight.set(ControlMode.PercentOutput, -m_controls.oper_LT_Axis());
+			m_intakeLeft.set(ControlMode.PercentOutput, -m_controls.oper_LT_Axis());
+			m_intakeRight.set(ControlMode.PercentOutput, m_controls.oper_LT_Axis());
 		}else if (m_controls.oper_LEFT_DPAD()) {
-			m_intakeLeft.set(ControlMode.PercentOutput, -.5);
-			m_intakeRight.set(ControlMode.PercentOutput, -.5);
-		}else if (m_controls.oper_RIGHT_DPAD()) {
 			m_intakeLeft.set(ControlMode.PercentOutput, .5);
 			m_intakeRight.set(ControlMode.PercentOutput, .5);
+		}else if (m_controls.oper_RIGHT_DPAD()) {
+			m_intakeLeft.set(ControlMode.PercentOutput, -.5);
+			m_intakeRight.set(ControlMode.PercentOutput, -.5);
 		}else { //Nope
 			m_intakeRight.set(ControlMode.PercentOutput, 0);
 			m_intakeLeft.set(ControlMode.PercentOutput, 0);
@@ -61,13 +61,13 @@ public class Intake {
 	}
 	
 	public void intakeIn() {
-		m_intakeLeft.set(ControlMode.PercentOutput, -m_aConstants.DefaultIntakeSpeed);
-		m_intakeRight.set(ControlMode.PercentOutput, m_aConstants.DefaultIntakeSpeed);
+		m_intakeLeft.set(ControlMode.PercentOutput, m_aConstants.DefaultIntakeSpeed);
+		m_intakeRight.set(ControlMode.PercentOutput, -m_aConstants.DefaultIntakeSpeed);
 		
 	}
 	public void intakeOut() {
-		m_intakeLeft.set(ControlMode.PercentOutput,  m_aConstants.DefaultIntakeSpeed);
-		m_intakeRight.set(ControlMode.PercentOutput, -m_aConstants.DefaultIntakeSpeed);
+		m_intakeLeft.set(ControlMode.PercentOutput,  -m_aConstants.DefaultIntakeSpeed);
+		m_intakeRight.set(ControlMode.PercentOutput, m_aConstants.DefaultIntakeSpeed);
 		
 	}
 	public void intakeStop() {

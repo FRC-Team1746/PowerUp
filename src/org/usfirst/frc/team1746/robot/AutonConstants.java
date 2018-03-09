@@ -23,7 +23,7 @@ public class AutonConstants {
 	   public static final double MiddleOffset = 7;					// distance from the middle of the field to the middle of the robot (position "2") in inches
 	   																//    the offset is towards the side of the field that doesn't have the exchange
 	   																//		^^ IMPORTANT WHEN STARTING IN POSITION 2 !!!!!
-	   public static final double WallToLane1 = 67;					// distance from wall to the middle of the first horizontal driving lane
+	   public static final double WallToLane1 = 33;					// distance from wall to the middle of the first horizontal driving lane
 	   public static final double WallToLane2 = 240;				// distance from wall to the middle of the second horizontal driving lane
 	   public static final double PlacementBuffer = 1;				/* Still undetermined so a guestimate for now	   <<<< MODIFY VALUE AND COMMENT
 	   																		distance from the front of the robot to the target (e.g. switch or scale or exchange)
@@ -32,7 +32,7 @@ public class AutonConstants {
 	   public static final double PickupBuffer = 1;					/* Still undetermined so a guestimate for now	   <<<< MODIFY VALUE AND COMMENT
 	   																		distance from the front of the robot to the target (i.e. cube on floor)	when
 	   																		preparing to pick up a cube */
-	   public static final double InsideSwitch = 4;					// when placing cubes on the switch from the side, how far from the end to place them
+	   public static final double InsideSwitch = 2;					// when placing cubes on the switch from the side, how far from the end to place them
 	   public static final double InsideScale = 2;					// when placing cubes on the scale from the side, how far from the end to place them
 	   public static final double ScalePlacementAdjustment = 16;    /* When this is zero, cubes placed at target positions 18 & 19 will be placed in the middle of
 	    																	the end of the scale.  Setting this to a number means "place the cube this many inches
@@ -43,13 +43,17 @@ public class AutonConstants {
 	    * Other Autonomous Choices
 	    */
 	   
-	   public static final double DefaultDrivingSpeed = .4;  // 1 means drive at maxVelocity by default, 0.75 means drive at three-quarters of maxVelocity by default
-	   public static final double DefaultTurningSpeed = .4;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
+	   public static final double DefaultDrivingSpeed = .7;  // 1 means drive at maxVelocity by default, 0.75 means drive at three-quarters of maxVelocity by default
+	   public static final double DefaultTurningSpeed = .75;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
 	   public static final double AccelerationMultiplier = 2;  /* At what multiple of maximum velocity do you want to accelerate -- 1 means reach maximum velocity in 1 second,
 	   																2 means reach maximum velocity in one-half second. */
-	   public static final double DefaultIntakeSpeed = 0.5;	// Default speed for intake in and out for auton
+	   public static final double DefaultIntakeSpeed = 1;	// Default speed for intake in and out for auton
 	   public static final double IntakeInTime = .75;			// Amount of time until intakeIn finishes
 	   public static final double IntakeOutTime = 2;		// Amount of time until intakeOut finishes	
+	   
+	   public static final double RetractorDownTime = 1;		// The time it takes to lower the retractor in auton
+	   public static final double DefaultRetractorDown = .25;	// Default percentage output for lowering the retractor
+	   public static final double DefaultRetractorUp = .5;		// Default percentage output for raising the retractor
 
 	   public static final int velocityTolerance = 3;				/* Velocity Tolerance in ticks per 100 milliseconds - this is used to determine when we have actually
 	         																started moving (at the beginning of driving or turning) and when we are finished moving (at
@@ -113,7 +117,7 @@ public class AutonConstants {
 	   
 	   		// Horizontal Distances
 	   
-	   public static final double MiddleToAngle = 132.31;			// Field Width of 27 feet (from Manual) / 2 - rail to flat wall (from Diagram)
+	   public static final double MiddleToAngle = 66;			// Field Width of 27 feet (from Manual) / 2 - rail to flat wall (from Diagram)
 	   public static final double MiddleToScaleEnd = 90;			// Scale Length (from Manual) / 2
 	   public static final double MiddleToSwitchEnd = 76.75;		// Switch Length (from Manual) / 2
 	   public static final double ExchangeOffset = 22;				// Guess based on Diagram & Manual (middle of field to middle of exchange)  <<<< MODIFY VALUE AND COMMENT
@@ -213,6 +217,9 @@ public class AutonConstants {
 	    *     
 	    *     H - Height (move the elevator at the default speed to the specified height position: 0=bottom, 1=above switch, 2=above scale)
 	    *     
+	    *     U - Move the retractor up
+	    *     D - Move the retractor down
+	    *     
 	    *     O - Output (put the cube out at the default speed)
 	    *     I - Input (get a cube in at the default speed)
 	    *     
@@ -220,68 +227,68 @@ public class AutonConstants {
 	    *     
 	    */
 	   public static final String driveCommands = "ABRL";
-	   public static final String elevatorGrabberCommands = "HIO";
+	   public static final String elevatorGrabberCommands = "HIOUD";
 	   public static final String specialCommands = "W";
 	   public static final String[][] commands = new String[][] {
 		   {																																// FROM 1
-			   "IA"+StartToLane1+"RA"+OutsideToExchangeNear+"RA"+Lane1ToExchange+"WOW",														//        TO 4
+			   "DA"+StartToLane1+"RA"+OutsideToExchangeNear+"RA"+Lane1ToExchange+"WOW",														//        TO 4
 		       "!",																															//        TO 5
-			   "IA"+StartToLane1+"RA"+OutsideToSwitchSideNear+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 6
-			   "IA"+StartToLane1+"RA"+OutsideToSwitchSideFar+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 7
-			   "IA"+StartToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",																			//        TO 8
-			   "IA"+StartToLane2+"RA"+OutsideToOutside+"RA"+Lane2ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",									//        TO 9
-// Lane 1	   "IA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",									//        TO 9
-			   "IA"+StartToLane2+"RA"+OutsideToFirstCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW",											//        TO 10
-			   "IA"+StartToLane2+"RA"+OutsideToSixthCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW",											//        TO 11
-// Lane 1	   "IA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToLane2+"LA"+OutsideToFirstCube+"LH1WA"+Lane2ToSwitchForPlacement+"WOW",	//        TO 11
-			   "IA"+StartToLane2+"RA"+OutsideToSecondCube+"RA"+Lane2ToSwitchForPickup,														//        TO 12
-			   "IA"+StartToLane2+"RA"+OutsideToFifthCube+"RA"+Lane2ToSwitchForPickup,														//        TO 13
-			   "IA"+StartToLane2+"RA"+OutsideToThirdCube+"RA"+Lane2ToSwitchForPickup,														//        TO 14
-			   "IA"+StartToLane2+"RA"+OutsideToFourthCube+"RA"+Lane2ToSwitchForPickup,														//        TO 15
-			   "IA"+StartToLane2+"RA"+OutsideToScaleSideNear+"LH2WA"+Lane2ToScale+"WOW",													//        TO 16
-			   "IA"+StartToLane2+"RA"+OutsideToScaleSideFar+"LH2WA"+Lane2ToScale+"WOW",														//        TO 17
-			   "IA"+StartToMidScale+"RH2WA"+OutsideToScale+"WOW", 																			//        TO 18
-			   "IA"+StartToLane2+"RA"+OutsideToOutside+"LA"+Lane2ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
-// Lane 1      "IA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
+			   "DA"+StartToLane1+"RA"+OutsideToSwitchSideNear+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 6
+			   "DA"+StartToLane1+"RA"+OutsideToSwitchSideFar+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 7
+			   "DA"+StartToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",																			//        TO 8
+			   "DA"+StartToLane2+"RA"+OutsideToOutside+"RA"+Lane2ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",									//        TO 9
+// Lane 1	   "DA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",									//        TO 9
+			   "DA"+StartToLane2+"RA"+OutsideToFirstCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW",											//        TO 10
+			   "DA"+StartToLane2+"RA"+OutsideToSixthCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW",											//        TO 11
+// Lane 1	   "DA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToLane2+"LA"+OutsideToFirstCube+"LH1WA"+Lane2ToSwitchForPlacement+"WOW",	//        TO 11
+			   "DA"+StartToLane2+"RA"+OutsideToSecondCube+"RA"+Lane2ToSwitchForPickup,														//        TO 12
+			   "DA"+StartToLane2+"RA"+OutsideToFifthCube+"RA"+Lane2ToSwitchForPickup,														//        TO 13
+			   "DA"+StartToLane2+"RA"+OutsideToThirdCube+"RA"+Lane2ToSwitchForPickup,														//        TO 14
+			   "DA"+StartToLane2+"RA"+OutsideToFourthCube+"RA"+Lane2ToSwitchForPickup,														//        TO 15
+			   "DA"+StartToLane2+"RA"+OutsideToScaleSideNear+"LH2WA"+Lane2ToScale+"WOW",													//        TO 16
+			   "DA"+StartToLane2+"RA"+OutsideToScaleSideFar+"LH2WA"+Lane2ToScale+"WOW",														//        TO 17
+			   "DA"+StartToMidScale+"RH2WA"+OutsideToScale+"WOW", 																			//        TO 18
+			   "DA"+StartToLane2+"RA"+OutsideToOutside+"LA"+Lane2ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
+// Lane 1      "DA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
 		   },
 		   {																																// FROM 2
-			   "IA"+StartToLane1+"LA"+(ExchangeOffset+MiddleOffset)+"LA"+Lane1ToExchange+"WOW",												//        TO 4
+			   "DA"+StartToLane1+"LA"+(ExchangeOffset+MiddleOffset)+"LA"+Lane1ToExchange+"WOW",												//        TO 4
 		       "!",																															//        TO 5
-		       "IA"+StartToLane1+"LA"+(OutsideToRobot2Far-OutsideToSwitchSideNear)+"RH1WA"+Lane1ToSwitch+"WOW",								//        TO 6
-		       "IA"+StartToLane1+"RA"+(OutsideToRobot2Near-OutsideToSwitchSideNear)+"LH1WA"+Lane1ToSwitch+"WOW",							//        TO 7
-		       "IA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",								//        TO 8
-		       "IA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",								//        TO 9
-			   "IA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToLane2+"RA"+OutsideToFirstCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW", //        TO 10
-			   "IA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToLane2+"LA"+OutsideToFirstCube+"LH1WA"+Lane2ToSwitchForPlacement+"WOW", //       TO 11
+		       "IWA"+StartToLane1+"LA"+"25"+"WRH1WA"+"11"+"WOW",								//        TO 6
+		       "IWA"+StartToLane1+"RA"+"26"+"WLH1WA"+"19"+"WOW",							//        TO 7
+		       "DA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",								//        TO 8
+		       "DA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",								//        TO 9
+			   "DA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToLane2+"RA"+OutsideToFirstCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW", //        TO 10
+			   "DA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToLane2+"LA"+OutsideToFirstCube+"LH1WA"+Lane2ToSwitchForPlacement+"WOW", //       TO 11
 		       "!",																															//        TO 12
 		       "!",																															//        TO 13
 		       "!",																															//        TO 14
 		       "!",																															//        TO 15
-		       "IA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToLane2+"RA"+OutsideToScaleSideNear+"LH2WA"+Lane2ToScale+"WOW",			//        TO 16
-		       "IA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToLane2+"LA"+OutsideToScaleSideNear+"RH2WA"+Lane2ToScale+"WOW",			//        TO 17
-		       "IA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
-		       "IA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToMidScale+"LH2WA"+OutsideToScale+"WOW",								//        TO 19		       
+		       "DA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToLane2+"RA"+OutsideToScaleSideNear+"LH2WA"+Lane2ToScale+"WOW",			//        TO 16
+		       "DA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToLane2+"LA"+OutsideToScaleSideNear+"RH2WA"+Lane2ToScale+"WOW",			//        TO 17
+		       "DA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
+		       "DA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToMidScale+"LH2WA"+OutsideToScale+"WOW",								//        TO 19		       
 		   },
 		   {																																// FROM 3
-		       "IA"+StartToLane1+"LA"+OutsideToExchangeFar+"LA"+Lane1ToExchange+"WOW",														//        TO 4
+		       "DA"+StartToLane1+"LA"+OutsideToExchangeFar+"LA"+Lane1ToExchange+"WOW",														//        TO 4
 		       "!",																															//        TO 5
-		       "IA"+StartToLane1+"LA"+OutsideToSwitchSideFar+"RH1WA"+Lane1ToSwitch+"WOW",													//        TO 6
-		       "IA"+StartToLane1+"RA"+OutsideToSwitchSideNear+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 7
-		       "IA"+StartToLane2+"LA"+OutsideToOutside+"LA"+Lane2ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",									//        TO 8
-// Lane 1	   "IA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",									//        TO 8
-		       "IA"+StartToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",																			//        TO 9
-			   "IA"+StartToLane2+"LA"+OutsideToSixthCube+"LWA"+Lane2ToSwitchForPickup+"WOW",												//        TO 10
-// Lane 1	   "IA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToLane2+"RA"+OutsideToFirstCube+"RWA"+Lane2ToSwitchForPlacement+"WOW",		//        TO 10
-			   "IA"+StartToLane2+"LA"+OutsideToFirstCube+"LWA"+Lane2ToSwitchForPickup+"WOW",												//        TO 11
-			   "IA"+StartToLane2+"LA"+OutsideToFifthCube+"LA"+Lane2ToSwitchForPickup,														//        TO 12
-			   "IA"+StartToLane2+"LA"+OutsideToSecondCube+"LA"+Lane2ToSwitchForPickup,														//        TO 13
-			   "IA"+StartToLane2+"LA"+OutsideToFourthCube+"LA"+Lane2ToSwitchForPickup,														//        TO 14
-			   "IA"+StartToLane2+"LA"+OutsideToThirdCube+"LA"+Lane2ToSwitchForPickup,														//        TO 15
-			   "IA"+StartToLane2+"LA"+OutsideToScaleSideFar+"RH2WA"+Lane2ToScale+"WOW",														//        TO 16
-			   "IA"+StartToLane2+"LA"+OutsideToScaleSideNear+"RH2WA"+Lane2ToScale+"WOW",													//        TO 17
-			   "IA"+StartToLane2+"LA"+OutsideToOutside+"RA"+Lane2ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
+		       "DA"+StartToLane1+"LA"+OutsideToSwitchSideFar+"RH1WA"+Lane1ToSwitch+"WOW",													//        TO 6
+		       "DA"+StartToLane1+"RA"+OutsideToSwitchSideNear+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 7
+		       "DA"+StartToLane2+"LA"+OutsideToOutside+"LA"+Lane2ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",									//        TO 8
+// Lane 1	   "DA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",									//        TO 8
+		       "DA"+StartToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",																			//        TO 9
+			   "DA"+StartToLane2+"LA"+OutsideToSixthCube+"LWA"+Lane2ToSwitchForPickup+"WOW",												//        TO 10
+// Lane 1	   "DA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToLane2+"RA"+OutsideToFirstCube+"RWA"+Lane2ToSwitchForPlacement+"WOW",		//        TO 10
+			   "DA"+StartToLane2+"LA"+OutsideToFirstCube+"LWA"+Lane2ToSwitchForPickup+"WOW",												//        TO 11
+			   "DA"+StartToLane2+"LA"+OutsideToFifthCube+"LA"+Lane2ToSwitchForPickup,														//        TO 12
+			   "DA"+StartToLane2+"LA"+OutsideToSecondCube+"LA"+Lane2ToSwitchForPickup,														//        TO 13
+			   "DA"+StartToLane2+"LA"+OutsideToFourthCube+"LA"+Lane2ToSwitchForPickup,														//        TO 14
+			   "DA"+StartToLane2+"LA"+OutsideToThirdCube+"LA"+Lane2ToSwitchForPickup,														//        TO 15
+			   "DA"+StartToLane2+"LA"+OutsideToScaleSideFar+"RH2WA"+Lane2ToScale+"WOW",														//        TO 16
+			   "DA"+StartToLane2+"LA"+OutsideToScaleSideNear+"RH2WA"+Lane2ToScale+"WOW",													//        TO 17
+			   "DA"+StartToLane2+"LA"+OutsideToOutside+"RA"+Lane2ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
 // Lane 1      "IWA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18		       
-			   "IA"+StartToMidScale+"LH2WA"+OutsideToScale+"WOW",																			//        TO 19		       
+			   "DA"+StartToMidScale+"LH2WA"+OutsideToScale+"WOW",																			//        TO 19		       
 		   },
 		   {																																// FROM 4
 			   "!",																															//        TO 4

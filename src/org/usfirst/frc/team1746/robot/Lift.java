@@ -128,16 +128,16 @@ public class Lift {
 			if (!m_liftBottom.get() && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
 				m_liftRight.set(0);
 			}else {
-				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
-//					if (m_pdp.getCurrent(9) < 10){
-						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
-						m_liftPosition = getLiftPosition();
-//					}else{
-//						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/5);
+//				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
+////					if (m_pdp.getCurrent(9) < 10){
+//						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
 //						m_liftPosition = getLiftPosition();
-//					}
-//					System.out.println("Stick");
-				} else {
+////					}else{
+////						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/5);
+////						m_liftPosition = getLiftPosition();
+////					}
+////					System.out.println("Stick");
+//				} else {
 					if (m_controls.oper_Y_Button()) {
 						m_liftRight.configMotionCruiseVelocity(6000, constants.kTimeoutMs);
 						m_liftPosition = constants.liftEncoderPosition2;
@@ -169,7 +169,7 @@ public class Lift {
 				m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
 			}
 			//System.out.println("Buttons");
-		}
+//		}
 		if (!m_liftBottom.get()) {
 			resetEncoder();
 		}
