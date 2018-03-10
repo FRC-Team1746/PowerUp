@@ -50,8 +50,8 @@ public class ElectricalConstants {
 	public int ENCODER_LIFT_B = 5;
 	public int CUBE_PRESENT = 6;
 	public int LIFT_BOTTOM = 0;
-	public int LIFT_LED = 1;
-	public int dio9 = 9;
+	public int LIFT_TOP = 1;
+	public int LIFT_LED = 9;
 	
 	//PCM
 	public int INTAKE_RETRACT_LEFT = 0;

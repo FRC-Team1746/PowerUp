@@ -100,6 +100,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		m_driveTrain.resetGyro();
 	    driverCommandComplete = true;
 		elevatorGrabberCommandComplete = true;
 		specialCommandComplete = true;
@@ -121,7 +122,7 @@ public class Robot extends IterativeRobot {
 //		m_switchLeftScaleRight = prefs.getString("Switch Left, Scale Right", "1,8,10,17");
 //		m_switchRightScaleLeft = prefs.getString("Switch Right, Scale Left", "1,16,11,11");
 //		m_switchRightScaleRight = prefs.getString("Switch Right, Scale Right", "1,17,11,11");
-		m_liveMatch = false;
+		m_liveMatch = true;
 		m_simulatedGameData = "LL";	
 		
 		//////// From Position 1 ///////
@@ -133,10 +134,16 @@ public class Robot extends IterativeRobot {
 		
 		////////From Position 2 ///////
 		
-		m_switchLeftScaleLeft = "2,6";
-		m_switchLeftScaleRight = "2,6";
-		m_switchRightScaleLeft = "2,7";
-		m_switchRightScaleRight = "2,7";
+//		m_switchLeftScaleLeft = "2,6";
+//		m_switchLeftScaleRight = "2,6";
+//		m_switchRightScaleLeft = "2,7";
+//		m_switchRightScaleRight = "2,7";
+
+		////////////Go Straight////////
+		m_switchLeftScaleLeft = "4,4";
+		m_switchLeftScaleRight = "4,4";
+		m_switchRightScaleLeft = "4,4";
+		m_switchRightScaleRight = "4,4";
 		
 		////////From Position 3 ///////
 		
@@ -233,8 +240,11 @@ public class Robot extends IterativeRobot {
 		if (!elevatorGrabberCommandComplete && currentElevatorGrabberCommand.equals("H")) {
 			elevatorGrabberCommandComplete = m_autonLiftMove.auton(currentElevatorGrabberCommandArgs);
 		}
+		if (!elevatorGrabberCommandComplete && currentElevatorGrabberCommand.equals("D")) {
+			elevatorGrabberCommandComplete = m_autonRetractor.auton("D");
+		}
 		if (!elevatorGrabberCommandComplete && currentElevatorGrabberCommand.equals("U")) {
-			elevatorGrabberCommandComplete = m_autonLiftMove.auton(currentElevatorGrabberCommandArgs);
+			elevatorGrabberCommandComplete = m_autonRetractor.auton("U");
 		}
 		if (!elevatorGrabberCommandComplete && currentElevatorGrabberCommand.equals("I")) {
 			elevatorGrabberCommandComplete = m_autonIntake.auton("I");
@@ -276,8 +286,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		m_lift.update();
-//		m_grabber.update();
 		m_intake.update();
+		m_retractor.update();
 		m_driveTrain.teleopArcadeDrive();
 //		m_shoot.update();
 		
@@ -299,7 +309,7 @@ public class Robot extends IterativeRobot {
 		if (driverCommandComplete && elevatorGrabberCommandComplete) {
 			if (m_controls.driver_UP_DPAD() || m_controls.oper_UP_DPAD()) {
 				currentDriverCommand = "A";
-				currentDriverCommandArgs = "200";
+				currentDriverCommandArgs = "50";
 				driverCommandComplete = false;
 			}else if (m_controls.driver_DOWN_DPAD() || m_controls.oper_DOWN_DPAD()) {
 				currentDriverCommand = "B";
@@ -330,6 +340,9 @@ public class Robot extends IterativeRobot {
 				elevatorGrabberCommandComplete = false;				
 			}else if (m_controls.driver_RB_Button() || m_controls.oper_RB_Button()) {
 				currentElevatorGrabberCommand = "I";									
+				elevatorGrabberCommandComplete = false;				
+			}else if (m_controls.driver_B_Button() || m_controls.oper_B_Button()) {
+				currentElevatorGrabberCommand = "D";									
 				elevatorGrabberCommandComplete = false;				
 			}
 		}

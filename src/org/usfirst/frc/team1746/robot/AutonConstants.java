@@ -44,15 +44,16 @@ public class AutonConstants {
 	    */
 	   
 	   public static final double DefaultDrivingSpeed = .7;  // 1 means drive at maxVelocity by default, 0.75 means drive at three-quarters of maxVelocity by default
-	   public static final double DefaultTurningSpeed = .75;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
+	   public static final double DefaultTurningSpeed = .65;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
 	   public static final double AccelerationMultiplier = 2;  /* At what multiple of maximum velocity do you want to accelerate -- 1 means reach maximum velocity in 1 second,
 	   																2 means reach maximum velocity in one-half second. */
 	   public static final double DefaultIntakeSpeed = 1;	// Default speed for intake in and out for auton
 	   public static final double IntakeInTime = .75;			// Amount of time until intakeIn finishes
 	   public static final double IntakeOutTime = 2;		// Amount of time until intakeOut finishes	
 	   
-	   public static final double RetractorDownTime = 1;		// The time it takes to lower the retractor in auton
-	   public static final double DefaultRetractorDown = .25;	// Default percentage output for lowering the retractor
+	   public static final double RetractorDownTime = .55;		// The time it takes to lower the retractor in auton
+	   public static final double RetractorUpTime = .55;	
+	   public static final double DefaultRetractorDown = .75;	// Default percentage output for lowering the retractor
 	   public static final double DefaultRetractorUp = .5;		// Default percentage output for raising the retractor
 
 	   public static final int velocityTolerance = 3;				/* Velocity Tolerance in ticks per 100 milliseconds - this is used to determine when we have actually
@@ -235,7 +236,8 @@ public class AutonConstants {
 		       "!",																															//        TO 5
 			   "DA"+StartToLane1+"RA"+OutsideToSwitchSideNear+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 6
 			   "DA"+StartToLane1+"RA"+OutsideToSwitchSideFar+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 7
-			   "DA"+StartToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",																			//        TO 8
+			   "A"+75+"RH1WA"+10+"WDOW",																									//        TO 8
+//			   "DA"+StartToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",																			//        TO 8
 			   "DA"+StartToLane2+"RA"+OutsideToOutside+"RA"+Lane2ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",									//        TO 9
 // Lane 1	   "DA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",									//        TO 9
 			   "DA"+StartToLane2+"RA"+OutsideToFirstCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW",											//        TO 10
@@ -247,15 +249,16 @@ public class AutonConstants {
 			   "DA"+StartToLane2+"RA"+OutsideToFourthCube+"RA"+Lane2ToSwitchForPickup,														//        TO 15
 			   "DA"+StartToLane2+"RA"+OutsideToScaleSideNear+"LH2WA"+Lane2ToScale+"WOW",													//        TO 16
 			   "DA"+StartToLane2+"RA"+OutsideToScaleSideFar+"LH2WA"+Lane2ToScale+"WOW",														//        TO 17
-			   "DA"+StartToMidScale+"RH2WA"+OutsideToScale+"WOW", 																			//        TO 18
+			   "A"+ 250+"RH2WDOW", 																											//        TO 18
+//			   "DA"+StartToMidScale+"RH2WA"+OutsideToScale+"WOW", 																			//        TO 18
 			   "DA"+StartToLane2+"RA"+OutsideToOutside+"LA"+Lane2ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
 // Lane 1      "DA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
 		   },
 		   {																																// FROM 2
 			   "DA"+StartToLane1+"LA"+(ExchangeOffset+MiddleOffset)+"LA"+Lane1ToExchange+"WOW",												//        TO 4
 		       "!",																															//        TO 5
-		       "IWA"+StartToLane1+"LA"+"25"+"WRH1WA"+"11"+"WOW",								//        TO 6
-		       "IWA"+StartToLane1+"RA"+"26"+"WLH1WA"+"19"+"WOW",							//        TO 7
+		       "A"+StartToLane1+"LA"+"25"+"WRH1WA"+"11"+"WDOW",																				//        TO 6
+		       "A"+StartToLane1+"RA"+"20"+"WLH1WA"+"19"+"WDOW",																				//        TO 7
 		       "DA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",								//        TO 8
 		       "DA"+StartToLane1+"RA"+OutsideToRobot2Near+"LA"+Lane1ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",								//        TO 9
 			   "DA"+StartToLane1+"LA"+OutsideToRobot2Far+"RA"+Lane1ToLane2+"RA"+OutsideToFirstCube+"RH1WA"+Lane2ToSwitchForPlacement+"WOW", //        TO 10
@@ -276,7 +279,8 @@ public class AutonConstants {
 		       "DA"+StartToLane1+"RA"+OutsideToSwitchSideNear+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 7
 		       "DA"+StartToLane2+"LA"+OutsideToOutside+"LA"+Lane2ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",									//        TO 8
 // Lane 1	   "DA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",									//        TO 8
-		       "DA"+StartToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",																			//        TO 9
+//		       "DA"+StartToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",																			//        TO 9
+		       "DA"+75+"LH1WA"+10+"WDOW",																									//        TO 9
 			   "DA"+StartToLane2+"LA"+OutsideToSixthCube+"LWA"+Lane2ToSwitchForPickup+"WOW",												//        TO 10
 // Lane 1	   "DA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToLane2+"RA"+OutsideToFirstCube+"RWA"+Lane2ToSwitchForPlacement+"WOW",		//        TO 10
 			   "DA"+StartToLane2+"LA"+OutsideToFirstCube+"LWA"+Lane2ToSwitchForPickup+"WOW",												//        TO 11
@@ -287,12 +291,13 @@ public class AutonConstants {
 			   "DA"+StartToLane2+"LA"+OutsideToScaleSideFar+"RH2WA"+Lane2ToScale+"WOW",														//        TO 16
 			   "DA"+StartToLane2+"LA"+OutsideToScaleSideNear+"RH2WA"+Lane2ToScale+"WOW",													//        TO 17
 			   "DA"+StartToLane2+"LA"+OutsideToOutside+"RA"+Lane2ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
-// Lane 1      "IWA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18		       
-			   "DA"+StartToMidScale+"LH2WA"+OutsideToScale+"WOW",																			//        TO 19		       
+// Lane 1      "IWA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
+			   "A250",																			//        TO 19	
+//			   "DA"+StartToMidScale+"LH2WA"+OutsideToScale+"WOW",																			//        TO 19		       
 		   },
 		   {																																// FROM 4
-			   "!",																															//        TO 4
-		       "B"+Lane1ToExchange+"LA"+ExchangeOffset+"LA"+Lane1ToCube+"IW",																//        TO 5
+			   "A120",																														//        TO 4
+		       "A"+Lane1ToExchange+"LA"+ExchangeOffset+"LA"+Lane1ToCube+"IW",																//        TO 5
 			   "!",																															//        TO 6
 			   "!",																															//        TO 7
 			   "!",																															//        TO 8

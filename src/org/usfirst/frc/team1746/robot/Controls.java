@@ -30,18 +30,21 @@ public class Controls {
 		}
 		return x_axisSquared;
 		//return xbox_driver.getRawAxis(0);
-		
 	}
 	public double driver_Y_Axis(){
 		return xbox_driver.getRawAxis(1);
-
+		
+	}
+	public double oper_Y_Axis(){
+		return xbox_oper.getRawAxis(1);
+		
 	}
 	public double oper_YR_Axis(){
 		return xbox_oper.getRawAxis(5);
-
+		
 	}
 	public boolean oper_Y_Button(){
-		return xbox_oper.getRawButton(4);
+		return xbox_oper.getRawButton(4);	
 		
 	}	
 	public boolean oper_X_Button(){

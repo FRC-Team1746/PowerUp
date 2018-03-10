@@ -27,19 +27,20 @@ public class AutonRetractor {
     	m_timer = new Timer();
     	currentState = States.INIT;
     }
-    public boolean auton(String m_args) {
+//    public boolean auton(String m_args) {
+    public boolean auton(String command) {
     	done=false;
     	switch(currentState) {
     	case INIT:
-    		if (m_args.length()!=0) {
-				String[] stringArray = m_args.split(",");
-	 		    double tmpDouble;
-	 		    for (int j = 0; j < stringArray.length; j++) {
-	 		       String numberAsString = stringArray[j];
- 		    	   tmpDouble = Double.parseDouble(numberAsString);
+//    		if (m_args.length()!=0) {
+//				String[] stringArray = m_args.split(",");
+//	 		    double tmpDouble;
+//	 		    for (int j = 0; j < stringArray.length; j++) {
+//	 		       String numberAsString = stringArray[j];
+// 		    	   tmpDouble = Double.parseDouble(numberAsString);
 //		    	   if (j == 0) m_position = (int) (tmpDouble);
-	 		    }
-	 		}
+//	 		    }
+//	 		}
 //    		System.out.println("Updating m_position to: " + m_position);
     		m_timer.reset();
     		m_timer.start();
@@ -47,11 +48,20 @@ public class AutonRetractor {
     	break;
     	case MOVE:
 //    		System.out.println("Retractor Updating");
-    		if (m_timer.get() < aConstants.RetractorDownTime) {
-    			m_retractor.retractorDown();
+			if (command.equals("D")) {
+				if (m_timer.get() < aConstants.RetractorDownTime) {
+					m_retractor.retractorDown();
+				} else {
+					m_retractor.retractorStop();
+					currentState = States.END;
+				}
     		} else {
-    			m_retractor.retractorStop();
-    			currentState = States.END;
+				if (m_timer.get() < aConstants.RetractorUpTime) {
+					m_retractor.retractorUp();
+				} else {
+					m_retractor.retractorStop();
+					currentState = States.END;
+				}    			
     		}
         break;    		
     	case END:

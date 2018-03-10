@@ -30,6 +30,7 @@ public class Lift {
 	private boolean moving;
 	
 	private DigitalInput m_liftBottom;
+	private DigitalInput m_liftTop;
 	private DigitalOutput m_liftTestLED;
 	private boolean m_UpDpadPrevious;
 	private boolean m_DownDpadPrevious;
@@ -44,6 +45,9 @@ public class Lift {
 		constants = new Constants();
 		m_liftLeft = new VictorSPX(m_eConstants.ELEVATOR_LEFT);
 		m_liftRight = new WPI_TalonSRX(m_eConstants.ELEVATOR_RIGHT);
+		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
+		m_liftTop = new DigitalInput(m_eConstants.LIFT_TOP);
+		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
 		m_liftLeft.follow(m_liftRight);
 //		m_pdp = new PowerDistributionPanel(0);
 //		m_liftEncoder = new Encoder(m_eConstants.ENCODER_LIFT_A, m_eConstants.ENCODER_LIFT_B, false, Encoder.EncodingType.k1X);	
@@ -83,8 +87,8 @@ public class Lift {
 		m_liftRight.configOpenloopRamp(0, 0);
 		m_liftRight.configClosedloopRamp(0, 0);
 
-		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
-		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
+//		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
+//		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
 
 		m_UpDpadPrevious = false;
 		m_DownDpadPrevious = false;
@@ -123,11 +127,11 @@ public class Lift {
 		
 //		m_liftRight.set(ControlMode.Position, m_liftPosition);
 			
-			m_liftTestLED.set(m_liftBottom.get());
+			m_liftTestLED.set(!m_liftTop.get());
 			
 			if (!m_liftBottom.get() && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
 				m_liftRight.set(0);
-			}else {
+			}else if (!m_liftTop.get()) {
 //				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
 ////					if (m_pdp.getCurrent(9) < 10){
 //						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
