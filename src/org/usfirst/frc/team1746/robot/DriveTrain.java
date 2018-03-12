@@ -267,7 +267,7 @@ public void initAuto(){
 //		System.out.println("Get Heading: " + getHeading());
 		System.out.println("Turn Error: " + turnError);
 		double P = 1/90;
-		if(Math.abs(turnError) > 30) {
+		if(Math.abs(turnError) > 35) {
 			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed,-direction*aConstants.DefaultTurningSpeed);
 		}else {
 			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed*P*turnError,-direction*aConstants.DefaultTurningSpeed*P*turnError);

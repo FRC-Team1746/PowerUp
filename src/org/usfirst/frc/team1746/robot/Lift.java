@@ -127,11 +127,11 @@ public class Lift {
 		
 //		m_liftRight.set(ControlMode.Position, m_liftPosition);
 			
-			m_liftTestLED.set(!m_liftTop.get());
+//			m_liftTestLED.set(!m_liftTop.get());
 			
 			if (!m_liftBottom.get() && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
 				m_liftRight.set(0);
-			}else if (!m_liftTop.get()) {
+			}else {
 //				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
 ////					if (m_pdp.getCurrent(9) < 10){
 //						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
@@ -145,27 +145,27 @@ public class Lift {
 					if (m_controls.oper_Y_Button()) {
 						m_liftRight.configMotionCruiseVelocity(6000, constants.kTimeoutMs);
 						m_liftPosition = constants.liftEncoderPosition2;
-//						System.out.println("Y Pressed");
+						System.out.println("Y Pressed");
 					}else if (m_controls.oper_X_Button()) {
 						m_liftRight.configMotionCruiseVelocity(6000, constants.kTimeoutMs);
 						m_liftPosition = constants.liftEncoderPosition1;
-//						System.out.println("X Pressed");
+						System.out.println("X Pressed");
 					}else if (m_controls.oper_A_Button()) {
 						m_liftRight.configMotionCruiseVelocity(2000, constants.kTimeoutMs);
 						m_liftPosition = constants.liftEncoderPosition0;
-//						System.out.println("A Pressed");
+						System.out.println("A Pressed");
 					}else if (m_controls.oper_UP_DPAD() != m_UpDpadPrevious) {
 						if (m_controls.oper_UP_DPAD()) {
 						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
 						m_liftPosition = m_liftPosition + constants.liftBumpUp;
-//						System.out.println("Up Press");
+						System.out.println("Up Press");
 						}
 						m_UpDpadPrevious = m_controls.oper_UP_DPAD();
 					}else if (m_controls.oper_DOWN_DPAD() != m_DownDpadPrevious) {
 						if (m_controls.oper_DOWN_DPAD()) {
 						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
 						m_liftPosition = m_liftPosition - constants.liftBumpDown;
-//						System.out.println("Down Press");
+						System.out.println("Down Press");
 						}
 						m_DownDpadPrevious = m_controls.oper_DOWN_DPAD();
 					}

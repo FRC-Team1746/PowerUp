@@ -43,8 +43,8 @@ public class AutonConstants {
 	    * Other Autonomous Choices
 	    */
 	   
-	   public static final double DefaultDrivingSpeed = .7;  // 1 means drive at maxVelocity by default, 0.75 means drive at three-quarters of maxVelocity by default
-	   public static final double DefaultTurningSpeed = .65;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
+	   public static final double DefaultDrivingSpeed = .75;  // 1 means drive at maxVelocity by default, 0.75 means drive at three-quarters of maxVelocity by default
+	   public static final double DefaultTurningSpeed = .75;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
 	   public static final double AccelerationMultiplier = 2;  /* At what multiple of maximum velocity do you want to accelerate -- 1 means reach maximum velocity in 1 second,
 	   																2 means reach maximum velocity in one-half second. */
 	   public static final double DefaultIntakeSpeed = 1;	// Default speed for intake in and out for auton
@@ -53,7 +53,7 @@ public class AutonConstants {
 	   
 	   public static final double RetractorDownTime = .55;		// The time it takes to lower the retractor in auton
 	   public static final double RetractorUpTime = .55;	
-	   public static final double DefaultRetractorDown = .75;	// Default percentage output for lowering the retractor
+	   public static final double DefaultRetractorDown = .7;	// Default percentage output for lowering the retractor
 	   public static final double DefaultRetractorUp = .5;		// Default percentage output for raising the retractor
 
 	   public static final int velocityTolerance = 3;				/* Velocity Tolerance in ticks per 100 milliseconds - this is used to determine when we have actually
@@ -236,7 +236,7 @@ public class AutonConstants {
 		       "!",																															//        TO 5
 			   "DA"+StartToLane1+"RA"+OutsideToSwitchSideNear+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 6
 			   "DA"+StartToLane1+"RA"+OutsideToSwitchSideFar+"LH1WA"+Lane1ToSwitch+"WOW",													//        TO 7
-			   "A"+75+"RH1WA"+10+"WDOW",																									//        TO 8
+			   "A"+90+"RH1WA"+10+"WDOW",																									//        TO 8
 //			   "DA"+StartToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",																			//        TO 8
 			   "DA"+StartToLane2+"RA"+OutsideToOutside+"RA"+Lane2ToMidSwitch+"RH1WA"+OutsideToSwitch+"WOW",									//        TO 9
 // Lane 1	   "DA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidSwitch+"LH1WA"+OutsideToSwitch+"WOW",									//        TO 9
@@ -249,7 +249,7 @@ public class AutonConstants {
 			   "DA"+StartToLane2+"RA"+OutsideToFourthCube+"RA"+Lane2ToSwitchForPickup,														//        TO 15
 			   "DA"+StartToLane2+"RA"+OutsideToScaleSideNear+"LH2WA"+Lane2ToScale+"WOW",													//        TO 16
 			   "DA"+StartToLane2+"RA"+OutsideToScaleSideFar+"LH2WA"+Lane2ToScale+"WOW",														//        TO 17
-			   "A"+ 250+"RH2WDOW", 																											//        TO 18
+			   "A"+ 200+"WRH2WDOW", 																											//        TO 18
 //			   "DA"+StartToMidScale+"RH2WA"+OutsideToScale+"WOW", 																			//        TO 18
 			   "DA"+StartToLane2+"RA"+OutsideToOutside+"LA"+Lane2ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
 // Lane 1      "DA"+StartToLane1+"RA"+OutsideToOutside+"LA"+Lane1ToMidScale+"LH2WA"+OutsideToScale+"WOW",									//        TO 19		       
@@ -292,7 +292,7 @@ public class AutonConstants {
 			   "DA"+StartToLane2+"LA"+OutsideToScaleSideNear+"RH2WA"+Lane2ToScale+"WOW",													//        TO 17
 			   "DA"+StartToLane2+"LA"+OutsideToOutside+"RA"+Lane2ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
 // Lane 1      "IWA"+StartToLane1+"LA"+OutsideToOutside+"RA"+Lane1ToMidScale+"RH2WA"+OutsideToScale+"WOW",									//        TO 18
-			   "A250",																			//        TO 19	
+			   "A250WLWH2WDOW",																			//        TO 19	
 //			   "DA"+StartToMidScale+"LH2WA"+OutsideToScale+"WOW",																			//        TO 19		       
 		   },
 		   {																																// FROM 4

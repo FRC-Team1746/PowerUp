@@ -37,7 +37,7 @@ public class AutonLiftMove {
  		    	   if (j == 0) m_position = (int) (tmpDouble);
 	 		    }
 	 		}
-//    		System.out.println("Updating m_position to: " + m_position);
+    		System.out.println("Updating m_position to: " + m_position);
     		m_lift.updatePosition(m_position);
     		currentState = States.MOVE;
     	break;

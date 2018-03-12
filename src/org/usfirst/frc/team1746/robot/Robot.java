@@ -123,15 +123,15 @@ public class Robot extends IterativeRobot {
 //		m_switchRightScaleLeft = prefs.getString("Switch Right, Scale Left", "1,16,11,11");
 //		m_switchRightScaleRight = prefs.getString("Switch Right, Scale Right", "1,17,11,11");
 		m_liveMatch = true;
-		m_simulatedGameData = "LL";	
+		m_simulatedGameData = "RL";	
 		
 		//////// From Position 1 ///////
 		
-//		m_switchLeftScaleLeft = "1,8";
-//		m_switchLeftScaleRight = "1,8";
-//		m_switchRightScaleLeft = "1,18";
-//		m_switchRightScaleRight = "4,4";
-		
+		m_switchLeftScaleLeft = "1,18";
+		m_switchLeftScaleRight = "1,8";
+		m_switchRightScaleLeft = "1,18";
+		m_switchRightScaleRight = "4,4";
+//		
 		////////From Position 2 ///////
 		
 //		m_switchLeftScaleLeft = "2,6";
@@ -140,13 +140,13 @@ public class Robot extends IterativeRobot {
 //		m_switchRightScaleRight = "2,7";
 
 		////////////Go Straight////////
-		m_switchLeftScaleLeft = "4,4";
-		m_switchLeftScaleRight = "4,4";
-		m_switchRightScaleLeft = "4,4";
-		m_switchRightScaleRight = "4,4";
+//		m_switchLeftScaleLeft = "4,4";
+//		m_switchLeftScaleRight = "4,4";
+//		m_switchRightScaleLeft = "4,4";
+//		m_switchRightScaleRight = "4,4";
 		
 		////////From Position 3 ///////
-		
+		    
 //		m_switchLeftScaleLeft = "3,9";
 //		m_switchLeftScaleRight = "3,9";
 //		m_switchRightScaleLeft = "3,19";
@@ -309,7 +309,7 @@ public class Robot extends IterativeRobot {
 		if (driverCommandComplete && elevatorGrabberCommandComplete) {
 			if (m_controls.driver_UP_DPAD() || m_controls.oper_UP_DPAD()) {
 				currentDriverCommand = "A";
-				currentDriverCommandArgs = "50";
+				currentDriverCommandArgs = "205";
 				driverCommandComplete = false;
 			}else if (m_controls.driver_DOWN_DPAD() || m_controls.oper_DOWN_DPAD()) {
 				currentDriverCommand = "B";
