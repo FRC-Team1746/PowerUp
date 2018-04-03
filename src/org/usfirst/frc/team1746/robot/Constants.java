@@ -4,8 +4,9 @@ class Constants {
 
 	
 	public static final double liftEncoderPosition0 = 5;
-	public static final double liftEncoderPosition1 = 15000;
-	public static final double liftEncoderPosition2 = 39666;
+	public static final double liftEncoderPosition1 = 6666;
+	public static final double liftEncoderPosition2 = 9666;
+	public static final double liftEncoderPosition3 = 18666;
 	public static final double liftBumpUp = 666;
 	public static final double liftBumpDown = 666; 
 	public static final double liftEncoderTolerance = 333;
@@ -26,6 +27,6 @@ class Constants {
 	/*
 	 * set to zero to skip waiting for confirmation, set to nonzero to wait and
 	 * report to DS if action fails.
-	 */
+	 */ 
 	public static final int kTimeoutMs = 10;
 }

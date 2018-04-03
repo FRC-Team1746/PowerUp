@@ -30,7 +30,7 @@ public class Lift {
 	private boolean moving;
 	
 	private DigitalInput m_liftBottom;
-	private DigitalInput m_liftTop;
+//	private DigitalInput m_liftTop;
 	private DigitalOutput m_liftTestLED;
 	private boolean m_UpDpadPrevious;
 	private boolean m_DownDpadPrevious;
@@ -46,7 +46,7 @@ public class Lift {
 		m_liftLeft = new VictorSPX(m_eConstants.ELEVATOR_LEFT);
 		m_liftRight = new WPI_TalonSRX(m_eConstants.ELEVATOR_RIGHT);
 		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
-		m_liftTop = new DigitalInput(m_eConstants.LIFT_TOP);
+//		m_liftTop = new DigitalInput(m_eConstants.LIFT_TOP);
 		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
 		m_liftLeft.follow(m_liftRight);
 //		m_pdp = new PowerDistributionPanel(0);
@@ -129,57 +129,60 @@ public class Lift {
 			
 //			m_liftTestLED.set(!m_liftTop.get());
 			
-			if (!m_liftBottom.get() && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
-				m_liftRight.set(0);
-			}else {
-//				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
-////					if (m_pdp.getCurrent(9) < 10){
-//						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
-//						m_liftPosition = getLiftPosition();
-////					}else{
-////						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/5);
-////						m_liftPosition = getLiftPosition();
-////					}
-////					System.out.println("Stick");
-//				} else {
-					if (m_controls.oper_Y_Button()) {
-						m_liftRight.configMotionCruiseVelocity(6000, constants.kTimeoutMs);
-						m_liftPosition = constants.liftEncoderPosition2;
-						System.out.println("Y Pressed");
-					}else if (m_controls.oper_X_Button()) {
-						m_liftRight.configMotionCruiseVelocity(6000, constants.kTimeoutMs);
-						m_liftPosition = constants.liftEncoderPosition1;
-						System.out.println("X Pressed");
-					}else if (m_controls.oper_A_Button()) {
-						m_liftRight.configMotionCruiseVelocity(2000, constants.kTimeoutMs);
-						m_liftPosition = constants.liftEncoderPosition0;
-						System.out.println("A Pressed");
-					}else if (m_controls.oper_UP_DPAD() != m_UpDpadPrevious) {
-						if (m_controls.oper_UP_DPAD()) {
-						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-						m_liftPosition = m_liftPosition + constants.liftBumpUp;
-						System.out.println("Up Press");
-						}
-						m_UpDpadPrevious = m_controls.oper_UP_DPAD();
-					}else if (m_controls.oper_DOWN_DPAD() != m_DownDpadPrevious) {
-						if (m_controls.oper_DOWN_DPAD()) {
-						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-						m_liftPosition = m_liftPosition - constants.liftBumpDown;
-						System.out.println("Down Press");
-						}
-						m_DownDpadPrevious = m_controls.oper_DOWN_DPAD();
-					}
-					
-				m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
-			}
-			//System.out.println("Buttons");
-//		}
+//			if (!m_liftBottom.get() && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
+//				m_liftRight.set(0);
+//			}else {
+				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
+						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/4);
+
+//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+//						m_liftPosition = getLiftPosition() + m_controls.oper_YR_Axis()*666;
+//			} 
+//						else {
+//					if (m_controls.oper_RB_Button()) {
+//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+//						m_liftPosition = constants.liftEncoderPosition3;
+//						System.out.println("RB Pressed");
+//					}else if (m_controls.oper_LB_Button()) {
+//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+//						m_liftPosition = constants.liftEncoderPosition2;
+//						System.out.println("LB Pressed");
+//					}else if (m_controls.oper_X_Button()) {
+//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+//						m_liftPosition = constants.liftEncoderPosition1;
+//						System.out.println("X Pressed");
+//					}else if (m_controls.oper_A_Button()) {
+//						m_liftRight.configMotionCruiseVelocity(2000, constants.kTimeoutMs);
+//						m_liftPosition = constants.liftEncoderPosition0;
+//						System.out.println("A Pressed");
+////					}else if (m_controls.oper_UP_DPAD() != m_UpDpadPrevious) {
+////						if (m_controls.oper_UP_DPAD()) {
+////						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+////						m_liftPosition = m_liftPosition + constants.liftBumpUp;
+////						System.out.println("Up Press");
+////						}
+////						m_UpDpadPrevious = m_controls.oper_UP_DPAD();
+////					}else if (m_controls.oper_DOWN_DPAD() != m_DownDpadPrevious) {
+////						if (m_controls.oper_DOWN_DPAD()) {
+////						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+////						m_liftPosition = m_liftPosition - constants.liftBumpDown;
+////						System.out.println("Down Press");
+////						}
+////						m_DownDpadPrevious = m_controls.oper_DOWN_DPAD();
+//					}
+//					
+//			}
+				
+//				m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
+		}else {
+			m_liftRight.set(ControlMode.PercentOutput, 0);
+		}
 		if (!m_liftBottom.get()) {
 			resetEncoder();
 		}
 		
 		System.out.println(m_liftRight.getSelectedSensorVelocity(0));
-		
+			
 	}
 	
 	public boolean updatePosition(int position) {

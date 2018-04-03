@@ -48,9 +48,9 @@ public class ElectricalConstants {
 	public int ENCODER_DRIVE_RIGHT_B = 3;
 	public int ENCODER_LIFT_A = 4;
 	public int ENCODER_LIFT_B = 5;
-	public int CUBE_PRESENT = 6;
+	public int CUBE_SENSOR = 6; //photosensor
 	public int LIFT_BOTTOM = 0;
-	public int LIFT_TOP = 1;
+	public int INTAKE_LED = 1;
 	public int LIFT_LED = 9;
 	
 	//PCM
@@ -64,7 +64,7 @@ public class ElectricalConstants {
 	public int pcm7 = 7;
 	
 	//Relay
-	public int relay0 = 0;
+	public int LEDRELAY = 0;
 	public int relay1 = 1;
 	public int relay2 = 2;
 	public int relay3 = 3;

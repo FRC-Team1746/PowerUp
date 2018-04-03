@@ -43,8 +43,8 @@ public class AutonConstants {
 	    * Other Autonomous Choices
 	    */
 	   
-	   public static final double DefaultDrivingSpeed = .75;  // 1 means drive at maxVelocity by default, 0.75 means drive at three-quarters of maxVelocity by default
-	   public static final double DefaultTurningSpeed = .75;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
+	   public static final double DefaultDrivingSpeed = .83;  // 1 means drive at maxVelocity by default, 0.75 means drive at three-quarters of maxVelocity by default
+	   public static final double DefaultTurningSpeed = .8;  // 1 means turn at maxVelocity by default, 0.50 means turn at half of maxVelocity by default
 	   public static final double AccelerationMultiplier = 2;  /* At what multiple of maximum velocity do you want to accelerate -- 1 means reach maximum velocity in 1 second,
 	   																2 means reach maximum velocity in one-half second. */
 	   public static final double DefaultIntakeSpeed = 1;	// Default speed for intake in and out for auton

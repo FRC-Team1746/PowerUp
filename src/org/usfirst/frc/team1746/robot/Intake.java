@@ -3,6 +3,11 @@ package org.usfirst.frc.team1746.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
+
 public class Intake {
 	
 	ElectricalConstants m_eConstants;
@@ -12,6 +17,11 @@ public class Intake {
 	private VictorSPX m_intakeLeft;
 	private VictorSPX m_intakeRight;
 	
+	private DigitalInput m_cubeSensor;
+	
+	private Relay m_ledStrip;
+	private DigitalOutput m_ledRio;
+	
 	public Intake(Controls controls) {
 		m_controls = controls;
 		m_eConstants =  new ElectricalConstants();
@@ -20,6 +30,9 @@ public class Intake {
 		m_intakeRight = new VictorSPX(m_eConstants.CUBE_INTAKE_RIGHT);
 		m_intakeRight.configOpenloopRamp(0, 5);
 		m_intakeLeft.configOpenloopRamp(0, 5);
+		m_cubeSensor = new DigitalInput(m_eConstants.CUBE_SENSOR);
+		m_ledStrip = new Relay(m_eConstants.LEDRELAY);
+		m_ledRio = new DigitalOutput(m_eConstants.INTAKE_LED);
 	}
 	
 	public void setRampRate(double rate){
@@ -42,18 +55,24 @@ public class Intake {
 	}
 	
 	public void update(){
+		m_ledRio.set(!intakeSensor());
+		if(intakeSensor()) {
+			m_ledStrip.set(Value.kOff);
+		}else {
+			m_ledStrip.set(Value.kForward);
+		}
 		if (m_controls.oper_RT_Axis() > .1) { //Spin In
-			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_RT_Axis());
-			m_intakeRight.set(ControlMode.PercentOutput, -m_controls.oper_RT_Axis());
+			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_RT_Axis()/3*4);
+			m_intakeRight.set(ControlMode.PercentOutput, -m_controls.oper_RT_Axis()/3*4);
 		}else if (m_controls.oper_LT_Axis() > .1){ //Spin Out
 			m_intakeLeft.set(ControlMode.PercentOutput, -m_controls.oper_LT_Axis());
 			m_intakeRight.set(ControlMode.PercentOutput, m_controls.oper_LT_Axis());
-		}else if (m_controls.oper_LEFT_DPAD()) {
-			m_intakeLeft.set(ControlMode.PercentOutput, .5);
-			m_intakeRight.set(ControlMode.PercentOutput, .5);
-		}else if (m_controls.oper_RIGHT_DPAD()) {
-			m_intakeLeft.set(ControlMode.PercentOutput, -.5);
-			m_intakeRight.set(ControlMode.PercentOutput, -.5);
+//		}else if (m_controls.oper_LEFT_DPAD()) {
+//			m_intakeLeft.set(ControlMode.PercentOutput, .5);
+//			m_intakeRight.set(ControlMode.PercentOutput, .5);
+//		}else if (m_controls.oper_RIGHT_DPAD()) {
+//			m_intakeLeft.set(ControlMode.PercentOutput, -.5);
+//			m_intakeRight.set(ControlMode.PercentOutput, -.5);
 		}else { //Nope
 			m_intakeRight.set(ControlMode.PercentOutput, 0);
 			m_intakeLeft.set(ControlMode.PercentOutput, 0);
@@ -74,5 +93,8 @@ public class Intake {
 		m_intakeRight.set(ControlMode.PercentOutput, 0);
 		m_intakeLeft.set(ControlMode.PercentOutput, 0);
 	}
-	
+	public boolean intakeSensor() {
+		System.out.println("Cube Sensor:" + m_cubeSensor.get());
+		return m_cubeSensor.get();
+	}
 }
