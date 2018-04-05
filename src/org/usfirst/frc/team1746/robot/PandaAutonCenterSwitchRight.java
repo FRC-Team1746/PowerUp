@@ -115,7 +115,7 @@ public class PandaAutonCenterSwitchRight {
 			m_speed = 0;
 			m_autonDriveTrain.autonDriveStraight(m_speed);
 			if(m_delayCounter ++ >= 100){
-				currentState = States.SECONDBACKINIT;
+				currentState = States.STOP;
 				m_delayCounter = 0;
 				m_autonDriveTrain.resetEncoders();
 			}

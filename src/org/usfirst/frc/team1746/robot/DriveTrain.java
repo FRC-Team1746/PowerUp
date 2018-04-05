@@ -235,8 +235,12 @@ public void initAuto(){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public void teleopArcadeDrive(){
-		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), m_controls.driver_X_Axis()/4*3);
-//		setRampRate(0.0);
+		if (!m_controls.driver_A_Button()) {
+		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), m_controls.driver_X_Axis()/10*6);
+		}else {
+		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), m_controls.driver_X_Axis());
+		}
+		setRampRate(0.0);
 //		setCoast(true);		
 	}
 	public void autonDriveStraight(double distance, double speed){
@@ -369,9 +373,9 @@ public void initAuto(){
 		System.out.println("STRAIGHTPID" + (P*encoderDifference+D*derivative+I*integral));
 	}
 	public void driveStraightGyro(double speed, double targetHeading) {
-		double P = 0.0002;
+		double P = 0.0012;
 		double I = 0.000000;
-		double D = 0;
+		double D = 0.012;
 		
 		encoderDifference = (getAdjustedHeading() - targetHeading) * 128.8;
 		

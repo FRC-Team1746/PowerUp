@@ -44,14 +44,18 @@ public class ElectricalConstants {
 	// DIOs
 	public int ENCODER_DRIVE_LEFT_A = 7;
 	public int ENCODER_DRIVE_LEFT_B = 8;
-	public int ENCODER_DRIVE_RIGHT_A = 2;
+	public int ENCODER_DRIVE_RIGHT_A = 6;
 	public int ENCODER_DRIVE_RIGHT_B = 3;
 	public int ENCODER_LIFT_A = 4;
 	public int ENCODER_LIFT_B = 5;
-	public int CUBE_SENSOR = 6; //photosensor
-	public int LIFT_BOTTOM = 0;
+	public int CUBE_SENSOR = 2; //photosensor
+	public int empty0 = 0;
 	public int INTAKE_LED = 1;
 	public int LIFT_LED = 9;
+	
+	//ANALOG
+	public int LIFT_BOTTOM = 0;
+	public int POT = 1;
 	
 	//PCM
 	public int INTAKE_RETRACT_LEFT = 0;

@@ -203,9 +203,8 @@ public class Robot extends IterativeRobot {
 		m_intake.update();
 		m_vision.trackObject();
 		System.out.println(m_vision.Tracking());
-		m_vision.updateSmartdashboard();
-		m_driveTrain.updateSmartDashboard();
 		m_autonBase.auton();
+		updateAutonSmartDashboard();
 //		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
 //        if (!allCommandsLoaded && driverCommandComplete && AutonConstants.driveCommands.contains(m_matcher.group(1))) {
 //        	currentDriverCommand = m_matcher.group(1);
@@ -373,10 +372,11 @@ public class Robot extends IterativeRobot {
 	
 	public void updateSmartDashboard() {
 		m_driveTrain.updateSmartDashboard();
-		
+		m_lift.updateSmartDashboard();
+		m_retractor.updateSmartDashboard();
 	}
 	public void updateAutonSmartDashboard() {
-//		m_driveTrain.updateSmartDashboard();
-		
+		m_vision.updateSmartdashboard();
+		m_driveTrain.updateSmartDashboard();
 	}
 }

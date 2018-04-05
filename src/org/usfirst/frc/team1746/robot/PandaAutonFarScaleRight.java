@@ -85,7 +85,7 @@ public class PandaAutonFarScaleRight {
 			if (m_autonDriveTrain.getEncoderLeftInches() >= 15) {
 				m_autonDriveTrain.setRampRate(0);
 			}
-			if (m_autonDriveTrain.getEncoderLeftInches() >= 155) {
+			if (m_autonDriveTrain.getEncoderLeftInches() >= 140) {
 				System.out.println("finished Drive 2 Cube");
 				currentState = States.FIRSTLEGINIT;
 			}
@@ -103,7 +103,7 @@ public class PandaAutonFarScaleRight {
 //			double value = pidcontroller.get(); 
 			m_autonDriveTrain.radialDriveAtSpeed(m_speed, m_turnRadius, m_rightTurn);
 			System.out.println("Gyro Value: " + m_autonDriveTrain.getAdjustedHeading());
-			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) >= 65) {
+			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) >= 50) {
 				currentState = States.SECONDDRIVESTRAIGHTINIT;
 				m_delayCounter = 0;
 				m_autonDriveTrain.resetEncoders();
@@ -124,7 +124,7 @@ public class PandaAutonFarScaleRight {
 			if (m_autonDriveTrain.getEncoderLeftInches() >= 15) {
 				m_autonDriveTrain.setRampRate(0);
 			}
-			if (m_autonDriveTrain.getEncoderLeftInches() >= 70) {
+			if (m_autonDriveTrain.getEncoderLeftInches() >= 90) {
 				System.out.println("finished Drive 2 Cube");
 				currentState = States.SECONDLEGINIT;
 			}
@@ -132,9 +132,9 @@ public class PandaAutonFarScaleRight {
 		case SECONDLEGINIT:
 			if(m_delayCounter ++ >= 2){
 			m_speed = .65;
-			m_turnRadius = 50;
+			m_turnRadius = 30;
 			m_rightTurn = false;
-			m_targetDegrees = 1;
+			m_targetDegrees = -65;
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
 //			m_autonLift.initPandaLift(1);
 			currentState = States.SECONDLEG;

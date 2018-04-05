@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -23,13 +24,14 @@ public class Lift {
 	Controls m_controls;
 //	PowerDistributionPanel m_pdp;
 	Constants constants;
-
+	Retractor m_retractor;
+	
 	private VictorSPX m_liftLeft;
 	private WPI_TalonSRX m_liftRight;
 	private double m_liftPosition;
 	private boolean moving;
 	
-	private DigitalInput m_liftBottom;
+	private AnalogInput m_liftBottom;
 //	private DigitalInput m_liftTop;
 	private DigitalOutput m_liftTestLED;
 	private boolean m_UpDpadPrevious;
@@ -45,7 +47,7 @@ public class Lift {
 		constants = new Constants();
 		m_liftLeft = new VictorSPX(m_eConstants.ELEVATOR_LEFT);
 		m_liftRight = new WPI_TalonSRX(m_eConstants.ELEVATOR_RIGHT);
-		m_liftBottom = new DigitalInput(m_eConstants.LIFT_BOTTOM);
+		m_liftBottom = new AnalogInput(m_eConstants.LIFT_BOTTOM);
 //		m_liftTop = new DigitalInput(m_eConstants.LIFT_TOP);
 		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
 		m_liftLeft.follow(m_liftRight);
@@ -57,7 +59,7 @@ public class Lift {
 		
 		/* first choose the sensor */
 		m_liftRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,constants.kPIDLoopIdx, constants.kTimeoutMs);
-		m_liftRight.setSensorPhase(true);
+		m_liftRight.setSensorPhase(false);
 		m_liftRight.setInverted(false);
 		/* Set relevant frame periods to be at least as fast as periodic rate*/
 		m_liftRight.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10,
@@ -129,56 +131,60 @@ public class Lift {
 			
 //			m_liftTestLED.set(!m_liftTop.get());
 			
-//			if (!m_liftBottom.get() && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button()) {
-//				m_liftRight.set(0);
-//			}else {
+			if ((m_liftBottom.getVoltage() >= 0.7) && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button() && !(m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15)) {
+				m_liftRight.set(0);
+			}else /* if (!m_retractor.checkPosition() || (m_retractor.checkPosition() && (getLiftPosition() >= constants.liftEncoderPosition2 || getLiftPosition() <= constants.liftEncoderPosition1) )) */ {
 				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
-						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/4);
-
-//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-//						m_liftPosition = getLiftPosition() + m_controls.oper_YR_Axis()*666;
-//			} 
-//						else {
-//					if (m_controls.oper_RB_Button()) {
-//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-//						m_liftPosition = constants.liftEncoderPosition3;
-//						System.out.println("RB Pressed");
-//					}else if (m_controls.oper_LB_Button()) {
-//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-//						m_liftPosition = constants.liftEncoderPosition2;
-//						System.out.println("LB Pressed");
-//					}else if (m_controls.oper_X_Button()) {
-//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-//						m_liftPosition = constants.liftEncoderPosition1;
-//						System.out.println("X Pressed");
-//					}else if (m_controls.oper_A_Button()) {
+//						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
+						m_liftRight.configMotionCruiseVelocity(4000, constants.kTimeoutMs);
+						m_liftPosition = getLiftPosition() - m_controls.oper_YR_Axis()*666;
+				} else {
+					if (m_controls.oper_Y_Button()) {
+						m_liftRight.configMotionCruiseVelocity(8000, constants.kTimeoutMs);
+						m_liftPosition = constants.liftEncoderPosition4;
+						System.out.println("Y Pressed");
+					}else if (m_controls.oper_B_Button()) {
+						m_liftRight.configMotionCruiseVelocity(8000, constants.kTimeoutMs);
+						m_liftPosition = constants.liftEncoderPosition2;
+						System.out.println("B Pressed");
+					}else if (m_controls.oper_X_Button()) {
+						m_liftRight.configMotionCruiseVelocity(8000, constants.kTimeoutMs);
+						m_liftPosition = constants.liftEncoderPosition1;
+						System.out.println("X Pressed");
+					}else if (m_controls.oper_A_Button()) {
+						if (m_liftBottom.getVoltage() >= 0.7) {
+							m_liftRight.configMotionCruiseVelocity(0, constants.kTimeoutMs);
+						} else {
+						m_liftRight.configMotionCruiseVelocity(5000, constants.kTimeoutMs);
+						m_liftPosition = constants.liftEncoderPosition0;
+						}
+						System.out.println("A Pressed");
+//					}else if (m_controls.oper_UP_DPAD() != m_UpDpadPrevious) {
+//						if (m_controls.oper_UP_DPAD()) {
 //						m_liftRight.configMotionCruiseVelocity(2000, constants.kTimeoutMs);
-//						m_liftPosition = constants.liftEncoderPosition0;
-//						System.out.println("A Pressed");
-////					}else if (m_controls.oper_UP_DPAD() != m_UpDpadPrevious) {
-////						if (m_controls.oper_UP_DPAD()) {
-////						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-////						m_liftPosition = m_liftPosition + constants.liftBumpUp;
-////						System.out.println("Up Press");
-////						}
-////						m_UpDpadPrevious = m_controls.oper_UP_DPAD();
-////					}else if (m_controls.oper_DOWN_DPAD() != m_DownDpadPrevious) {
-////						if (m_controls.oper_DOWN_DPAD()) {
-////						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-////						m_liftPosition = m_liftPosition - constants.liftBumpDown;
-////						System.out.println("Down Press");
-////						}
-////						m_DownDpadPrevious = m_controls.oper_DOWN_DPAD();
-//					}
-//					
-//			}
+//						m_liftPosition = m_liftPosition + constants.liftBumpUp;
+//						System.out.println("Up Press");
+//						}
+//						m_UpDpadPrevious = m_controls.oper_UP_DPAD();
+//					}else if (m_controls.oper_DOWN_DPAD() != m_DownDpadPrevious) {
+//						if (m_controls.oper_DOWN_DPAD()) {
+//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
+//						m_liftPosition = m_liftPosition - constants.liftBumpDown;
+//						System.out.println("Down Press");
+//						}
+//						m_DownDpadPrevious = m_controls.oper_DOWN_DPAD();
+					}
+					
+			}
 				
-//				m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
-		}else {
-			m_liftRight.set(ControlMode.PercentOutput, 0);
+				m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
+		/*}else {
+			m_liftRight.set(0); */
 		}
-		if (!m_liftBottom.get()) {
+			
+		if ((m_liftBottom.getVoltage() >= 0.7)) {
 			resetEncoder();
+			m_liftPosition = 0;
 		}
 		
 		System.out.println(m_liftRight.getSelectedSensorVelocity(0));
@@ -187,15 +193,19 @@ public class Lift {
 	
 	public boolean updatePosition(int position) {
 		if (!moving) {
-			if (position == 2) {
+			if (position == 3) {
 				m_liftRight.configMotionCruiseVelocity(6000, constants.kTimeoutMs);
-				m_liftPosition = constants.liftEncoderPosition2;
+				m_liftPosition = constants.liftEncoderPosition3;
 			}else if (position == 1) {
 				m_liftRight.configMotionCruiseVelocity(6000, constants.kTimeoutMs);
 				m_liftPosition = constants.liftEncoderPosition1;
 			}else if (position == 0) {
-				m_liftRight.configMotionCruiseVelocity(2000, constants.kTimeoutMs);
+				if (m_liftBottom.getVoltage() >= 0.7) {
+					m_liftRight.configMotionCruiseVelocity(0, constants.kTimeoutMs);
+				} else {
+				m_liftRight.configMotionCruiseVelocity(4000, constants.kTimeoutMs);
 				m_liftPosition = constants.liftEncoderPosition0;
+				}
 			}
 			moving = true;
 			return false;
@@ -212,12 +222,14 @@ public class Lift {
 	}
 	
 	public double getLiftPosition(){
-		return m_liftRight.getSelectedSensorPosition(0);
+		return m_liftRight.getSelectedSensorPosition(constants.kPIDLoopIdx);
 	}
 	
 	public void updateSmartDashboard(){
 		SmartDashboard.putNumber("Lift position", getLiftPosition());
 		SmartDashboard.putNumber("Intended", m_liftPosition);
+		SmartDashboard.putNumber("Bottom Value: ", m_liftBottom.getVoltage());		
+		SmartDashboard.putBoolean("Bottom Sensor: ", (m_liftBottom.getVoltage() >= 0.7));
 //		SmartDashboard.putNumber("PDP 8", m_pdp.getCurrent(8));
 //		SmartDashboard.putNumber("PDP 9", m_pdp.getCurrent(9));
 //		SmartDashboard.putNumber("Lift Encoder", m_liftEncoder);
