@@ -37,29 +37,39 @@ public class Retractor {
 		/*eFeedbackNotContinuous = 1, subValue/ordinal/timeoutMs = 0*/
 		m_retractor.configSetParameter(ParamEnum.eFeedbackNotContinuous, 1, 0x00, 0x00, 0x00);
 		
-		m_retractor.setSensorPhase(false);
+		m_retractor.setSensorPhase(true);
 		m_retractor.setInverted(false);
 		
 		m_retractor.setSelectedSensorPosition(0, constants.kPIDLoopIdx, constants.kTimeoutMs);
 		m_retractor.configOpenloopRamp(0, 0);
 		m_retractor.configClosedloopRamp(0, 0);
+		
+		m_retPosition = getPot();
 	}
 
-	public void updateOld(){
+	public void update(){
+
+		analogPos = m_retractor.getSensorCollection().getAnalogIn();
+		analogVel = m_retractor.getSensorCollection().getAnalogInVel();
+		
 		if (m_controls.oper_Y_Axis() > .15 || m_controls.oper_Y_Axis() < -.15) {
-//			System.out.println("Moving Retractor in Teleop  -  Output Percentage: " + (-m_controls.oper_YR_Axis()/3*4));
-			m_retractor.set(ControlMode.PercentOutput, -m_controls.oper_Y_Axis()/3*4);
+			System.out.println("Moving Retractor in Teleop  -  Output Percentage: " + (-m_controls.oper_YR_Axis()/2));
+			m_retractor.set(ControlMode.PercentOutput, -m_controls.oper_Y_Axis()/2);
 			m_retractor.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake); 
 		}else{
 			m_retractor.set(0);
 		}
 	}
 	
-	public void update() {
+	public void updateNew() {
 		
-			if (m_controls.oper_Y_Axis() > .15 || m_controls.oper_Y_Axis() < -.15) {
-				m_retractor.configMotionCruiseVelocity(2, 10);
-				m_retPosition = m_retPosition - m_controls.oper_Y_Axis()/2;
+		analogPos = m_retractor.getSensorCollection().getAnalogIn();
+		analogVel = m_retractor.getSensorCollection().getAnalogInVel();
+		
+		if(getPot() < constants.retNinetyDeg+10 && getPot() > constants.retZeroDeg-1) {		
+			if (m_controls.oper_Y_Axis() < .15 && m_controls.oper_Y_Axis() > -.15) {
+				m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+				m_retPosition = m_retPosition - m_controls.oper_Y_Axis()*50;
 			}else{
 				if(m_controls.oper_UP_DPAD()) {
 					m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
@@ -75,6 +85,53 @@ public class Retractor {
 					m_retPosition = constants.retZeroDeg;
 				}
 			}
+		}else {
+			if (getPot() > constants.retNinetyDeg) {
+				if (m_controls.oper_Y_Axis() > -.15) {
+					m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+					m_retPosition = m_retPosition - m_controls.oper_Y_Axis()*50;
+				}else if (m_controls.oper_DOWN_DPAD()||m_controls.oper_UP_DPAD()||m_controls.oper_LEFT_DPAD()||m_controls.oper_RIGHT_DPAD()){
+					if(m_controls.oper_UP_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retNinetyDeg;
+					} else if(m_controls.oper_DOWN_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retZeroDeg;
+					} else if(m_controls.oper_RIGHT_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retFourtyFiveDeg;
+					} else if(m_controls.oper_LEFT_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retZeroDeg;
+					}
+				} else {
+					m_retPosition = constants.retNinetyDeg;
+					m_retractor.configMotionCruiseVelocity(0, 10);
+				}
+			} else if(getPot() < constants.retZeroDeg) {
+				if (m_controls.oper_Y_Axis() < .15) {
+					m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+					m_retPosition = m_retPosition - m_controls.oper_Y_Axis()*50;
+				}else if (m_controls.oper_DOWN_DPAD()||m_controls.oper_UP_DPAD()||m_controls.oper_LEFT_DPAD()||m_controls.oper_RIGHT_DPAD()){
+					if(m_controls.oper_UP_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retNinetyDeg;
+					} else if(m_controls.oper_DOWN_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retZeroDeg;
+					} else if(m_controls.oper_RIGHT_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retFourtyFiveDeg;
+					} else if(m_controls.oper_LEFT_DPAD()) {
+						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
+						m_retPosition = constants.retZeroDeg;
+					}
+				} else {
+					m_retPosition = constants.retZeroDeg;
+					m_retractor.configMotionCruiseVelocity(0, 10);
+				}
+			}
+		}
 		m_retractor.set(ControlMode.MotionMagic, m_retPosition);	
 	}
 	
@@ -92,7 +149,7 @@ public class Retractor {
 		return m_retractor.getSelectedSensorPosition(constants.kPIDLoopIdx);
 	}
 	
-	public void retractorDown() { //Retractor at 90 degrees
+	public void retractorDown() { //Retractor at 0 degrees
 		m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
 		m_retPosition = constants.retZeroDeg;
 //		m_retractor.set(ControlMode.PercentOutput, -m_aConstants.DefaultRetractorDown);
@@ -110,5 +167,7 @@ public class Retractor {
 	public void updateSmartDashboard() {
 		SmartDashboard.putNumber("Pot Pos", analogPos);
 		SmartDashboard.putNumber("Pot Vel", analogVel);
+		SmartDashboard.putNumber("Potended", m_retPosition);
+		
 	}
 }

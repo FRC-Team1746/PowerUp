@@ -94,9 +94,10 @@ public class Robot extends IterativeRobot {
 	 	m_autonGo = new AutonGo(m_driveTrain);
 	    m_autonTurn = new AutonTurn(m_driveTrain);
 	    m_timer = new Timer();
-	 	m_autonBase = new AutonBase(m_driveTrain, m_lift, m_intake);
+	 	m_autonBase = new AutonBase(m_driveTrain, m_lift, m_intake, m_retractor);
 	    
-	    
+		m_lift.setEncoderToStart();
+
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		m_driveTrain.initHeading();
 		
-		
+		m_lift.setEncoderToStart();
 		
 //		m_driveTrain.resetGyro();
 //	    driverCommandComplete = true;
@@ -201,6 +202,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		m_intake.update();
+		m_lift.update();
+		m_retractor.updateNew();
 		m_vision.trackObject();
 		System.out.println(m_vision.Tracking());
 		m_autonBase.auton();
@@ -300,7 +303,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		m_lift.update();
 		m_intake.update();
-		m_retractor.update();
+		m_retractor.updateNew();
 		m_driveTrain.teleopArcadeDrive();
 		m_vision.trackObject();
 		System.out.println(m_vision.Tracking());
@@ -378,5 +381,7 @@ public class Robot extends IterativeRobot {
 	public void updateAutonSmartDashboard() {
 		m_vision.updateSmartdashboard();
 		m_driveTrain.updateSmartDashboard();
+		m_lift.updateSmartDashboard();
+		m_retractor.updateSmartDashboard();
 	}
 }

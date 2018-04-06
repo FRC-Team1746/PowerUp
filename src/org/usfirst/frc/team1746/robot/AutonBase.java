@@ -28,22 +28,22 @@ public class AutonBase {
 	SendableChooser<String> switchSelector = new SendableChooser<>();
 	SendableChooser<String> scaleSelector = new SendableChooser<>();
 	
-	public AutonBase(DriveTrain m_driveTrain, Lift m_lift, Intake m_intake) {
+	public AutonBase(DriveTrain m_driveTrain, Lift m_lift, Intake m_intake, Retractor m_retractor) {
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		robotPosition = 1;
 		scalePrioritized = true;
 		delayTimer = new Timer();
 		
-		m_pandaAutonCenterSwitchRight = new PandaAutonCenterSwitchRight(m_driveTrain,m_lift, m_intake);
-	    m_pandaAutonCenterSwitchLeft = new PandaAutonCenterSwitchLeft(m_driveTrain,m_lift, m_intake);
-	    m_pandaAutonScaleRight = new PandaAutonScaleRight(m_driveTrain, m_lift, m_intake);
-	    m_pandaAutonScaleLeft = new PandaAutonScaleLeft(m_driveTrain, m_lift, m_intake);
-	    m_pandaAutonSwitchLeft = new PandaAutonSwitchLeft(m_driveTrain, m_lift, m_intake);
-	    m_pandaAutonSwitchRight = new PandaAutonSwitchRight(m_driveTrain, m_lift, m_intake);
+		m_pandaAutonCenterSwitchRight = new PandaAutonCenterSwitchRight(m_driveTrain,m_lift, m_intake, m_retractor);
+	    m_pandaAutonCenterSwitchLeft = new PandaAutonCenterSwitchLeft(m_driveTrain,m_lift, m_intake, m_retractor);
+	    m_pandaAutonScaleRight = new PandaAutonScaleRight(m_driveTrain, m_lift, m_intake, m_retractor);
+	    m_pandaAutonScaleLeft = new PandaAutonScaleLeft(m_driveTrain, m_lift, m_intake, m_retractor);
+	    m_pandaAutonSwitchLeft = new PandaAutonSwitchLeft(m_driveTrain, m_lift, m_intake, m_retractor);
+	    m_pandaAutonSwitchRight = new PandaAutonSwitchRight(m_driveTrain, m_lift, m_intake, m_retractor);
 	    m_pandaAutonStraight = new PandaAutonStraight(m_driveTrain, m_lift, m_intake);
-	    m_pandaAutonFarScaleRight = new PandaAutonFarScaleRight(m_driveTrain, m_lift, m_intake);   
-	    m_pandaAutonFarScaleLeft = new PandaAutonFarScaleLeft(m_driveTrain, m_lift, m_intake);   
+	    m_pandaAutonFarScaleRight = new PandaAutonFarScaleRight(m_driveTrain, m_lift, m_intake, m_retractor);   
+	    m_pandaAutonFarScaleLeft = new PandaAutonFarScaleLeft(m_driveTrain, m_lift, m_intake, m_retractor);   
 	    
 	    m_pandaAutonCenterSwitchRight.init();
 	    m_pandaAutonCenterSwitchLeft.init();

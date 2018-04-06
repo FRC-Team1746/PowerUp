@@ -22,6 +22,7 @@ public class PandaAutonScaleLeft {
 //	private double inf = Double.POSITIVE_INFINITY;
 	private double m_initialHeading;
 	private double m_targetDegrees;
+	private Retractor m_retractor;
 	
 	public enum States {
 		INIT,
@@ -29,13 +30,15 @@ public class PandaAutonScaleLeft {
 		DRIVESTRAIGHT,
 		RIGHTLEGINIT,
 		RIGHTLEG,
+		SHOOT,
 		STOP,
 		IDLE
 	}
 	
-	public PandaAutonScaleLeft(DriveTrain drivetrain, Lift lift, Intake intake) {
+	public PandaAutonScaleLeft(DriveTrain drivetrain, Lift lift, Intake intake, Retractor retractor) {
 		m_autonDriveTrain = drivetrain;
 		m_autonLift = lift;
+		m_retractor = retractor;
 		m_constants = new Constants();
 		m_intake = intake;
 		m_speed = 0;
@@ -79,7 +82,7 @@ public class PandaAutonScaleLeft {
 			if (m_autonDriveTrain.getEncoderLeftInches() >= 15) {
 				m_autonDriveTrain.setRampRate(0);
 			}
-			if (m_autonDriveTrain.getEncoderLeftInches() >= 165) {
+			if (m_autonDriveTrain.getEncoderLeftInches() >= 160) {
 				System.out.println("finished Drive 2 Cube");
 				currentState = States.RIGHTLEGINIT;
 			}
@@ -87,8 +90,8 @@ public class PandaAutonScaleLeft {
 		case RIGHTLEGINIT:
 			if(m_delayCounter ++ >= 2){
 			m_speed = .7;
-			m_turnRadius = 90;
-			m_targetDegrees = 25;
+			m_turnRadius = 55;
+			m_targetDegrees = 22;
 			m_rightTurn = true;
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
 //			m_autonLift.initPandaLift(1);
@@ -102,16 +105,28 @@ public class PandaAutonScaleLeft {
 				System.out.println("finished left leg, heading = " + m_autonDriveTrain.getAdjustedHeading());
 //				m_pandaIntake.initPandaIntake(1);
 				m_delayCounter = 0;
-				currentState = States.STOP;
+				currentState = States.SHOOT;
 			}
 			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= 15) {
 				//init Shooting
 			}
-			break;	
+			break;
+		case SHOOT:
+			m_retractor.updateNew();
+			m_retractor.retractorDown();
+			if(m_retractor.getPot() >= Constants.retFourtyFiveDeg) {
+				m_intake.intakeOut();
+				if (m_delayCounter ++ >= 20) {
+					currentState = States.STOP;
+					m_delayCounter = 0;
+				}
+			}
+			break;
 		case STOP:
 //			System.out.println("STOP has been reached");
 			m_speed = 0;
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
+			m_intake.intakeStop();
 			break;
 		case IDLE:
 			break;

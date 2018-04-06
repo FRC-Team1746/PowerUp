@@ -22,7 +22,8 @@ public class PandaAutonCenterSwitchRight {
 //	private double inf = Double.POSITIVE_INFINITY;
 	private double m_initialHeading;
 	private double m_targetDegrees;
-	
+	private Retractor m_retractor;
+		
 	public enum States {
 		INIT,
 		DRIVESTRAIGHT,
@@ -41,10 +42,11 @@ public class PandaAutonCenterSwitchRight {
 		IDLE
 	}
 	
-	public PandaAutonCenterSwitchRight(DriveTrain drivetrain, Lift lift, Intake intake) {
+	public PandaAutonCenterSwitchRight(DriveTrain drivetrain, Lift lift, Intake intake, Retractor retractor) {
 		m_autonDriveTrain = drivetrain;
 		m_autonLift = lift;
 		m_constants = new Constants();
+		m_retractor = retractor;
 		m_intake = intake;
 		m_speed = 0;
 		m_turnRadius = 150;
@@ -102,13 +104,21 @@ public class PandaAutonCenterSwitchRight {
 				System.out.println("finished second leg, heading = " + m_autonDriveTrain.getAdjustedHeading());
 //				m_pandaIntake.initPandaIntake(1);
 				m_delayCounter = 0;
-				currentState = States.DELAY;
+				currentState = States.SHOOT;
 			}
 			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= 15) {
 				//init Shooting
 			}
 			break;
 		case SHOOT:
+			m_retractor.retractorDown();
+			if(m_retractor.getPot() >= Constants.retFourtyFiveDeg) {
+				m_intake.intakeOut();
+				if (m_delayCounter ++ >= 20) {
+					currentState = States.STOP;
+					m_delayCounter = 0;
+				}
+			}
 			break;
 			//insert
 		case DELAY:
@@ -183,6 +193,7 @@ public class PandaAutonCenterSwitchRight {
 //			System.out.println("STOP has been reached");
 			m_speed = 0;
 			m_autonDriveTrain.autonDriveStraight(m_speed);
+			m_intake.intakeStop();
 			break;
 		case IDLE:
 			break;

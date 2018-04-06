@@ -5,29 +5,6 @@ public class ElectricalConstants {
 	public int JOYSTICK_DRIVER = 0;
 	public int JOYSTICK_OPERATOR = 1;
 	
-	
-	// PWMs
-	public int MOTOR_DRIVE_LEFT_MASTER = 20;
-	public int MOTOR_DRIVE_LEFT_FOLLOWER_A = 21;
-	public int MOTOR_DRIVE_LEFT_FOLLOWER_B = 22;
-	
-	public int MOTOR_DRIVE_RIGHT_MASTER = 10;
-	public int MOTOR_DRIVE_RIGHT_FOLLOWER_A = 11;
-	public int MOTOR_DRIVE_RIGHT_FOLLOWER_B = 12;
-	
-	public int CUBE_INTAKE_LEFT = 51;
-	public int CUBE_INTAKE_RIGHT = 52;
-	
-	public int ELEVATOR_LEFT = 32;
-	public int ELEVATOR_RIGHT = 31;
-	
-	public int CLIMBER_1 = 40;
-	public int CLIMBER_2 = 41;
-	public int CLIMBER_3 = 42;
-	
-//	public int RETRACTOR_LEFT = 50;
-	public int RETRACTOR = 53;
-	
 	// MoreBoard
 	public int EMPTY1 = 10;
 	public int EMPTY2 = 11;
@@ -42,26 +19,25 @@ public class ElectricalConstants {
 	
 	
 	// DIOs
-	public int ENCODER_DRIVE_LEFT_A = 7;
-	public int ENCODER_DRIVE_LEFT_B = 8;
-	public int ENCODER_DRIVE_RIGHT_A = 6;
-	public int ENCODER_DRIVE_RIGHT_B = 3;
-	public int ENCODER_LIFT_A = 4;
-	public int ENCODER_LIFT_B = 5;
-	public int CUBE_SENSOR = 2; //photosensor
-	public int empty0 = 0;
+	public int DIO0 = 0;
 	public int INTAKE_LED = 1;
+	public int CUBE_SENSOR = 2; //photosensor
+	public int DIO3 = 3;
+	public int DIO4 = 4;
+	public int DIO5 = 5;
+	public int DIO6 = 6;
+	public int DIO7 = 7;
+	public int DIO8 = 8;
 	public int LIFT_LED = 9;
 	
 	//ANALOG
 	public int LIFT_BOTTOM = 0;
-	public int POT = 1;
 	
 	//PCM
-	public int INTAKE_RETRACT_LEFT = 0;
-	public int INTAKE_RETRACT_RIGHT = 1;
-	public int GEAR_HOPPER_FLAPS_OUT= 2;
-	public int GEAR_HOPPER_FLAPS_IN = 3;
+	public int pcm0 = 0;
+	public int pcm1 = 1;
+	public int pcm2= 2;
+	public int pcm3 = 3;
 	public int pcm4 = 4;
 	public int pcm5 = 5;
 	public int pcm6 = 6;
@@ -94,13 +70,26 @@ public class ElectricalConstants {
 	public int PDP_CHANNEL_15 = 15;
 	
 	//CAN
-	
-	public int CAN_DRIVE_LEFT_FRONT = 10;
-	public int CAN_DRIVE_LEFT_BACK = 11;
-	public int CAN_DRIVE_LEFT_CENTER = 12;
-	
-	public int CAN_DRIVE_RIGHT_FRONT = 13;
-	public int CAN_DRIVE_RIGHT_BACK = 14;
-	public int CAN_DRIVE_RIGHT_CENTER = 15;
+
+		public int MOTOR_DRIVE_LEFT_MASTER = 20;
+		public int MOTOR_DRIVE_LEFT_FOLLOWER_A = 21;
+		public int MOTOR_DRIVE_LEFT_FOLLOWER_B = 22;
+		
+		public int MOTOR_DRIVE_RIGHT_MASTER = 10;
+		public int MOTOR_DRIVE_RIGHT_FOLLOWER_A = 11;
+		public int MOTOR_DRIVE_RIGHT_FOLLOWER_B = 12;
+		
+		public int CUBE_INTAKE_LEFT = 51;
+		public int CUBE_INTAKE_RIGHT = 52;
+		
+		public int ELEVATOR_LEFT = 32;
+		public int ELEVATOR_RIGHT = 31;
+		
+		public int CLIMBER_1 = 40;
+		public int CLIMBER_2 = 41;
+		public int CLIMBER_3 = 42;
+		
+//		public int RETRACTOR_LEFT = 50;
+		public int RETRACTOR = 53;
 	
 }

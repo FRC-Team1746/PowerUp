@@ -2,22 +2,26 @@ package org.usfirst.frc.team1746.robot;
 
 class Constants {
 	//Lift
-														// 1 Inch around 678	
+														// 1 Inch is 914
+	public static final double liftEncoderPerInch = 914;
+	public static final double liftBottomFromFloor = 6;
 	public static final double liftEncoderPosition0 = -6666;
-	public static final double liftEncoderPosition1 = 19666;//29 Inches
-	public static final double liftEncoderPosition2 = 40666;//5 feet
-	public static final double liftEncoderPosition3 = 50000;//6 feet
-	public static final double liftEncoderPosition4 = 56999;//7 feet
-	public static final double liftBumpUp = 666;
-	public static final double liftBumpDown = 666; 
-	public static final double liftEncoderTolerance = 333;
-	public static final double climbingBarHeight = 81;           //In Inches
+	public static final double liftEncoderPosition1 = liftEncoderPerInch * (29-liftBottomFromFloor);//29 Inches 21022 Ticks
+	public static final double liftEncoderPosition2 = liftEncoderPerInch * (60-liftBottomFromFloor);//5 feet 49356 Ticks
+	public static final double liftEncoderPosition3 = liftEncoderPerInch * (72-liftBottomFromFloor);//6 feet 60324 Ticks
+	public static final double liftEncoderPosition4 = liftEncoderPerInch * (84-liftBottomFromFloor);//7 feet 71292 Ticks
+	public static final double liftAutonStartPosition = 25222;//Starting Position 
+	public static final double liftBumpUp = liftEncoderPerInch; //Unused
+	public static final double liftBumpDown = liftEncoderPerInch; //Unused
+	public static final double liftEncoderTolerance = liftEncoderPerInch/2;
+	public static final double climbingBarHeight = 81;           //In Inches ;
+
 	//Retractor
-	public static final double retZeroDeg = 0; // In 5 Volts Out Of 1023  Units 
-	public static final double retFourtyFiveDeg = 127.88;
-	public static final double retNinetyDeg = 255.75; 
-	public static final double retCrashDeg = 200;
-	public static final int retSpeed = 20;
+	public static final double retZeroDeg = -856; // In 5 Volts Out Of 1023  Units 
+	public static final double retFourtyFiveDeg = -660;
+	public static final double retNinetyDeg = -590; 
+	public static final double retCrashDeg = -420; //
+	public static final int retSpeed = 30;
 	
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from

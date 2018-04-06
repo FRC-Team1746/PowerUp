@@ -105,6 +105,11 @@ public class Lift {
 		m_liftRight.setSelectedSensorPosition(0, 0, 10);
 	}
 	
+	public void setEncoderToStart(){
+		m_liftRight.setSelectedSensorPosition((int) constants.liftAutonStartPosition, 0, 10);
+		m_liftPosition = constants.liftAutonStartPosition;
+	}
+	
 	public void setRampRate(double rate){
 		m_liftRight.configOpenloopRamp(rate, 5);
 		m_liftLeft.configOpenloopRamp(rate, 5);
@@ -133,7 +138,7 @@ public class Lift {
 			
 			if ((m_liftBottom.getVoltage() >= 0.7) && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_Y_Button() && !(m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15)) {
 				m_liftRight.set(0);
-			}else /* if (!m_retractor.checkPosition() || (m_retractor.checkPosition() && (getLiftPosition() >= constants.liftEncoderPosition2 || getLiftPosition() <= constants.liftEncoderPosition1) )) */ {
+			}else  if (!m_retractor.checkPosition() || (m_retractor.checkPosition() && (getLiftPosition() >= constants.liftEncoderPosition2 || getLiftPosition() <= constants.liftEncoderPosition1) )) {
 				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
 //						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
 						m_liftRight.configMotionCruiseVelocity(4000, constants.kTimeoutMs);
@@ -178,8 +183,9 @@ public class Lift {
 			}
 				
 				m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
-		/*}else {
-			m_liftRight.set(0); */
+		}else {
+			m_liftRight.set(0); 
+			m_liftPosition = getLiftPosition();
 		}
 			
 		if ((m_liftBottom.getVoltage() >= 0.7)) {

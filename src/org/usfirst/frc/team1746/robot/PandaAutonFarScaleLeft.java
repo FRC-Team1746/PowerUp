@@ -22,6 +22,7 @@ public class PandaAutonFarScaleLeft {
 //	private double inf = Double.POSITIVE_INFINITY;
 	private double m_initialHeading;
 	private double m_targetDegrees;
+	private Retractor m_retractor;
 	
 	public enum States {
 		INIT,
@@ -39,11 +40,12 @@ public class PandaAutonFarScaleLeft {
 		IDLE
 	}
 	
-	public PandaAutonFarScaleLeft(DriveTrain drivetrain, Lift lift, Intake intake) { //Everything In The Class Needs To Be Changed
+	public PandaAutonFarScaleLeft(DriveTrain drivetrain, Lift lift, Intake intake, Retractor retractor ) { //Everything In The Class Needs To Be Changed
 		m_autonDriveTrain = drivetrain;
 		m_autonLift = lift;
 		m_constants = new Constants();
 		m_intake = intake;
+		m_retractor = retractor;
 		m_speed = 0;
 		m_turnRadius = 150;
 		m_rightTurn = true;
@@ -146,16 +148,23 @@ public class PandaAutonFarScaleLeft {
 			System.out.println("Adjusted Heading" + m_autonDriveTrain.getAdjustedHeading());
 			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= m_targetDegrees) {
 				System.out.println("finished second leg, heading = " + m_autonDriveTrain.getAdjustedHeading());
-//				m_pandaIntake.initPandaIntake(1);
 				m_delayCounter = 0;
-				currentState = States.DELAY;
+				currentState = States.SHOOT;
 			}
-			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= 15) {
-				//init Shooting
+			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= m_targetDegrees/3) {
+				m_autonLift.updatePosition(3);
 			}
 			break;
 		case SHOOT:
-			break;
+			m_retractor.retractorDown();
+			if(m_retractor.getPot() >= Constants.retFourtyFiveDeg) {
+				m_intake.intakeOut();
+				if (m_delayCounter ++ >= 20) {
+					currentState = States.STOP;
+					m_delayCounter = 0;
+				}
+			}
+			break;	
 			//insert
 		case DELAY:
 			m_speed = 0;
@@ -170,6 +179,7 @@ public class PandaAutonFarScaleLeft {
 //			System.out.println("STOP has been reached");
 			m_speed = 0;
 			m_autonDriveTrain.autonDriveStraight(m_speed);
+			m_intake.intakeStop();
 			break;
 		case IDLE:
 			break;
