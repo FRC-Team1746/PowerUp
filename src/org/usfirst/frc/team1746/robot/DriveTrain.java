@@ -373,14 +373,15 @@ public void initAuto(){
 		System.out.println("STRAIGHTPID" + (P*encoderDifference+D*derivative+I*integral));
 	}
 	public void driveStraightGyro(double speed, double targetHeading) {
-		double P = 0.0012;
+		double P = 0.00078; //on practice bot it is .0012
 		double I = 0.000000;
-		double D = 0.012;
+		double D = 0.000;
 		
 		encoderDifference = (getAdjustedHeading() - targetHeading) * 128.8;
 		
 		derivative = encoderDifference-prevEncoderDiff;
 		prevEncoderDiff = encoderDifference;
+		System.out.println("LeftEncoder/RightEncoder " + getEncoderLeft() + getEncoderRight());
 		integral = integral + encoderDifference;
 		if(encoderDifference == 0) {integral = 0;}
 		if((Math.abs(integral)>4000)) {integral = 0;}
@@ -405,7 +406,7 @@ public void initAuto(){
 		m_RightMaster.set(vision_speedRight);
 	}
 	
-	public double autonDriveTurn(double direction, double initialHeading){
+	public double autonDriveTurn(double direction, double initialHeading, double speed){
 //		myRobot.tankDrive(speed, -speed);
 //		m_LeftMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
 //		m_RightMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
@@ -427,9 +428,13 @@ public void initAuto(){
 		System.out.println("Turn Error: " + turnError);
 		double P = 1/90;
 		if(Math.abs(turnError) > 40) {
-			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed,-direction*aConstants.DefaultTurningSpeed);
+//			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed,-direction*aConstants.DefaultTurningSpeed);
+			m_LeftMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed);
+			m_RightMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed);
 		}else {
-			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed*P*turnError,-direction*aConstants.DefaultTurningSpeed*P*turnError);
+//			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed*P*turnError,-direction*aConstants.DefaultTurningSpeed*P*turnError);
+			m_LeftMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed*P*turnError);
+			m_RightMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed*P*turnError);
 			System.out.println("Initial Heading: " + initialHeading);
 			System.out.println("Direction: " + direction);
 			System.out.println("Get Heading: " + getHeading());

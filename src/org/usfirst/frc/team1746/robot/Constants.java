@@ -6,22 +6,22 @@ class Constants {
 	public static final double liftEncoderPerInch = 914;
 	public static final double liftBottomFromFloor = 6;
 	public static final double liftEncoderPosition0 = -6666;
-	public static final double liftEncoderPosition1 = liftEncoderPerInch * (29-liftBottomFromFloor);//29 Inches 21022 Ticks
-	public static final double liftEncoderPosition2 = liftEncoderPerInch * (60-liftBottomFromFloor);//5 feet 49356 Ticks
-	public static final double liftEncoderPosition3 = liftEncoderPerInch * (72-liftBottomFromFloor);//6 feet 60324 Ticks
-	public static final double liftEncoderPosition4 = liftEncoderPerInch * (84-liftBottomFromFloor);//7 feet 71292 Ticks
-	public static final double liftAutonStartPosition = 25222;//Starting Position 
+	public static final double liftEncoderPosition1 = liftEncoderPerInch * (31-liftBottomFromFloor);//29 Inches 21022 Ticks
+	public static final double liftEncoderPosition2 = liftEncoderPerInch * (76-liftBottomFromFloor);//5 feet 49356 Ticks
+	public static final double liftEncoderPosition3 = liftEncoderPerInch * (73-liftBottomFromFloor);//6 feet 60324 Ticks
+	public static final double liftEncoderPosition4 = liftEncoderPerInch * (88-liftBottomFromFloor);// 71292 Ticks
+	public static final double liftAutonStartPosition = 25246;//Starting Position 
 	public static final double liftBumpUp = liftEncoderPerInch; //Unused
 	public static final double liftBumpDown = liftEncoderPerInch; //Unused
 	public static final double liftEncoderTolerance = liftEncoderPerInch/2;
 	public static final double climbingBarHeight = 81;           //In Inches ;
 
 	//Retractor
-	public static final double retZeroDeg = -856; // In 5 Volts Out Of 1023  Units 
-	public static final double retFourtyFiveDeg = -660;
-	public static final double retNinetyDeg = -590; 
-	public static final double retCrashDeg = -420; //
-	public static final int retSpeed = 30;
+	public static final double retZeroDeg = 765; // In 5 Volts Out Of 1023  Units 
+	public static final double retFourtyFiveDeg = 650;
+	public static final double retNinetyDeg = 520; 
+	public static final double retCrashDeg = 320; //Starting Position
+	public static final int retSpeed = 50;
 	
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from

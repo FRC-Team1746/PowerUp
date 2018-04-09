@@ -5,6 +5,28 @@ public class ElectricalConstants {
 	public int JOYSTICK_DRIVER = 0;
 	public int JOYSTICK_OPERATOR = 1;
 	
+	//CAN
+	public int MOTOR_DRIVE_LEFT_MASTER = 20;
+	public int MOTOR_DRIVE_LEFT_FOLLOWER_A = 21;
+	public int MOTOR_DRIVE_LEFT_FOLLOWER_B = 22;
+		
+	public int MOTOR_DRIVE_RIGHT_MASTER = 10;
+	public int MOTOR_DRIVE_RIGHT_FOLLOWER_A = 11;
+	public int MOTOR_DRIVE_RIGHT_FOLLOWER_B = 12;
+		
+	public int CUBE_INTAKE_LEFT = 51;
+	public int CUBE_INTAKE_RIGHT = 52;
+		
+	public int ELEVATOR_LEFT = 32;
+	public int ELEVATOR_RIGHT = 31;
+		
+	public int CLIMBER_1 = 40;
+	public int CLIMBER_2 = 41;
+	public int CLIMBER_3 = 42;
+		
+//	public int RETRACTOR_LEFT = 53;
+	public int RETRACTOR = 50; //For The Comp Rob
+//	public int RETRACTOR = 53; //For The Prac Ot
 	// MoreBoard
 	public int EMPTY1 = 10;
 	public int EMPTY2 = 11;
@@ -19,9 +41,9 @@ public class ElectricalConstants {
 	
 	
 	// DIOs
-	public int DIO0 = 0;
+	public int CUBE_SENSOR = 0; //photosensor
 	public int INTAKE_LED = 1;
-	public int CUBE_SENSOR = 2; //photosensor
+	public int DIO2 = 2; 
 	public int DIO3 = 3;
 	public int DIO4 = 4;
 	public int DIO5 = 5;
@@ -31,7 +53,7 @@ public class ElectricalConstants {
 	public int LIFT_LED = 9;
 	
 	//ANALOG
-	public int LIFT_BOTTOM = 0;
+	public int LIFT_BOTTOM = 0; //Reset
 	
 	//PCM
 	public int pcm0 = 0;
@@ -51,7 +73,6 @@ public class ElectricalConstants {
 	
 	//PDP
 	public int PDP_CAN_ID = 0;
-	
 	public int PDP_CHANNEL_0 = 0;
 	public int PDP_CHANNEL_1 = 1;
 	public int PDP_CHANNEL_2 = 2;
@@ -68,28 +89,5 @@ public class ElectricalConstants {
 	public int PDP_CHANNEL_13 = 13;
 	public int PDP_CHANNEL_14 = 14;
 	public int PDP_CHANNEL_15 = 15;
-	
-	//CAN
-
-		public int MOTOR_DRIVE_LEFT_MASTER = 20;
-		public int MOTOR_DRIVE_LEFT_FOLLOWER_A = 21;
-		public int MOTOR_DRIVE_LEFT_FOLLOWER_B = 22;
 		
-		public int MOTOR_DRIVE_RIGHT_MASTER = 10;
-		public int MOTOR_DRIVE_RIGHT_FOLLOWER_A = 11;
-		public int MOTOR_DRIVE_RIGHT_FOLLOWER_B = 12;
-		
-		public int CUBE_INTAKE_LEFT = 51;
-		public int CUBE_INTAKE_RIGHT = 52;
-		
-		public int ELEVATOR_LEFT = 32;
-		public int ELEVATOR_RIGHT = 31;
-		
-		public int CLIMBER_1 = 40;
-		public int CLIMBER_2 = 41;
-		public int CLIMBER_3 = 42;
-		
-//		public int RETRACTOR_LEFT = 50;
-		public int RETRACTOR = 53;
-	
 }

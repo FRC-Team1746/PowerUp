@@ -55,12 +55,18 @@ public class Intake {
 	}
 	
 	public void update(){
-		m_ledRio.set(!intakeSensor());
-		if(intakeSensor()) {
-			m_ledStrip.set(Value.kOff);
-		}else {
+		if(m_controls.driver_X_Button()) {
 			m_ledStrip.set(Value.kForward);
+		}else {
+			m_ledRio.set(!intakeSensor());
+			if(intakeSensor()) {
+				m_ledStrip.set(Value.kOff);
+			}else {
+				m_ledStrip.set(Value.kForward);
+			}
+			
 		}
+		
 		if (m_controls.oper_RT_Axis() > .1) { //Spin In
 			m_intakeLeft.set(ControlMode.PercentOutput, m_controls.oper_RT_Axis()/3*4);
 			m_intakeRight.set(ControlMode.PercentOutput, -m_controls.oper_RT_Axis()/3*4);

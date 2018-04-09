@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutonBase {
 	String gameData;
 	int robotPosition;
+	private int m_delayCounter;
 
 	Timer delayTimer;
 	
@@ -19,7 +20,7 @@ public class AutonBase {
 	PandaAutonSwitchLeft m_pandaAutonSwitchLeft;
 	PandaAutonStraight m_pandaAutonStraight;
 	PandaAutonFarScaleRight m_pandaAutonFarScaleRight;
-	PandaAutonFarScaleLeft m_pandaAutonFarScaleLeft;
+	PandaAutonFarScaleLeftHook m_pandaAutonFarScaleLeft;
 	
 	boolean scalePrioritized;
 	
@@ -31,7 +32,7 @@ public class AutonBase {
 	public AutonBase(DriveTrain m_driveTrain, Lift m_lift, Intake m_intake, Retractor m_retractor) {
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		robotPosition = 1;
+		robotPosition = 3;
 		scalePrioritized = true;
 		delayTimer = new Timer();
 		
@@ -43,7 +44,7 @@ public class AutonBase {
 	    m_pandaAutonSwitchRight = new PandaAutonSwitchRight(m_driveTrain, m_lift, m_intake, m_retractor);
 	    m_pandaAutonStraight = new PandaAutonStraight(m_driveTrain, m_lift, m_intake);
 	    m_pandaAutonFarScaleRight = new PandaAutonFarScaleRight(m_driveTrain, m_lift, m_intake, m_retractor);   
-	    m_pandaAutonFarScaleLeft = new PandaAutonFarScaleLeft(m_driveTrain, m_lift, m_intake, m_retractor);   
+	    m_pandaAutonFarScaleLeft = new PandaAutonFarScaleLeftHook(m_driveTrain, m_lift, m_intake, m_retractor);   
 	    
 	    m_pandaAutonCenterSwitchRight.init();
 	    m_pandaAutonCenterSwitchLeft.init();
@@ -130,66 +131,71 @@ public class AutonBase {
 	
 	public void auton() {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		robotPosition = (int) selectedStart();
+//		robotPosition = (int) selectedStart();
+		robotPosition = 3;
 		scalePrioritized = true;
 		
 		delayTimer.start();
 		
-		if(delayTimer.get() >= selectedStartDelay()) {
-			if(robotPosition == 1) {	//Bot On Left DriverStation Position
-				if (scalePrioritized) { //Scale Is Prioritized
-					if (gameData.charAt(1) == 'L') { //Game Data Says Scale Is Left Side
-						m_pandaAutonScaleLeft.auton();
-					} else {// Assume Right Side Scale
-						m_pandaAutonFarScaleRight.auton();
-//						m_pandaAutonStraight.auton();
-//						if(gameData.charAt(0) == 'L') { //Game Data Says Switch Is Left
-//							m_pandaAutonSwitchLeft.auton();
-//						}else {
-//							m_pandaAutonStraight.auton();//Drive Straight Or Do Nothing
-//						}
-					}
-				}else {//Switch Is Prioritized
-					if (gameData.charAt(0) == 'L') { //Game Data Says Switch Is Left Side
-						m_pandaAutonSwitchLeft.auton();
-					} else {// Assume Right Side Switch
+//		if (m_delayCounter ++ >= 750) {
+			if(delayTimer.get() >= selectedStartDelay()) {
+				if(robotPosition == 1) {	//Bot On Left DriverStation Position
+					if (scalePrioritized) { //Scale Is Prioritized
 						if (gameData.charAt(1) == 'L') { //Game Data Says Scale Is Left Side
 							m_pandaAutonScaleLeft.auton();
 						} else {// Assume Right Side Scale
-							m_pandaAutonStraight.auton();//Do Nothing Or Drive Straight
+	//						m_pandaAutonFarScaleRight.auton();
+	//						m_pandaAutonStraight.auton();
+	//						if(gameData.charAt(0) == 'L') { //Game Data Says Switch Is Left
+	//							m_pandaAutonSwitchLeft.auton();
+	//						}else {
+								m_pandaAutonStraight.auton();//Drive Straight Or Do Nothing
+	//						}
+						}
+					}else {//Switch Is Prioritized
+						if (gameData.charAt(0) == 'L') { //Game Data Says Switch Is Left Side
+							m_pandaAutonSwitchLeft.auton();
+						} else {// Assume Right Side Switch
+							if (gameData.charAt(1) == 'L') { //Game Data Says Scale Is Left Side
+								m_pandaAutonScaleLeft.auton();
+							} else {// Assume Right Side Scale
+								m_pandaAutonStraight.auton();//Do Nothing Or Drive Straight
+							}
 						}
 					}
-				}
-			}else if(robotPosition == 2) { //Bot Next To Exchange
-				if(gameData.charAt(0) == 'L') { //Game Data Says Switch Is Left
-					m_pandaAutonCenterSwitchLeft.auton();
-				}else { //Game Data Says Switch Is Right
-					m_pandaAutonCenterSwitchRight.auton();
-				}
-			}else if(robotPosition == 3) { //Bot On Right Side DriverStation
-				if (scalePrioritized) { //Scale Is Prioritized
-					if (gameData.charAt(1) == 'R') { //Game Data Says Scale Is Right Side
-						m_pandaAutonScaleRight.auton();
-					} else {// Assume Left Side Scale
-						if(gameData.charAt(0) == 'R') { //Game Data Says Switch Is Right
-							m_pandaAutonSwitchRight.auton();
-						}else {
-							m_pandaAutonStraight.auton();//Drive Straight Or Do Nothing
-						}
+				}else if(robotPosition == 2) { //Bot Next To Exchange
+					if(gameData.charAt(0) == 'L') { //Game Data Says Switch Is Left
+						m_pandaAutonCenterSwitchLeft.auton();
+					}else { //Game Data Says Switch Is Right
+						m_pandaAutonCenterSwitchRight.auton();
 					}
-				}else {//Switch Is Prioritized
-					if (gameData.charAt(0) == 'R') { //Game Data Says Switch Is Right Side
-						m_pandaAutonSwitchRight.auton();
-					} else {// Assume Left Side Switch
+				}else if(robotPosition == 3) { //Bot On Right Side DriverStation
+					if (scalePrioritized) { //Scale Is Prioritized
 						if (gameData.charAt(1) == 'R') { //Game Data Says Scale Is Right Side
 							m_pandaAutonScaleRight.auton();
 						} else {// Assume Left Side Scale
-							m_pandaAutonStraight.auton();//Do Nothing Or Drive Straight
-						}	
-					}
-				}			
-			}
-		} 
+							if(gameData.charAt(0) == 'R') { //Game Data Says Switch Is Right
+								m_pandaAutonSwitchRight.auton();
+							}else {
+								m_pandaAutonStraight.auton();//Drive Straight Or Do Nothing
+							}
+						}
+					}else {//Switch Is Prioritized
+						if (gameData.charAt(0) == 'R') { //Game Data Says Switch Is Right Side
+							m_pandaAutonSwitchRight.auton();
+						} else {// Assume Left Side Switch
+							if (gameData.charAt(1) == 'R') { //Game Data Says Scale Is Right Side
+								m_pandaAutonScaleRight.auton();
+							} else {// Assume Left Side Scale
+								m_pandaAutonStraight.auton();//Do Nothing Or Drive Straight
+							}	
+						}
+					}			
+				}
+			} 
+//		}else {
+//			
+//		}
 	}	
 	
 	public void updateSmartDashboard() {

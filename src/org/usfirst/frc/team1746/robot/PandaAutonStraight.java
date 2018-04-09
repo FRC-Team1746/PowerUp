@@ -76,10 +76,10 @@ public class PandaAutonStraight {
 			m_autonDriveTrain.driveStraightGyro(m_speed, 0);
 			System.out.println("Encoder" + m_autonDriveTrain.getAdjustedHeading());
 //			if (!m_intake.intakeSensor()) { //Sensor Returns False When It Sees A Cube
-			if (m_autonDriveTrain.getEncoderLeftInches() >= 180) {
+			if (m_autonDriveTrain.getEncoderLeftInches() >= 100) {
 				m_autonDriveTrain.setRampRate(0);
 			}
-			if (m_autonDriveTrain.getEncoderLeftInches() >= 180) {
+			if (m_autonDriveTrain.getEncoderLeftInches() >= 100) {
 				System.out.println("finished Drive 2 Cube");
 				currentState = States.STOP;
 			}

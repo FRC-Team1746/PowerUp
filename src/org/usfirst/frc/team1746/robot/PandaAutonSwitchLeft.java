@@ -113,20 +113,21 @@ public class PandaAutonSwitchLeft {
 			}
 			break;
 		case SHOOT:
-			m_retractor.retractorDown();
-			if(m_retractor.getPot() >= Constants.retFourtyFiveDeg) {
-				m_intake.intakeOut();
-				if (m_delayCounter ++ >= 20) {
+			m_retractor.retractorDownDumb();
+				if (m_delayCounter ++ >= 50) {
+					m_intake.intakeOut();
+					if (m_delayCounter ++ >= 100) {
 					currentState = States.STOP;
 					m_delayCounter = 0;
 				}
-			}
+				}
 			break;
 		case STOP:
 //			System.out.println("STOP has been reached");
 			m_speed = 0;
 			m_autonDriveTrain.autonDriveStraight(m_speed);
 			m_intake.intakeStop();
+			m_retractor.retractorStop();
 			break;
 		case IDLE:
 			break;

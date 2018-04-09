@@ -60,6 +60,7 @@ public class PandaAutonCenterSwitchLeft {
 		case INIT:
 			m_autonDriveTrain.resetEncoders();
 			m_initialHeading = m_autonDriveTrain.getHeading();
+			m_autonDriveTrain.initHeading();
 //			pidcontroller = new PIDController(0, 0, 0, 0, m_Gyro, m_LeftMaster);
 //			PIDController pidcontroller1 = new PIDController(0, 0, 0, 0, m_Gyro, m_RightMaster); //Enter Gyro value and Both Motor Sides? // Try Speed Controller Groups?
 			m_speed = .5;
@@ -100,7 +101,7 @@ public class PandaAutonCenterSwitchLeft {
 		case SECONDLEG:
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
 			System.out.println("Adjusted Heading" + m_autonDriveTrain.getAdjustedHeading());
-			if (m_autonDriveTrain.getAdjustedHeading() >= m_targetDegrees) {
+			if (m_autonDriveTrain.getAdjustedHeading() >= m_targetDegrees - 3) {
 				System.out.println("finished second leg, heading = " + m_autonDriveTrain.getAdjustedHeading());
 //				m_pandaIntake.initPandaIntake(1);
 				m_delayCounter = 0;
@@ -111,12 +112,14 @@ public class PandaAutonCenterSwitchLeft {
 			}
 			break;
 		case SHOOT:
-			m_retractor.retractorDown();
-			if(m_retractor.getPot() >= Constants.retFourtyFiveDeg) {
+			m_speed = 0;
+			m_autonDriveTrain.autonDriveStraight(m_speed);
+			m_retractor.retractorDownDumb();
+			if (m_delayCounter ++ >= 50) {
 				m_intake.intakeOut();
-				if (m_delayCounter ++ >= 20) {
-					currentState = States.STOP;
-					m_delayCounter = 0;
+				if (m_delayCounter ++ >= 100) {
+				currentState = States.STOP;
+				m_delayCounter = 0;
 				}
 			}
 			break;

@@ -12,7 +12,7 @@ public class PandaAutonScaleRight {
 	AutonConstants aConstants;
 	private DriveTrain m_autonDriveTrain;
 	private States currentState;
-	private Lift m_autonLift;
+	private Lift m_lift;
 	private Constants m_constants;
 	private double m_speed;
 	private double m_turnRadius;
@@ -30,14 +30,16 @@ public class PandaAutonScaleRight {
 		DRIVESTRAIGHT,
 		LEFTLEGINIT,
 		LEFTLEG,
+		LIFT,
 		SHOOT,
+		BACK,
 		STOP,
 		IDLE
 	}
 	
 	public PandaAutonScaleRight(DriveTrain drivetrain, Lift lift, Intake intake, Retractor retractor) {
 		m_autonDriveTrain = drivetrain;
-		m_autonLift = lift;
+		m_lift = lift;
 		m_constants = new Constants();
 		m_intake = intake;
 		m_speed = 0;
@@ -54,6 +56,7 @@ public class PandaAutonScaleRight {
 		case INIT:
 			m_autonDriveTrain.resetEncoders();
 			m_initialHeading = m_autonDriveTrain.getHeading();
+			m_autonDriveTrain.initHeading();
 //			pidcontroller = new PIDController(0, 0, 0, 0, m_Gyro, m_LeftMaster);
 //			PIDController pidcontroller1 = new PIDController(0, 0, 0, 0, m_Gyro, m_RightMaster); //Enter Gyro value and Both Motor Sides? // Try Speed Controller Groups?
 			m_speed = .25;
@@ -83,7 +86,7 @@ public class PandaAutonScaleRight {
 			if (m_autonDriveTrain.getEncoderLeftInches() >= 30) {
 				m_autonDriveTrain.setRampRate(0);
 			}
-			if (m_autonDriveTrain.getEncoderLeftInches() >= 116) {
+			if (m_autonDriveTrain.getEncoderLeftInches() >= 139) {
 				System.out.println("finished Drive 2 Cube");
 				currentState = States.LEFTLEGINIT;
 			}
@@ -92,7 +95,7 @@ public class PandaAutonScaleRight {
 			if(m_delayCounter ++ >= 2){
 			m_speed = .7;
 			m_turnRadius = 100;
-			m_targetDegrees = -40;
+			m_targetDegrees = -27;
 			m_rightTurn = false;
 //			m_autonLift.initPandaLift(1);
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
@@ -102,28 +105,42 @@ public class PandaAutonScaleRight {
 		case LEFTLEG:
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
 			System.out.println("Adjusted Heading" + m_autonDriveTrain.getAdjustedHeading());
-			if (m_autonDriveTrain.getAdjustedHeading() <= m_targetDegrees) {
+			if (m_autonDriveTrain.getAdjustedHeading() <= m_targetDegrees+8) {
 				System.out.println("finished left leg, heading = " + m_autonDriveTrain.getAdjustedHeading());
 //				m_pandaIntake.initPandaIntake(1);
 				m_delayCounter = 0;
-				currentState = States.SHOOT;
-			}
-			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <=  m_targetDegrees + 5) {
-				m_autonLift.updatePosition(3);
-				//init Shooting
+				currentState = States.LIFT;
 			}
 			break;	
+		case LIFT:
+			m_speed = 0;
+			m_autonDriveTrain.autonDriveStraight(0);
+			m_lift.updatePosition(4);
+			m_lift.update();
+			if(m_lift.getLiftPosition() >= Constants.liftEncoderPosition4 - 1000) {
+				currentState = States.SHOOT;
+			}
+			break;
 		case SHOOT:
-			m_retractor.updateNew();
-			m_retractor.retractorDown();
-			if(m_retractor.getPot() >= Constants.retFourtyFiveDeg) {
+			m_retractor.retractorDownDumb();
+			if (m_delayCounter ++ >= 50) {
 				m_intake.intakeOut();
-				if (m_delayCounter ++ >= 20) {
-					currentState = States.STOP;
-					m_delayCounter = 0;
+				if (m_delayCounter ++ >= 100) {
+				currentState = States.BACK;
+				m_delayCounter = 0;
 				}
 			}
+			break;
+		case BACK:
+			if(m_delayCounter ++ >= 2){ //Waiting For Encoders To Reset
+				m_speed = -.4;
+				m_rightTurn = true;
+				m_autonDriveTrain.pandaDriveStraight(m_speed);
+			}
 			
+			if(m_delayCounter ++ >= 50) {
+				currentState = States.STOP;
+			}
 			break;
 		case STOP:
 //			System.out.println("STOP has been reached");

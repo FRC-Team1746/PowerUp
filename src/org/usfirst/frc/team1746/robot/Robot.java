@@ -51,6 +51,7 @@ public class Robot extends IterativeRobot {
     Timer m_timer;
     VisionCube m_vision;
     AutonBase m_autonBase;
+    PandaAutonFarScaleLeftMeghan m_pandaAutonScaleRight;
     
     double waitTime;
     
@@ -95,6 +96,8 @@ public class Robot extends IterativeRobot {
 	    m_autonTurn = new AutonTurn(m_driveTrain);
 	    m_timer = new Timer();
 	 	m_autonBase = new AutonBase(m_driveTrain, m_lift, m_intake, m_retractor);
+	 	m_pandaAutonScaleRight = new PandaAutonFarScaleLeftMeghan(m_driveTrain, m_lift, m_intake, m_retractor);
+//	 	m_pandaAutonScaleRight = new PandaAutonScaleRight(m_driveTrain, m_lift, m_intake, m_retractor);
 	    
 		m_lift.setEncoderToStart();
 
@@ -106,7 +109,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		m_driveTrain.initHeading();
-		
+//		m_pandaAutonScaleRight.init();
 		m_lift.setEncoderToStart();
 		
 //		m_driveTrain.resetGyro();
@@ -124,7 +127,7 @@ public class Robot extends IterativeRobot {
 //		currentSpecialCommandArgs="";
 //
 //		prefs = Preferences.getInstance();
-//		
+//		.
 ////		m_liveMatch = prefs.getBoolean("This a Live Match", false);
 ////		m_simulatedGameData = prefs.getString("Simulated Game Data", "LL");
 ////		m_switchLeftScaleLeft = prefs.getString("Switch Left, Scale Left", "1,16,10,10");
@@ -203,10 +206,11 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		m_intake.update();
 		m_lift.update();
-		m_retractor.updateNew();
+		m_retractor.update();
 		m_vision.trackObject();
 		System.out.println(m_vision.Tracking());
 		m_autonBase.auton();
+//		m_pandaAutonScaleRight.auton();
 		updateAutonSmartDashboard();
 //		System.out.println("Driver command complete: " + driverCommandComplete + "   All Commands Loaded: " + allCommandsLoaded);
 //        if (!allCommandsLoaded && driverCommandComplete && AutonConstants.driveCommands.contains(m_matcher.group(1))) {
@@ -217,7 +221,7 @@ public class Robot extends IterativeRobot {
 //        	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
 //        }
 //        if (!allCommandsLoaded && elevatorGrabberCommandComplete && AutonConstants.elevatorGrabberCommands.contains(m_matcher.group(1))) {
-//        	currentElevatorGrabberCommand = m_matcher.group(1);
+//        	currentElevatorG3bnjkjzkrabberCommand = m_matcher.group(1);
 //        	currentElevatorGrabberCommandArgs = m_matcher.group(2);
 //        	elevatorGrabberCommandComplete = false;
 //        	if (!m_matcher.find()) allCommandsLoaded = true;   // get the next Command
@@ -303,7 +307,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		m_lift.update();
 		m_intake.update();
-		m_retractor.updateNew();
+		m_retractor.update();
 		m_driveTrain.teleopArcadeDrive();
 		m_vision.trackObject();
 		System.out.println(m_vision.Tracking());

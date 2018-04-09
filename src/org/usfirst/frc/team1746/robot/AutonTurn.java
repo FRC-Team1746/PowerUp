@@ -63,12 +63,12 @@ public class AutonTurn {
 //			if (m_driveTrain.getHeading() < -88 + m_initialHeading) {  // We need to make this more accurate !!!!  (and calibrate)
 //				currentState = States.TURN_STOP;							
 //			}		
-			m_driveTrain.autonDriveTurn(m_turn, m_initialHeading);
-			
-			if (m_driveTrain.autonDriveTurn(m_turn, m_initialHeading) < 13) {
-				currentState = States.TURN_STOP;
-			}
-			
+//			m_driveTrain.autonDriveTurn(m_turn, m_initialHeading);
+//			
+//			if (m_driveTrain.autonDriveTurn(m_turn, m_initialHeading) < 13) {
+//				currentState = States.TURN_STOP;
+//			}
+			currentState = States.TURN_STOP;
 			
 			
 		
