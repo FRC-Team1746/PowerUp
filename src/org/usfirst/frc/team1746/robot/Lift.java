@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1746.robot;
 
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
@@ -16,13 +15,10 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.*;
 
-//import edu.wpi.first.wpilibj.PowerDistributionPanel;
-
 public class Lift {
 	
 	ElectricalConstants m_eConstants;
 	Controls m_controls;
-//	PowerDistributionPanel m_pdp;
 	Constants constants;
 	Retractor m_retractor;
 	
@@ -32,14 +28,11 @@ public class Lift {
 	private boolean moving;
 	
 	private AnalogInput m_liftBottom;
-//	private DigitalInput m_liftTop;
 	private DigitalOutput m_liftTestLED;
 	private boolean m_UpDpadPrevious;
 	private boolean m_DownDpadPrevious;
 	
 	StringBuilder _sb = new StringBuilder();
-	
-//	private Encoder m_liftEncoder;
 	
 	public Lift(Controls controls) {
 		m_controls = controls;
@@ -48,11 +41,8 @@ public class Lift {
 		m_liftLeft = new VictorSPX(m_eConstants.ELEVATOR_LEFT);
 		m_liftRight = new WPI_TalonSRX(m_eConstants.ELEVATOR_RIGHT);
 		m_liftBottom = new AnalogInput(m_eConstants.LIFT_BOTTOM);
-//		m_liftTop = new DigitalInput(m_eConstants.LIFT_TOP);
 		m_liftTestLED = new DigitalOutput(m_eConstants.LIFT_LED);
 		m_liftLeft.follow(m_liftRight);
-//		m_pdp = new PowerDistributionPanel(0);
-//		m_liftEncoder = new Encoder(m_eConstants.ENCODER_LIFT_A, m_eConstants.ENCODER_LIFT_B, false, Encoder.EncodingType.k1X);	
 		
 		m_liftPosition = 13;
 		moving = false;
@@ -132,17 +122,13 @@ public class Lift {
 	
 	public void update() {
 		
-//		m_liftRight.set(ControlMode.Position, m_liftPosition);
-			
-//			m_liftTestLED.set(!m_liftTop.get());
-			
 			if ((m_liftBottom.getVoltage() >= 0.7) && !m_controls.oper_A_Button() && !m_controls.oper_X_Button() && !m_controls.oper_B_Button() && !m_controls.oper_Y_Button() && !(m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15)) {
 				m_liftRight.set(0);
 			}else /*if (!m_retractor.checkPosition() || (m_retractor.checkPosition() && (getLiftPosition() >= constants.liftEncoderPosition2 || getLiftPosition() <= constants.liftEncoderPosition1) )) */{
 				if (m_controls.oper_YR_Axis() > .15 || m_controls.oper_YR_Axis() < -.15) {
 //						m_liftRight.set(ControlMode.PercentOutput, -m_controls.oper_YR_Axis()/2);
-						m_liftRight.configMotionCruiseVelocity(7000, constants.kTimeoutMs);
-						m_liftPosition = getLiftPosition() - m_controls.oper_YR_Axis()*1.6*constants.liftEncoderPerInch;
+						m_liftRight.configMotionCruiseVelocity((int) (6500+(Math.abs(m_controls.oper_Y_Axis()*1500))), constants.kTimeoutMs);
+						m_liftPosition = getLiftPosition() - m_controls.oper_YR_Axis()*2.5*constants.liftEncoderPerInch;
 				} else {
 					if (m_controls.oper_Y_Button()) {
 						m_liftRight.configMotionCruiseVelocity(9000, constants.kTimeoutMs);
@@ -164,20 +150,6 @@ public class Lift {
 						m_liftPosition = constants.liftEncoderPosition0;
 						}
 						System.out.println("A Pressed");
-//					}else if (m_controls.oper_UP_DPAD() != m_UpDpadPrevious) {
-//						if (m_controls.oper_UP_DPAD()) {
-//						m_liftRight.configMotionCruiseVelocity(2000, constants.kTimeoutMs);
-//						m_liftPosition = m_liftPosition + constants.liftBumpUp;
-//						System.out.println("Up Press");
-//						}
-//						m_UpDpadPrevious = m_controls.oper_UP_DPAD();
-//					}else if (m_controls.oper_DOWN_DPAD() != m_DownDpadPrevious) {
-//						if (m_controls.oper_DOWN_DPAD()) {
-//						m_liftRight.configMotionCruiseVelocity(1000, constants.kTimeoutMs);
-//						m_liftPosition = m_liftPosition - constants.liftBumpDown;
-//						System.out.println("Down Press");
-//						}
-//						m_DownDpadPrevious = m_controls.oper_DOWN_DPAD();
 					}
 					
 			}
@@ -220,7 +192,6 @@ public class Lift {
 			return false;
 		}else {	
 			m_liftRight.set(ControlMode.MotionMagic, m_liftPosition);
-			
 			}
 		if ( Math.abs(getLiftPosition()-m_liftPosition) <= constants.liftEncoderTolerance) {
 			moving = false;
@@ -239,9 +210,6 @@ public class Lift {
 		SmartDashboard.putNumber("Intended", m_liftPosition);
 		SmartDashboard.putNumber("Bottom Value: ", m_liftBottom.getVoltage());		
 		SmartDashboard.putBoolean("Bottom Sensor: ", (m_liftBottom.getVoltage() >= 0.7));
-//		SmartDashboard.putNumber("PDP 8", m_pdp.getCurrent(8));
-//		SmartDashboard.putNumber("PDP 9", m_pdp.getCurrent(9));
-//		SmartDashboard.putNumber("Lift Encoder", m_liftEncoder);
 	}
 	
 }

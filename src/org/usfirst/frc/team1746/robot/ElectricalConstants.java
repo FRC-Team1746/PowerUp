@@ -24,9 +24,9 @@ public class ElectricalConstants {
 	public int CLIMBER_2 = 41;
 	public int CLIMBER_3 = 42;
 		
-//	public int RETRACTOR_LEFT = 53;
-	public int RETRACTOR = 50; //For The Comp Rob
-//	public int RETRACTOR = 53; //For The Prac Ot
+//	public int RETRACTOR = 50; //For The Comp Rob
+	public int RETRACTOR = 53; //For The Prac Ot
+	
 	// MoreBoard
 	public int EMPTY1 = 10;
 	public int EMPTY2 = 11;
@@ -38,7 +38,6 @@ public class ElectricalConstants {
 	public int EMPTY8 = 17;
 	public int EMPTY9 = 18;
 	public int EMPTY10 = 19;
-	
 	
 	// DIOs
 	public int CUBE_SENSOR = 0; //photosensor
