@@ -20,7 +20,7 @@ public class AutonBase {
 	PandaAutonSwitchLeft m_pandaAutonSwitchLeft;
 	PandaAutonStraight m_pandaAutonStraight;
 	PandaAutonFarScaleRight m_pandaAutonFarScaleRight;
-	PandaAutonFarScaleLeftHook m_pandaAutonFarScaleLeft;
+	PandaAutonFarScaleLeftMeghan m_pandaAutonFarScaleLeft;
 	
 	boolean scalePrioritized;
 	
@@ -44,7 +44,7 @@ public class AutonBase {
 	    m_pandaAutonSwitchRight = new PandaAutonSwitchRight(m_driveTrain, m_lift, m_intake, m_retractor);
 	    m_pandaAutonStraight = new PandaAutonStraight(m_driveTrain, m_lift, m_intake);
 	    m_pandaAutonFarScaleRight = new PandaAutonFarScaleRight(m_driveTrain, m_lift, m_intake, m_retractor);   
-	    m_pandaAutonFarScaleLeft = new PandaAutonFarScaleLeftHook(m_driveTrain, m_lift, m_intake, m_retractor);   
+	    m_pandaAutonFarScaleLeft = new PandaAutonFarScaleLeftMeghan(m_driveTrain, m_lift, m_intake, m_retractor);   
 	    
 	    m_pandaAutonCenterSwitchRight.init();
 	    m_pandaAutonCenterSwitchLeft.init();

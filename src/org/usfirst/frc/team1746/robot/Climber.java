@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Climber {
 
-	
 	ElectricalConstants m_eConstants;
 	Controls m_controls;
 	Constants constants;

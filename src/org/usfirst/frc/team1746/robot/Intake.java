@@ -79,7 +79,7 @@ public class Intake {
 		}else if (m_controls.oper_RB_Button()) {
 			m_intakeLeft.set(ControlMode.PercentOutput, -.5);
 			m_intakeRight.set(ControlMode.PercentOutput, -.5);
-		}else { //Nope
+		}else { //Stops
 			m_intakeRight.set(ControlMode.PercentOutput, 0);
 			m_intakeLeft.set(ControlMode.PercentOutput, 0);
 		}

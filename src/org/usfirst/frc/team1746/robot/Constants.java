@@ -17,10 +17,10 @@ class Constants {
 	public static final double climbingBarHeight = 81;           //In Inches ;
 
 	//Retractor
-	public static final double retZeroDeg = 765; // In 5 Volts Out Of 1023  Units 
-	public static final double retFourtyFiveDeg = 650;
-	public static final double retNinetyDeg = 520; 
-	public static final double retCrashDeg = 320; //Starting Position
+	public static final double retZeroDeg = 858; // In 5 Volts Out Of 1023  Units 
+	public static final double retFourtyFiveDeg = retZeroDeg - 115;
+	public static final double retNinetyDeg = retZeroDeg - 245; 
+	public static final double retCrashDeg = retZeroDeg - 445; //Starting Position
 	public static final int retSpeed = 50;
 	
 	/**

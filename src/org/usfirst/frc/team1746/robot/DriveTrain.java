@@ -41,8 +41,6 @@ public class DriveTrain {
 	
 	public DifferentialDrive myRobot;
 
-//	private Encoder m_encoderLeft;
-//	private Encoder m_encoderRight;
 	private ADXRS450_Gyro m_Gyro;
 	private double m_drivePosition;
 	
@@ -80,8 +78,6 @@ public class DriveTrain {
 		m_RightFollowerA.follow(m_RightMaster);
 		m_RightFollowerB.follow(m_RightMaster);	
 	
-//		m_encoderLeft = new Encoder(eConstants.ENCODER_DRIVE_LEFT_A, eConstants.ENCODER_DRIVE_LEFT_B, false, Encoder.EncodingType.k1X);
-//		m_encoderRight = new Encoder(eConstants.ENCODER_DRIVE_RIGHT_A, eConstants.ENCODER_DRIVE_RIGHT_B, false, Encoder.EncodingType.k1X);
 		m_Gyro = new ADXRS450_Gyro();
 		m_Gyro.reset();
 		m_drivePosition = 0;
@@ -104,10 +100,7 @@ public class DriveTrain {
 		
 	}
 	
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// Drivetrain init
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 		
 	public void initTele(){
 		
@@ -230,9 +223,7 @@ public void initAuto(){
 //		m_LeftMaster.configOpenloopRamp(0.25, 0);
 	}
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// Drivetrain Functions
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public void teleopArcadeDrive(){
 		if (!m_controls.driver_A_Button()) {
@@ -241,7 +232,6 @@ public void initAuto(){
 		myRobot.arcadeDrive(-m_controls.driver_Y_Axis(), m_controls.driver_X_Axis());
 		}
 		setRampRate(0.0);
-//		setCoast(true);		
 	}
 	public void autonDriveStraight(double distance, double speed){
 		m_RightMaster.configMotionCruiseVelocity((int)(AutonConstants.maxVelocity * speed), Constants.kTimeoutMs);
@@ -250,33 +240,18 @@ public void initAuto(){
 //		m_LeftMaster.configMotionAcceleration(21000, Constants.kTimeoutMs);
 		m_RightMaster.set(ControlMode.MotionMagic, (-distance * AutonConstants.ticksPerInch));
 		m_LeftMaster.set(ControlMode.MotionMagic, (distance * AutonConstants.ticksPerInch));
-//		try { 
-//			TimeUnit.MILLISECONDS.sleep(10);
-//		} catch (Exception e) {
-//			System.out.println("Exception: " + e);
-//		}
-//		if(Math.abs(getEncoderLeft()) < Math.abs(distance*AutonConstants.ticksPerInch)-333) {
-//			m_LeftMaster.set(ControlMode.Position, (distance * AutonConstants.ticksPerInch));
-//			m_RightMaster.set(ControlMode.Position, (-distance * AutonConstants.ticksPerInch));
-////			drivePID(AutonConstants.DefaultDrivingSpeed, 0);
-//		}else {
-//			m_RightMaster.set(ControlMode.PercentOutput, 0);
-//			m_LeftMaster.set(ControlMode.PercentOutput, 0);
-//		}
 }
 
 	public void autonDriveStraight(double speed){
-//		myRobot.tankDrive(-speed, -speed);
 		m_LeftMaster.set(speed);
 		m_RightMaster.set(-speed);
 		System.out.println("Speed: " + speed + " Talon Right Output: " + m_RightMaster.getMotorOutputPercent() + " Talon Left Output: " + m_LeftMaster.getMotorOutputPercent());
-//		System.out.println("Running Tank Drive");
 	}
 	public void autonDriveProto(double speed, double speed1) {
 		myRobot.tankDrive(speed, speed1);
 	}
+	
 	public void radialDriveToStop(double speed, double radius, boolean rightTurn, double turn) {
-		
 		double P = 0.00002;
 		System.out.println("Initial Heading" + m_initialHeading);
 		System.out.println("Speed  = " + speed + " R OUt " + m_RightMaster.getMotorOutputPercent() + " L Out " + m_LeftMaster.getMotorOutputPercent());
@@ -289,7 +264,6 @@ public void initAuto(){
 			double encoderDifference = (-getEncoderRight()*(((radius+WHEELBASE_IN) / radius))) - getEncoderLeft();
 			m_RightMaster.set(ControlMode.PercentOutput, -((speed)-(P*(encoderDifference)))*(angleRatio));
 			m_LeftMaster.set(ControlMode.PercentOutput, ((speed))*(angleRatio));
-//			m_LeftMaster.set(ControlMode.Position, -getEncoderRight()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println(">RightENC: " + getEncoderRight());
 //			System.out.println(">LeftENC: " + -getEncoderRight()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println("LeftActual:" + getEncoderLeft());
@@ -303,10 +277,7 @@ public void initAuto(){
 			}
 			double encoderDifference = (getEncoderLeft()*(((radius+WHEELBASE_IN) / radius)) - (-getEncoderRight()));
 			m_LeftMaster.set(ControlMode.PercentOutput, ((speed)-(P*(encoderDifference)))*(angleRatio));
-//			m_LeftMaster.set(ControlMode.PercentOutput, ((speed)-(P*(encoderDifference))));
 			m_RightMaster.set(ControlMode.PercentOutput, -(speed)*(angleRatio));
-//			m_RightMaster.set(ControlMode.PercentOutput, -(speed));
-//			m_RightMaster.set(ControlMode.Position, -getEncoderLeft()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println("<LeftENC: " + getEncoderLeft());
 //			System.out.println("<RightENC: " + -getEncoderLeft()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println("RightActual:" + getEncoderRight());
@@ -322,7 +293,6 @@ public void initAuto(){
 	}
 
 	public void radialDriveAtSpeed(double speed, double radius, boolean rightTurn) {
-		
 		double P = 0.00008;
 		System.out.println("Initial Heading" + m_initialHeading);
 		System.out.println("Speed  = " + speed + " R OUt " + m_RightMaster.getMotorOutputPercent() + " L Out " + m_LeftMaster.getMotorOutputPercent());
@@ -330,7 +300,6 @@ public void initAuto(){
 			double encoderDifference = (-getEncoderRight()*(((radius+WHEELBASE_IN) / radius))) - getEncoderLeft();
 			m_RightMaster.set(ControlMode.PercentOutput, -((speed)-(P*(encoderDifference))));
 			m_LeftMaster.set(ControlMode.PercentOutput, ((speed)));
-//			m_LeftMaster.set(ControlMode.Position, -getEncoderRight()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println(">RightENC: " + getEncoderRight());
 //			System.out.println(">LeftENC: " + -getEncoderRight()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println("LeftActual:" + getEncoderLeft());
@@ -339,10 +308,7 @@ public void initAuto(){
 		}else {
 			double encoderDifference = (getEncoderLeft()*(((radius+WHEELBASE_IN) / radius)) - (-getEncoderRight()));
 			m_LeftMaster.set(ControlMode.PercentOutput, ((speed)-(P*(encoderDifference))));
-//			m_LeftMaster.set(ControlMode.PercentOutput, ((speed)-(P*(encoderDifference))));
 			m_RightMaster.set(ControlMode.PercentOutput, -(speed));
-//			m_RightMaster.set(ControlMode.PercentOutput, -(speed));
-//			m_RightMaster.set(ControlMode.Position, -getEncoderLeft()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println("<LeftENC: " + getEncoderLeft());
 //			System.out.println("<RightENC: " + -getEncoderLeft()*(((radius+WHEELBASE_IN) / radius)));
 //			System.out.println("RightActual:" + getEncoderRight());
@@ -373,7 +339,7 @@ public void initAuto(){
 		System.out.println("STRAIGHTPID" + (P*encoderDifference+D*derivative+I*integral));
 	}
 	public void driveStraightGyro(double speed, double targetHeading) {
-		double P = 0.00078; //on practice bot it is .0012
+		double P = 0.00078; //on practice bot it is .0012?
 		double I = 0.000000;
 		double D = 0.000;
 		
@@ -407,20 +373,6 @@ public void initAuto(){
 	}
 	
 	public double autonDriveTurn(double direction, double initialHeading, double speed){
-//		myRobot.tankDrive(speed, -speed);
-//		m_LeftMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
-//		m_RightMaster.set(ControlMode.MotionMagic, (direction * aConstants.encoderTicksPer90Degrees));
-//		System.out.println("Running Tank	 Turn");
-		
-//		m_LeftMaster.set(ControlMode.PercentOutput , direction * aConstants.DefaultTurningSpeed);
-//		m_RightMaster.set(ControlMode.PercentOutput, direction * aConstants.DefaultTurningSpeed);
-//		System.out.println(getHeading());	
-//		if(Math.abs(getHeading()) > 78) {
-//				m_turned = true;
-//			}else {
-//				m_turned = false;
-//		}			
-//		return m_turned;
 		double turnError = (initialHeading + direction*90)-getHeading();
 //		System.out.println("Initial Heading: " + initialHeading);
 //		System.out.println("Direction: " + direction);
@@ -428,11 +380,9 @@ public void initAuto(){
 		System.out.println("Turn Error: " + turnError);
 		double P = 1/90;
 		if(Math.abs(turnError) > 40) {
-//			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed,-direction*aConstants.DefaultTurningSpeed);
 			m_LeftMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed);
 			m_RightMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed);
 		}else {
-//			myRobot.tankDrive(direction*aConstants.DefaultTurningSpeed*P*turnError,-direction*aConstants.DefaultTurningSpeed*P*turnError);
 			m_LeftMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed*P*turnError);
 			m_RightMaster.set(ControlMode.PercentOutput, direction*aConstants.DefaultTurningSpeed*P*turnError);
 			System.out.println("Initial Heading: " + initialHeading);
@@ -442,47 +392,6 @@ public void initAuto(){
 		return turnError;
 	}
 
-
-	//////////////////////////////////////////////////////////////
-	//////////////		    	PID              ////////////////
-	/////////////////////////////////////////////////////////////	
-//	int sumEncoderErrors;
-//
-//	public void drivePID(double desiredLeftMotorSpeed, double turnRadius){
-////		double P = SmartDashboard.getNumber("PID P");
-//		//double I = SmartDashboard.getNumber("PID I");
-//		double P = .05;
-//		double encoderError;
-//		if(turnRadius != 0){
-//			encoderError = getEncoderLeft() - getEncoderRight() - (getEncoderLeft() * (1-(turnRadius-11)/(turnRadius+11)));
-//		} else{
-//			encoderError = -(getEncoderLeft() + getEncoderRight());
-//		}
-//		double rightMotorSpeed;
-//		if(desiredLeftMotorSpeed >= 0){
-//			if(leftMotorSpeed < desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed+MOTOR_INCREMENT_RATE;
-//			}else if(leftMotorSpeed > desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed-MOTOR_INCREMENT_RATE;
-//			}else{
-//				leftMotorSpeed = desiredLeftMotorSpeed;
-//			}
-//		} else{
-//			if(leftMotorSpeed > desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed-MOTOR_INCREMENT_RATE;
-//			}else if(leftMotorSpeed < desiredLeftMotorSpeed){
-//				leftMotorSpeed = leftMotorSpeed+MOTOR_INCREMENT_RATE;
-//			}else{
-//				leftMotorSpeed = desiredLeftMotorSpeed;
-//			}
-//		}
-//		
-//		rightMotorSpeed = leftMotorSpeed + P*encoderError;
-////		myRobot.tankDrive(-leftMotorSpeed, -rightMotorSpeed);
-//		m_LeftMaster.set(ControlMode.PercentOutput, leftMotorSpeed);
-//		m_RightMaster.set(ControlMode.PercentOutput, -rightMotorSpeed);
-//	}
-	
 	public int getEncoderLeft(){
 		return m_LeftMaster.getSelectedSensorPosition(Constants.kPIDLoopIdx);
 	}

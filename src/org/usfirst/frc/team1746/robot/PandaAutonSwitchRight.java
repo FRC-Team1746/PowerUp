@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1746.robot;
 
-import org.usfirst.frc.team1746.robot.AutonGo.States;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -19,7 +17,6 @@ public class PandaAutonSwitchRight {
 	private boolean m_rightTurn;
 	private Intake m_intake;
 	private int m_delayCounter;
-//	private double inf = Double.POSITIVE_INFINITY;
 	private double m_initialHeading;
 	private double m_targetDegrees;
 	private Retractor m_retractor;
@@ -55,8 +52,6 @@ public class PandaAutonSwitchRight {
 		case INIT:
 			m_autonDriveTrain.resetEncoders();
 			m_initialHeading = m_autonDriveTrain.getHeading();
-//			pidcontroller = new PIDController(0, 0, 0, 0, m_Gyro, m_LeftMaster);
-//			PIDController pidcontroller1 = new PIDController(0, 0, 0, 0, m_Gyro, m_RightMaster); //Enter Gyro value and Both Motor Sides? // Try Speed Controller Groups?
 			m_speed = .25;
 			m_turnRadius = 50;
 			m_rightTurn = true;
@@ -76,7 +71,6 @@ public class PandaAutonSwitchRight {
 				currentState = States.LEFTLEGINIT;
 			}
 			break;
-			//SKIPPING
 		case DRIVESTRAIGHT:
 			m_autonDriveTrain.pandaDriveStraight(m_speed);
 			System.out.println("Encoder" + m_autonDriveTrain.getAdjustedHeading());
@@ -95,7 +89,6 @@ public class PandaAutonSwitchRight {
 			m_turnRadius = 35;
 			m_targetDegrees = -40;
 			m_rightTurn = false;
-//			m_autonLift.initPandaLift(1);
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
 			currentState = States.LEFTLEG;
 			}
@@ -105,12 +98,8 @@ public class PandaAutonSwitchRight {
 			System.out.println("Adjusted Heading" + m_autonDriveTrain.getAdjustedHeading());
 			if (m_autonDriveTrain.getAdjustedHeading() <= m_targetDegrees) {
 				System.out.println("finished left leg, heading = " + m_autonDriveTrain.getAdjustedHeading());
-//				m_pandaIntake.initPandaIntake(1);
 				m_delayCounter = 0;
 				currentState = States.SHOOT;
-			}
-			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= 15) {
-				//init Shooting
 			}
 			break;
 		case SHOOT:
@@ -124,7 +113,7 @@ public class PandaAutonSwitchRight {
 			}
 			break;
 		case BACK:
-			if(m_delayCounter  >= 2){ //Waiting For Encoders To Reset
+			if(m_delayCounter  >= 2){
 				m_speed = -.4;
 				m_rightTurn = true;
 				m_autonDriveTrain.autonDriveStraight(m_speed);
@@ -143,11 +132,6 @@ public class PandaAutonSwitchRight {
 		case IDLE:
 			break;
 		}
-//		System.out.println("Speed of Robot: " + m_speed);
-//		m_pandaIntake.updatePandaIntake();
-//		m_autonLift.updatePandaLift();
-//		m_autonDriveTrain.pandaDriveStraight(m_speed);
-//		m_autonDriveTrain.radialDrive(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees); // boolean defines true/false for right
 	}
 	public void init() {
 		currentState = States.INIT;

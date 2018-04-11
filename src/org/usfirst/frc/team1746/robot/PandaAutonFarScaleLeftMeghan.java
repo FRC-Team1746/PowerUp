@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1746.robot;
 
-import org.usfirst.frc.team1746.robot.AutonGo.States;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;

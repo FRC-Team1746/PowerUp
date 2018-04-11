@@ -62,7 +62,6 @@ public class Retractor {
 	}
 	
 	public void updateNew() {
-//		m_retractor.config_kF(0, value, 10);
 		analogPos = m_retractor.getSensorCollection().getAnalogIn();
 		analogVel = m_retractor.getSensorCollection().getAnalogInVel();
 		
@@ -86,57 +85,6 @@ public class Retractor {
 			m_retPosition = m_retPosition + m_controls.oper_Y_Axis()*66;
 		}
 			m_retractor.set(ControlMode.MotionMagic, m_retPosition);
-//		}else {
-//			if (getPot() > constants.retNinetyDeg) {
-//				if (m_controls.oper_Y_Axis() > -.15) {
-//					m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//					m_retPosition = m_retPosition - m_controls.oper_Y_Axis()*50;
-//				}else if (m_controls.oper_DOWN_DPAD()||m_controls.oper_UP_DPAD()||m_controls.oper_LEFT_DPAD()||m_controls.oper_RIGHT_DPAD()){
-//					if(m_controls.oper_UP_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retNinetyDeg;
-//					} else if(m_controls.oper_DOWN_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retFourtyFiveDeg;
-//					} else if(m_controls.oper_RIGHT_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retFourtyFiveDeg;
-//					} else if(m_controls.oper_LEFT_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retZeroDeg;
-//					}
-//				} else {
-//					m_retPosition = constants.retNinetyDeg;
-//					m_retractor.configMotionCruiseVelocity(0, 10);
-//				}
-//				m_retractor.set(ControlMode.MotionMagic, m_retPosition);
-//			} else if(getPot() < constants.retZeroDeg) {
-//				if (m_controls.oper_Y_Axis() < .15) {
-//					m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//					m_retPosition = m_retPosition - m_controls.oper_Y_Axis()*50;
-//				}else if (m_controls.oper_DOWN_DPAD()||m_controls.oper_UP_DPAD()||m_controls.oper_LEFT_DPAD()||m_controls.oper_RIGHT_DPAD()){
-//					if(m_controls.oper_UP_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retNinetyDeg;
-//					} else if(m_controls.oper_DOWN_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retFourtyFiveDeg;
-//					} else if(m_controls.oper_RIGHT_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retFourtyFiveDeg;
-//					} else if(m_controls.oper_LEFT_DPAD()) {
-//						m_retractor.configMotionCruiseVelocity(constants.retSpeed, 10);
-//						m_retPosition = constants.retZeroDeg;
-//					}
-//					m_retractor.set(ControlMode.MotionMagic, m_retPosition);
-//				} else {
-//					m_retPosition = constants.retZeroDeg;
-//					m_retractor.configMotionCruiseVelocity(0, 10);
-//					m_retractor.set(ControlMode.MotionMagic, m_retPosition);
-//				}
-//			}
-//		}
-////		m_retractor.set(ControlMode.MotionMagic, m_retPosition);	
 	}
 	
 	public boolean checkPosition() {

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1746.robot;
 
-import org.usfirst.frc.team1746.robot.AutonGo.States;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -19,7 +17,6 @@ public class PandaAutonCenterSwitchRight {
 	private boolean m_rightTurn;
 	private Intake m_intake;
 	private int m_delayCounter;
-//	private double inf = Double.POSITIVE_INFINITY;
 	private double m_initialHeading;
 	private double m_targetDegrees;
 	private Retractor m_retractor;
@@ -62,8 +59,6 @@ public class PandaAutonCenterSwitchRight {
 			m_autonDriveTrain.resetEncoders();
 			m_initialHeading = m_autonDriveTrain.getHeading();
 			m_autonDriveTrain.initHeading();
-//			pidcontroller = new PIDController(0, 0, 0, 0, m_Gyro, m_LeftMaster);
-//			PIDController pidcontroller1 = new PIDController(0, 0, 0, 0, m_Gyro, m_RightMaster); //Enter Gyro value and Both Motor Sides? // Try Speed Controller Groups?
 			m_speed = .5;
 			m_turnRadius = 25;
 			m_rightTurn = true;
@@ -77,8 +72,6 @@ public class PandaAutonCenterSwitchRight {
 			currentState = States.FIRSTLEG;
 			break;
 		case FIRSTLEG:
-//			pidcontroller.setSetpoint(-45.0);
-//			double value = pidcontroller.get(); 
 			m_autonDriveTrain.radialDriveAtSpeed(m_speed, m_turnRadius, m_rightTurn);
 			System.out.println("Gyro Value: " + m_autonDriveTrain.getAdjustedHeading());
 			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) >= 25) {
@@ -94,7 +87,6 @@ public class PandaAutonCenterSwitchRight {
 			m_rightTurn = false;
 			m_targetDegrees = 1;
 			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
-//			m_autonLift.initPandaLift(1);
 			currentState = States.SECONDLEG;
 			
 			}
@@ -104,12 +96,8 @@ public class PandaAutonCenterSwitchRight {
 			System.out.println("Adjusted Heading" + m_autonDriveTrain.getAdjustedHeading());
 			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= m_targetDegrees+3) {
 				System.out.println("finished second leg, heading = " + m_autonDriveTrain.getAdjustedHeading());
-//				m_pandaIntake.initPandaIntake(1);
 				m_delayCounter = 0;
 				currentState = States.SHOOT;
-			}
-			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= 15) {
-				//init Shooting
 			}
 			break;
 		case SHOOT:
@@ -124,7 +112,6 @@ public class PandaAutonCenterSwitchRight {
 				}
 			}
 			break;
-			//insert
 		case BACK:
 			if(m_delayCounter ++ >= 2){ //Waiting For Encoders To Reset
 				m_speed = -.4;
@@ -144,65 +131,6 @@ public class PandaAutonCenterSwitchRight {
 				m_autonDriveTrain.resetEncoders();
 			}
 			break;
-		case SECONDBACKINIT:
-			if(m_delayCounter ++ >= 2){
-			m_speed = -.5;
-			m_turnRadius = 70;
-			m_rightTurn = false;
-			m_autonDriveTrain.radialDriveAtSpeed(m_speed, m_turnRadius, m_rightTurn);
-			currentState = States.SECONDBACK;
-			}
-			break;
-		case SECONDBACK:
-			m_autonDriveTrain.radialDriveAtSpeed(m_speed, m_turnRadius, m_rightTurn);
-			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) >= 43) {
-				System.out.println("finished second back, heading = " + m_autonDriveTrain.getAdjustedHeading());
-				currentState = States.FIRSTBACKINIT;
-				m_delayCounter = 0;
-				m_autonDriveTrain.resetEncoders();
-			}
-			break;
-		case FIRSTBACKINIT:
-			if(m_delayCounter ++ >= 2){ //Waiting For Encoders To Reset
-			m_speed = -.5;
-			m_turnRadius = 40;
-			m_rightTurn = true;
-			m_targetDegrees = 10;
-			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
-//			m_autonLift.initPandaLift(0);
-			currentState = States.FIRSTBACK;
-			}
-			break;
-		case FIRSTBACK:
-			m_autonDriveTrain.radialDriveToStop(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees);
-			if (Math.abs(m_autonDriveTrain.getAdjustedHeading()) <= m_targetDegrees) {
-				System.out.println("finished first back, heading = " + m_autonDriveTrain.getAdjustedHeading());
-//				m_pandaIntake.initPandaIntake(1);
-				currentState = States.DRIVE2CUBEINIT;
-				m_delayCounter = 0;
-				m_autonDriveTrain.resetEncoders();
-			}
-			break;
-		case DRIVE2CUBEINIT:
-			if(m_delayCounter ++ >= 2){ //Waiting For Encoders To Reset
-				m_speed = .7;
-				m_turnRadius = 4294000000.0;
-//				m_turnRadius = inf;
-				m_rightTurn = true;
-				m_autonDriveTrain.pandaDriveStraight(m_speed);
-				currentState = States.DRIVE2CUBE;
-			}
-			break;
-			
-		case DRIVE2CUBE:
-			m_autonDriveTrain.pandaDriveStraight(m_speed);
-			System.out.println("Encoder" + m_autonDriveTrain.getAdjustedHeading());
-			if (!m_intake.intakeSensor()) { //Sensor Returns False When It Sees A Cube
-//			if (m_autonDriveTrain.getEncoderLeftInches() >= 50) {
-				System.out.println("finished Drive 2 Cube");
-				currentState = States.STOP;
-			}
-			break;
 		case STOP:
 //			System.out.println("STOP has been reached");
 			m_speed = 0;
@@ -212,17 +140,7 @@ public class PandaAutonCenterSwitchRight {
 			break;
 		case IDLE:
 			break;
-		case DRIVESTRAIGHT:
-			if (m_autonDriveTrain.getEncoderLeftInches() >= 200) {
-				System.out.println("finished Drive Straight");
-				currentState = States.STOP;
-			}
 		}
-//		System.out.println("Speed of Robot: " + m_speed);
-//		m_pandaIntake.updatePandaIntake();
-//		m_autonLift.updatePandaLift();
-//		m_autonDriveTrain.pandaDriveStraight(m_speed); 
-//		m_autonDriveTrain.radialDrive(m_speed, m_turnRadius, m_rightTurn, m_targetDegrees); // boolean defines true/false for right
 	}
 	public void init() {
 		currentState = States.INIT;
